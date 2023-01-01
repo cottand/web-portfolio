@@ -1,10 +1,9 @@
-import React, {FC, Fragment} from "react";
-import {Card, List, ListItem, ListItemButton, ListItemText, Typography} from "@mui/material";
+import React, {FC} from "react";
+import {Card, List, ListItemButton, ListItemText, Typography} from "@mui/material";
 
 export const Blog = () => (
     <Card>
         <List component={"nav"}>
-
             <Entry
                 type = {"article"}
                 title ={"Detailed Case Study of Blockchain.com, a Fast-growing Cryptocurrency Company"}

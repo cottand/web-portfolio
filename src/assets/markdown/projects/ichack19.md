@@ -4,7 +4,7 @@ Our submission, which we baptised ARnold, was an app that allowed a lecturer to 
 students' phones through AR.
 
 <figure>
-<img src="assets/ichackWin.jpeg" class="centered border-radius" style="width: min(75%, 450px)"/>
+<img src="assets/ichackWin.jpeg" class="centered border-radius" style="width: min(100%, 450px)"/>
 <figcaption align = "center"><i>The team receiving the prize</i></figcaption>
 </figure>
 
@@ -15,4 +15,4 @@ part of teaching.
 
 We made the app with **Unity**, so in **C#**.
 
-<img src="assets/ichack.jpeg" class="centered border-radius" style="width: min(75%, 450px)"/>
+<img src="assets/ichack.jpeg" class="centered border-radius" style="width: min(90%, 450px)"/>

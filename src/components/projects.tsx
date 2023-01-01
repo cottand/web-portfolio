@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, {useEffect, useState} from "react";
+import React, {FC, useEffect, useRef, useState} from "react";
 import {Accordion, AccordionDetails, AccordionSummary, Link, Typography} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -8,6 +8,7 @@ import {css} from "@emotion/react";
 import {theme} from "../App";
 import {MdRenderer} from "./MdFile";
 import {PanelEntry, PanelName, panels} from "./projectPanels";
+import {Defer} from "./Defer";
 
 type EntryProps = PanelEntry & {
     handleChange: (event: any, expanded: boolean) => void
@@ -15,13 +16,25 @@ type EntryProps = PanelEntry & {
     aligned: boolean
 }
 
-function ProjEntry(props: EntryProps) {
-    const Heading = ()  => (<Typography fontSize={"30px"} className={styles.heading}>{props.name}</Typography>)
-    const Subheading = () => (<Typography color={theme.palette.grey.A700} className={styles.subheading}>{props.summary}</Typography>)
+const ProjEntry:FC<EntryProps> = (props ) => {
+    const Heading = () => (<Typography fontSize={"30px"} className={styles.heading}>{props.name}</Typography>)
+    const Subheading = () => (
+        <Typography color={theme.palette.grey.A700} className={styles.subheading}>{props.summary}</Typography>)
 
+    const ref = useRef<HTMLDivElement>(null)
+
+    const onTransitionEnd = () => {
+        if(props.expandedPanel === props.name)
+            ref.current?.scrollIntoView({behavior: "smooth", block: "start", inline: "start"});
+    }
     return (
-        <Accordion expanded={props.expandedPanel === props.name} onChange={props.handleChange}>
+            <Accordion
+                expanded={props.expandedPanel === props.name}
+                onChange={props.handleChange}
+                onTransitionEnd={() => onTransitionEnd()}
+                >
             <AccordionSummary
+                ref={ref}
                 expandIcon={<ExpandMoreIcon color={"primary"}/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
@@ -66,25 +79,21 @@ export function Projects() {
         }
     );
 
-    function entry(e: PanelEntry) {
-        return (<ProjEntry
-            aligned={aligned}
-            markdown={e.markdown}
-            summary={e.summary}
-            gh={e.gh} name={e.name} handleChange={handleChange(e.name)} expandedPanel={expanded}
-        />)
-    }
-
-    return (<div className={css`width: 100%`.name}>
-        {panels.map((p) => (
-            <ProjEntry
-                handleChange={handleChange(p.name)}
-                expandedPanel={expanded}
-                aligned={aligned}
-                {...p}
-            />
-        ))}
-    </div>)
+    return (
+        <div css={css`width: 100%`}>
+            <Defer chunkSize={2}>
+                {panels.map((p) => (
+                    <ProjEntry
+                        key={p.name}
+                        handleChange={handleChange(p.name)}
+                        expandedPanel={expanded}
+                        aligned={aligned}
+                        {...p}
+                    />
+                ))}
+            </Defer>
+        </div>
+    )
 
 }
 
@@ -104,12 +113,12 @@ function GithubBanner(props: { repo: string }) {
                 >
                     <GitHubIcon css={css`width: ${svgWidth};
                       height: ${svgWidth};
+                      vertical-align: center;
                       position: absolute`}/>
                 </div>
                 <Typography
-                    // TODO SPACING
                     css={css`padding-left: calc(${svgWidth} + ${theme.spacing(1)});
-                      height: ${svgWidth};
+                      height: fit-content;
                       line-height: ${svgWidth};`}>
                     {props.repo}
                 </Typography>

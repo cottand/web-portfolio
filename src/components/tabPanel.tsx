@@ -1,17 +1,20 @@
 /** @jsxImportSource @emotion/react */
 import {css} from "@emotion/react";
-import {Box} from "@mui/material";
-import React from "react";
+import Box from "@mui/material/Box";
+import {ReactNode} from "react";
 
 interface TabPanelProps {
-    children: React.ReactNode;
+    children: ReactNode;
     value: number;
     index: number;
+    keepMountedOnHide?: boolean;
 }
 
 export function TabPanel(props: TabPanelProps) {
-    const {children, value, index, ...other} = props;
+    const {children, value, index, keepMountedOnHide, ...other} = props;
+    const hidden = value !== index;
 
+    const keepMounted = keepMountedOnHide ?? false
     return (
         <div
             css={css`
@@ -19,13 +22,14 @@ export function TabPanel(props: TabPanelProps) {
               align-self: center;
             `}
             role="tabpanel"
-            hidden={value !== index}
+            hidden={hidden}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
 
             {...other}
         >
-            {value === index && (<Box>{children}</Box>)}
+            {(!hidden || keepMounted) && <Box>{children}</Box>}
         </div>
+
     );
 }
