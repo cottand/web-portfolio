@@ -1,5 +1,6 @@
 {
   "name": "web-portfolio",
+  "homepage": "https://nico.dcotta.eu"
   "version": "0.1.0",
   "private": true,
   "dependencies": {
