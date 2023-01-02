@@ -41,6 +41,7 @@ export const theme = createTheme({
     },
 });
 
+// noinspection CssInvalidPropertyValue
 const App: FC = () => (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -48,9 +49,12 @@ const App: FC = () => (
                 css={css`
                   padding: 16px;
                   background-image: url(${background});
-                  background-position: center center;
+                  //background-position: center;
                   background-size: cover;
+                  height: 100%;
                   //min-height: min(100%, 600px);
+                  overflow: scroll;
+                  overflow: overlay;
                   background-attachment: fixed;
                   background-repeat: no-repeat;
                   box-sizing: border-box;
