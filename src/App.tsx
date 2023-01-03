@@ -6,7 +6,6 @@ import Header from "./components/header";
 import {HashRouter} from "react-router-dom";
 import {NavBar} from "./components/navBar";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
-import background from "./assets/oil1.jpg"
 import styles from "./portfolio.module.css"
 
 export const theme = createTheme({

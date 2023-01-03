@@ -12,7 +12,7 @@ export const MdRenderer: FC<{ file: string, centered?: boolean }> = (props) => {
         () => fetch(props.file).then((r) => r.text()),
         [props.file]
     )
-    const [content, setContent] = useState<string | null>(null)
+    const [content, setContent] = useState<string>("")
     useEffect(() => {
         const req = makemSourceRequest();
         if (!req) return
@@ -50,7 +50,7 @@ export const MdRenderer: FC<{ file: string, centered?: boolean }> = (props) => {
                 }
             }}
             rehypePlugins={[rehypeRaw]}
-            children={content ? content : ""}
+            children={content}
         />
 
     ), [content])
