@@ -7,7 +7,7 @@ import rehypeRaw from "rehype-raw";
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import {atomDark} from 'react-syntax-highlighter/dist/esm/styles/prism'
 
-export const MdRenderer: FC<{ file: string, centered?: boolean }> = (props) => {
+export const MdRenderer: FC<{ file: string}> = (props) => {
     const makemSourceRequest = useCallback(
         () => fetch(props.file).then((r) => r.text()),
         [props.file]
@@ -20,15 +20,8 @@ export const MdRenderer: FC<{ file: string, centered?: boolean }> = (props) => {
     }, [makemSourceRequest])
 
 
-    const centering = props.centered ? css`
-      align-content: center;
-      align-items: center;
-      text-align: center;
-    ` : css``
-
     return useMemo(() => (
         <ReactMarkdown
-            css={centering}
             components={{
                 a: Util.mdAsMuiLink,
                 code({node, inline, className, children, ...props}) {
