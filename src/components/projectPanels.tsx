@@ -7,6 +7,7 @@ import ichack from "../assets/markdown/projects/ichack19.md"
 import web from "../assets/markdown/projects/website.md"
 import pintos from "../assets/markdown/projects/Pintos.md"
 import checkm8 from "../assets/markdown/projects/Checkm8.md"
+import confis from "../assets/markdown/projects/Confis.md"
 
 export type PanelName = string
 
@@ -18,6 +19,12 @@ export interface PanelEntry {
 }
 
 export const panels: PanelEntry[] = [
+    {
+      name: "Confis"  ,
+        markdown: confis,
+        summary: "Framework for specifying and querying legal agreements",
+        gh: "cottand/confis",
+    },
     {
         name: "DJStreamr",
         markdown: djStreamr,
