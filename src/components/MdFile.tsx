@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import {FC, useCallback, useEffect, useMemo, useState} from "react";
 import ReactMarkdown from "react-markdown";
-import {css} from "@emotion/react";
 import {Util} from "../util";
 import rehypeRaw from "rehype-raw";
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
