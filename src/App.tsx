@@ -7,6 +7,7 @@ import {HashRouter} from "react-router-dom";
 import {NavBar} from "./components/navBar";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import background from "./assets/oil1.jpg"
+import styles from "./portfolio.module.css"
 
 export const theme = createTheme({
     palette: {
@@ -46,13 +47,10 @@ const App: FC = () => (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             <div
+                className={styles.svgBackground}
                 css={css`
                   padding: 16px;
-                  background-image: url(${background});
-                  //background-position: center;
                   background-size: cover;
-                  height: 100%;
-                  //min-height: min(100%, 600px);
                   overflow: scroll;
                   overflow: overlay;
                   background-attachment: fixed;
