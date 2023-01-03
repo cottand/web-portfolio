@@ -70,9 +70,7 @@ export function Projects() {
         setExpanded(isExpanded ? panel : null)
     };
     const [aligned, setAligend] = useState(window.innerWidth > 600);
-    const updater = () => {
-        setAligend(window.innerWidth > 600)
-    };
+    const updater = () => setAligend(window.innerWidth > 600);
     useEffect(() => {
             window.addEventListener("resize", updater);
             return () => window.removeEventListener("resize", updater);

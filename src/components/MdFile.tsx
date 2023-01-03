@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import {FC, useEffect, useState} from "react";
+import {FC, useCallback, useEffect, useMemo, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {css} from "@emotion/react";
 import {Util} from "../util";
@@ -8,12 +8,17 @@ import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import {atomDark} from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 export const MdRenderer: FC<{ file: string, centered?: boolean }> = (props) => {
+    const makemSourceRequest = useCallback(
+        () => fetch(props.file).then((r) => r.text()),
+        [props.file]
+    )
+    const [content, setContent] = useState<string | null>(null)
     useEffect(() => {
-        // TODO introduce caching since this is always the same file
-        fetch(props.file)
-            .then((r) => r.text())
-            .then(setContent);
-    }, [props.file])
+        const req = makemSourceRequest();
+        if (!req) return
+        req.then(setContent);
+    }, [makemSourceRequest])
+
 
     const centering = props.centered ? css`
       align-content: center;
@@ -21,8 +26,7 @@ export const MdRenderer: FC<{ file: string, centered?: boolean }> = (props) => {
       text-align: center;
     ` : css``
 
-    const [content, setContent] = useState<string | null>(null)
-    return (
+    return useMemo(() => (
         <ReactMarkdown
             css={centering}
             components={{
@@ -48,5 +52,6 @@ export const MdRenderer: FC<{ file: string, centered?: boolean }> = (props) => {
             rehypePlugins={[rehypeRaw]}
             children={content ? content : ""}
         />
-    )
+
+    ), [content])
 };
