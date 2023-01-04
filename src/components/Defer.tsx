@@ -6,6 +6,12 @@ export const Defer: FC<{ chunkSize: number, children: ReactNode }> = ({chunkSize
     const childrenArray = useMemo(() => React.Children.toArray(children), [children]);
 
     React.useEffect(() => {
+        // bypass deferring if browser does not support requestIdleCallback
+        if (typeof(window.requestIdleCallback) === "undefined") {
+            setRenderedItemsCount(childrenArray.length)
+            return
+        }
+
         if (renderedItemsCount < childrenArray.length) {
             window.requestIdleCallback(
                 () => {
