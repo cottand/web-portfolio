@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/styles/markdown.module.css">
 
-<img alt="DJStreamr" height="32px" src="assets/djstreamrLogoBlack.png"/>
+[//]: # (<img alt="DJStreamr" height="32px" src="assets/djstreamrLogoBlack.png"/>)
 
 [DJStreamr](https://djstreamr.com) is a collaborative platform for simultaneous, real-time DJ-ing.
 
