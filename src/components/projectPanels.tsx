@@ -38,7 +38,7 @@ export const panels: PanelEntry[] = [
         name: "\u{2000}",
         markdown: djStreamr,
         summary: "Full-stack collaborative live DJ software",
-        icon: <img src={djStreamrLogo} height={30} alt={"DJStreamr"}/>
+        icon: <img src={djStreamrLogo} height={24} alt={"DJStreamr"}/>
     },
     {
         name: "Confis"  ,

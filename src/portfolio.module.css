@@ -1,5 +1,7 @@
 .heading {
     padding-right: 20px; /*#su*/
+    padding-top: 4px;
+    padding-bottom: 4px;
     flex-basis: 33%;
     flex-shrink: 0;
     display: flex;

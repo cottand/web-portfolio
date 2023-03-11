@@ -17,7 +17,7 @@ type EntryProps = PanelEntry & {
 }
 
 const ProjEntry:FC<EntryProps> = (props ) => {
-    const HeadingTypo = () => <Typography fontSize={"30px"}>{props.name}</Typography>
+    const HeadingTypo = () => <Typography fontSize={"20px"} fontWeight={"bold"}>{props.name}</Typography>
     const Heading = () =>
         <div className={styles.heading}>
             {props.icon ?? <></>}
