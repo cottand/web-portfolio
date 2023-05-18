@@ -1,5 +1,6 @@
 import djStreamr from "../assets/markdown/projects/DJStreamr.md";
 import djStreamrLogo from "../assets/djstreamrLogoBlack.png"
+import selfhosted from "../assets/markdown/projects/Selfhosted.md";
 import ivann from "../assets/markdown/projects/Ivann.md";
 import wacc from "../assets/markdown/projects/Wacc.md"
 import paxos from "../assets/markdown/projects/Paxos.md"
@@ -10,6 +11,7 @@ import pintos from "../assets/markdown/projects/Pintos.md"
 import checkm8 from "../assets/markdown/projects/Checkm8.md"
 import confis from "../assets/markdown/projects/Confis.md"
 import Balance from "@mui/icons-material/Balance";
+import StorageIcon from '@mui/icons-material/Storage';
 import React from "react";
 import ShareOutlined from "@mui/icons-material/ShareOutlined";
 import Handshake from "@mui/icons-material/Handshake";
@@ -39,6 +41,13 @@ export const panels: PanelEntry[] = [
         markdown: djStreamr,
         summary: "Full-stack collaborative live DJ software",
         icon: <img src={djStreamrLogo} height={24} alt={"DJStreamr"}/>
+    },
+    {
+        name: "Selfhosted Infra"  ,
+        markdown: selfhosted,
+        summary: "Home SRE-like infra deployment, on my own hardware",
+        gh: "cottand/selfhosted",
+        icon: <StorageIcon {...commonIconProps} />
     },
     {
         name: "Confis"  ,
