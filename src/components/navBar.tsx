@@ -35,6 +35,7 @@ export function NavBar() {
             case "/blog":
                 return 2;
             default:
+                if (path.includes("/blog")) return 2;
                 return 0;
         }
     }
