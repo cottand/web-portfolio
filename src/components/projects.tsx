@@ -63,7 +63,7 @@ const ProjEntry:FC<EntryProps> = (props ) => {
                     {props.gh === undefined ? (<div/>) : (<GithubBanner repo={props.gh}/>)}
                     {props.gh === undefined ? (<div/>) : (<br/>)}
                 </div>
-                <MdRenderer file={props.markdown}/>
+                <MdRenderer foldCode={false} file={props.markdown}/>
             </AccordionDetails>
         </Accordion>
     )

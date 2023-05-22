@@ -1,42 +1,34 @@
 /** @jsxImportSource @emotion/react */
-import React, {FC, Fragment, useEffect} from "react";
+import React, {FC} from "react";
 import {Card, List, ListItemButton, ListItemText, Typography} from "@mui/material";
-import {Route, Routes, useLocation} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import {MdRenderer} from "./MdFile";
 import nomad from "../assets/markdown/blog/NomdAndNixOS.md"
 import {css} from "@emotion/react";
 
-export function Blog() {
-    const [path, setValue] = React.useState(useLocation().pathname);
-    // useEffect(() => setValue(useLocation().pathname))
+export const Blog = () => (
+    <Card css={css`min-height: 400px`}>
+        <Routes>
+            <Route
+                path="/blog/nomad"
+                element={<BlogEntry file={nomad}/>}
+            />
+            <Route
+                path="/blog"
+                element={<BlogEntriesList/>}
+            />
+            <Route
+                path="*"
+                element={<BlogEntriesList/>}
+            />
+        </Routes>
+    </Card>
+)
 
-    // console.log(`is: ${path} and ${useLocation().pathname}`)
-    return (
-        <Card css={css`min-height: 400px`}>
-            <Routes>
-                <Route
-                    path="/blog/nomad"
-                    element={<BlogEntry file={nomad} />}
-                />
-                <Route
-                    path="/blog"
-                    element={<BlogEntriesList/>}
-                />
-                <Route
-                    path="*"
-                    element={<BlogEntriesList/>}
-                />
-            </Routes>
-        </Card>
-        // <Card>
-        //     { (useLocation().pathname === "/blog") ? <BlogEntriesList/> : <Fragment/> }
-        // </Card>
-    );
-}
-
-export const BlogEntry: FC<{file: string}> = (props) =>
+// noinspection HtmlUnknownAttribute
+export const BlogEntry: FC<{ file: string }> = (props) =>
     <div css={css`padding: 20px`}>
-        <MdRenderer {...props}/>
+        <MdRenderer foldCode={true} {...props}/>
     </div>
 
 export const BlogEntriesList: FC = () =>
@@ -83,12 +75,3 @@ const Entry: FC<{ type: Type; title: string; href: string; date: string; divider
         </div>
     </ListItemButton>
 )
-
-// const BlogEntry: FC<{ title: string }> = (props) => (
-//     <ListItemButton href={props.href} divider={props.divider ?? true}>
-//         <div>
-//             <Typography variant={"caption"}>{props.date}</Typography>
-//             <ListItemText secondary={props.type}>{props.title}</ListItemText>
-//         </div>
-//     </ListItemButton>
-// )
