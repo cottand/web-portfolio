@@ -37,7 +37,7 @@ export const BlogEntriesList: FC = () =>
             type={"blog"}
             title={"Nomad + NixOS"}
             href={"/#/blog/nomad"}
-            date={"29/02/22"}
+            date={"22/05/23"}
         />
         <Entry
             type={"article"}
