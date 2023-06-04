@@ -5,10 +5,9 @@ I run a personal fleet of a few old computers in my living room which run servic
 - VPN, with adblocking
 - ... and hosts some of the projects you see in this website!
 
-<figure>
-<img src="assets/selfhosted1.png" class="centered border-radius" style="width: min(99%, 460px)"/>
-<figcaption align = "center"><i>Screenshot of the Nomad Job page for Grafana</i></figcaption>
-</figure>
+<img src="assets/selfhosted1.png" class="centered border-radius" style="width: min(99%, 560px)"
+caption="Screenshot of the Nomad Job page for Grafana"
+/>
 
 I made it thinking about how I would build a company's fleet as an SRE. It has a mostly open-source stack with:
 - Container orchestration through [Nomad](https://www.nomadproject.io/) (an alternative to Kubernetes)
@@ -16,10 +15,9 @@ I made it thinking about how I would build a company's fleet as an SRE. It has a
 - Secure private networking through [Wireguard](https://www.wireguard.com/)
 - Reproducible, declarative deployments of the Linux OSs through [NixOS](https://nixos.org/) (although sometimes I install other OSs on some machines to experiment!)
 
-<figure>
-<img src="assets/selfhosted2.png" class="centered border-radius" style="width: min(99%, 460px)"/>
-<figcaption align = "center"><i>Screenshot of a Grafana monitoring dashboard</i></figcaption>
-</figure>
+<img src="assets/selfhosted2.png" class="centered border-radius" style="width: min(99%, 560px)"
+caption="Screenshot of a Grafana monitoring dashboard"
+/>
 
 Overall, the setup is overkill for what I am running (a few containers, really). I could achieve most of this with SSH and docker compose alone, but
 I learnt a great deal of [SRE skills](https://en.wikipedia.org/wiki/Site_reliability_engineering) by trying to make a industry-grade platform that could scale to 10 or 1000 services!

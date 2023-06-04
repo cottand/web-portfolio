@@ -1,6 +1,6 @@
 # Using NixOS to swiftly and reproducibly get Nomad clients up and running
 
-_21/05/2023 - #noamd #nixos #cni_
+_21/05/2023 - #noamd #nixos #cni #selfhosted_
 <br></br>
 
 ## Background
@@ -200,12 +200,9 @@ have determined a suitable specification it is very easy to deploy it to 1 or to
 2. Being able to define an orchestrator like Nomad in this specification
 3. Remote deployments
 
-<figure>
-<br>
-<img src="assets/blog/nomad-nix.png" class="centered border-radius" style="width: min(95%, 500px)"/>
-<br>
-<figcaption align = "center"><i>Nomad client page, showing NixOS as the underlying distro</i></figcaption>
-</figure>
+<img src="assets/blog/nomad-nix.png" style="width: min(95%, 500px)"
+caption="Nomad client page, showing NixOS as the underlying distro"
+/>
 
 # References
 

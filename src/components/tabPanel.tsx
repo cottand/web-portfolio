@@ -18,7 +18,7 @@ export function TabPanel(props: TabPanelProps) {
     return (
         <div
             css={css`
-              width: min(860px, 100%);
+              width: min(1000px, 100%);
               align-self: center;
             `}
             role="tabpanel"

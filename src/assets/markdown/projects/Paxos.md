@@ -14,7 +14,6 @@ the clients broadcasted transactions. The implementation must guarantee a number
 - **Failure tolerance**: as long as a majority of replicas is correct (ie, have not crashed),
 we will maintain Consistency, Liveness, and Safety.
 
-<figure>
-<img src="assets/multiPaxosUml.png" class="centered border-radius" style="width: min(90%, 650px)"/>
-<figcaption align = "center"><i>UML diagram of the lifecycle a Client's request</i></figcaption>
-</figure>
+<img src="assets/multiPaxosUml.png" class="centered border-radius" style="width: min(90%, 650px)"
+caption="UML diagram of the lifecycle a Client's request"
+/>

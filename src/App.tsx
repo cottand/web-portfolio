@@ -48,7 +48,7 @@ const App: FC = () => (
             <div
                 className={styles.svgBackground}
                 css={css`
-                  padding: 16px;
+                  padding: 14px;
                   background-size: cover;
                   overflow: scroll;
                   overflow: overlay;

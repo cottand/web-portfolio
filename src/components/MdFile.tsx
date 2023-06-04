@@ -32,9 +32,10 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean }> = ({foldCode, f
 
     return useMemo(() => (
         <ReactMarkdown
-            css={css`font-size: 13px;`}
+            css={css`font-size: 15px;`}
             components={{
                 a: Util.mdAsMuiLink,
+                img: Util.pictureWithPadding,
                 code({node, inline, className, children, ...props}) {
                     const match = /language-(\w+)/.exec(className || '')
                     const filenameMatch = /# file: (.+) #/.exec(String(children) || '')

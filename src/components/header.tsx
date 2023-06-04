@@ -5,7 +5,7 @@ import {Typography} from "@mui/material";
 import {css} from "@emotion/react";
 
 const Header: FC = () => (
-            <Typography variant='h2' fontFamily={"'Fira Code', monospace"} css={css`
+            <Typography variant='h3' fontFamily={"'Fira Code', monospace"} css={css`
               color: white;
               letter-spacing: 1px;
               font-weight: bold;
