@@ -39,10 +39,13 @@ export function NavBar() {
 
     function fromPathToIndex(path: string): number {
         switch (path) {
+            case "/#/about":
             case "/about":
                 return 0;
             case "/projects":
+            case "/#/projects":
                 return 1;
+            case "/#/blog":
             case "/blog":
                 return 2;
             default:
