@@ -13,13 +13,15 @@ export const PicWithCaption: FC<{ caption?: string }> = (props) => {
         return <img
             className={"centered border-radius"}
             css={
-            css`padding: 50px;
-              width: min(95%, 700px)`}
+                css`padding: 50px;
+                  width: min(95%, 700px)`}
             {...props}
         />
     return <figure css={css`padding: 50px;
       align-content: center`}>
+
         <img
+            alt=""
             className="centered border-radius"
             css={css`
               width: min(95%, 700px);
