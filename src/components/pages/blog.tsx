@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, {FC} from "react";
 import {Card, List, ListItemButton, ListItemText, Typography} from "@mui/material";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import {MdRenderer} from "../markdown/MdFile";
 import nomad from "../../assets/markdown/blog/NomdAndNixOS.md"
 import {css} from "@emotion/react";
@@ -36,7 +36,7 @@ export const BlogEntriesList: FC = () =>
         <Entry
             type={"blog"}
             title={"Nomad + NixOS"}
-            href={"/#/blog/nomad"}
+            href={"/blog/nomad"}
             date={"22/05/23"}
         />
         <Entry
@@ -67,11 +67,18 @@ export const BlogEntriesList: FC = () =>
 
 type Type = "blog" | "talk" | "article"
 
-const Entry: FC<{ type: Type; title: string; href: string; date: string; divider?: boolean }> = (props) => (
-    <ListItemButton href={props.href} divider={props.divider ?? true}>
+const Entry: FC<{ type: Type; title: string; href: string; date: string; divider?: boolean }> = (props) => {
+    const navigate = useNavigate()
+    const onClick: React.MouseEventHandler = (e) => {
+        e.preventDefault();
+        navigate(props.href);
+    };
+
+    return <ListItemButton href={props.href} divider={props.divider ?? true} onClick={onClick}>
         <div>
             <Typography variant={"caption"}>{props.date}</Typography>
             <ListItemText secondary={props.type}>{props.title}</ListItemText>
         </div>
     </ListItemButton>
-)
+}
+
