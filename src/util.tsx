@@ -11,6 +11,7 @@ export abstract class Util {
 export const PicWithCaption: FC<{ caption?: string }> = (props) => {
     if (props.caption === undefined)
         return <img
+            alt=""
             className={"centered border-radius"}
             css={
                 css`padding: 50px;
