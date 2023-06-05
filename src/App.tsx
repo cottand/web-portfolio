@@ -2,7 +2,6 @@
 import React, {FC} from 'react';
 import './App.css';
 import {css} from "@emotion/react";
-import {Header} from "./components/header";
 import {BrowserRouter} from "react-router-dom";
 import {NavBar} from "./components/navBar";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
@@ -62,10 +61,17 @@ const App: FC = () => (
               min-height: 100vh;
             `}
         >
-            <Header/>
-            <BrowserRouter>
-                <NavBar/>
-            </BrowserRouter>
+
+            <div css={css`
+              align-self: center;
+              width: min(800px, 100%);
+            `}
+
+            >
+                <BrowserRouter>
+                    <NavBar/>
+                </BrowserRouter>
+            </div>
 
         </div>
     </ThemeProvider>
