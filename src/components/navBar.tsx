@@ -2,7 +2,7 @@
 import React, {FC, Fragment, useEffect, useState} from "react";
 import {AppBar, Tab, Tabs} from "@mui/material";
 import {css} from "@emotion/react";
-import {BrowserRouter, useHref, useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Projects} from "./pages/projects";
 import {About} from "./pages/about";
 import {Blog} from "./pages/blog";

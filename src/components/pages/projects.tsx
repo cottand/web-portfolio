@@ -8,7 +8,6 @@ import {css} from "@emotion/react";
 import {theme} from "../../App";
 import {MdRenderer} from "../markdown/MdFile";
 import {PanelEntry, PanelName, panels} from "../projectPanels";
-import {Defer} from "../util/Defer";
 
 type EntryProps = PanelEntry & {
     handleChange: (event: any, expanded: boolean) => void
