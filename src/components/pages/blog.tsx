@@ -2,8 +2,8 @@
 import React, {FC} from "react";
 import {Card, List, ListItemButton, ListItemText, Typography} from "@mui/material";
 import {Route, Routes} from "react-router-dom";
-import {MdRenderer} from "./MdFile";
-import nomad from "../assets/markdown/blog/NomdAndNixOS.md"
+import {MdRenderer} from "../markdown/MdFile";
+import nomad from "../../assets/markdown/blog/NomdAndNixOS.md"
 import {css} from "@emotion/react";
 
 export const Blog = () => (

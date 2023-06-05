@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import {FC, useCallback, useEffect, useMemo, useState} from "react";
 import ReactMarkdown from "react-markdown";
-import {Util} from "../util";
+import {Util} from "../../util";
 import rehypeRaw from "rehype-raw";
 import {Prism as SyntaxHighlighter, SyntaxHighlighterProps} from 'react-syntax-highlighter'
 import {atomDark} from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -16,6 +16,7 @@ import {
     Typography
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {PicWithCaption} from "./PicWithCaption";
 
 export const MdRenderer: FC<{ file: string, foldCode: boolean }> = ({foldCode, file}) => {
     const makemSourceRequest = useCallback(
@@ -31,25 +32,27 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean }> = ({foldCode, f
 
 
     return useMemo(() => (
+
         <ReactMarkdown
             css={css`font-size: 15px;`}
             components={{
                 a: Util.mdAsMuiLink,
-                img: Util.pictureWithPadding,
+                img: ({node, ...props}) => <PicWithCaption {...props}/>,
                 code({node, inline, className, children, ...props}) {
                     const match = /language-(\w+)/.exec(className || '')
                     const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
-                    console.log(filenameMatch)
                     return !inline && match ? (
                         <FoldingHighlighter
                             foldCode={foldCode}
-                            children={String(children).replace(/\n$/, '')}
+                            highlighting={{
+                                children: [String(children).replace(/\n$/, '')],
+                                css: css`font-size: 12px`,
+                                language: match[1],
+                                PreTag: "div",
+                                style: atomDark
+                            }}
                             filename={filenameMatch ? filenameMatch[1] : undefined}
                             // @ts-ignore
-                            style={atomDark}
-                            css={css`font-size: 12px`}
-                            language={match[1]}
-                            PreTag="div"
                             {...props}
                         />
                     ) : (
@@ -66,10 +69,10 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean }> = ({foldCode, f
     ), [content, foldCode])
 };
 
-const FoldingHighlighter: FC<SyntaxHighlighterProps & { filename?: string, foldCode: boolean }> = (props) => {
+const FoldingHighlighter: FC<{ filename?: string, foldCode: boolean, highlighting: SyntaxHighlighterProps }> = (props) => {
 
     const [expanded, setExpanded] = useState(true)
-    if (!props.foldCode) return <SyntaxHighlighter {...props}/>;
+    if (!props.foldCode) return <SyntaxHighlighter {...props.highlighting}/>;
 
     return <CodeAccordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
         <CodeAccordionSummary
@@ -82,7 +85,7 @@ const FoldingHighlighter: FC<SyntaxHighlighterProps & { filename?: string, foldC
         </CodeAccordionSummary>
         <AccordionDetails css={css`padding: 0;
           height: min-content`}>
-            <SyntaxHighlighter {...props}/>
+            <SyntaxHighlighter {...props.highlighting}/>
         </AccordionDetails>
 
     </CodeAccordion>

@@ -2,8 +2,8 @@
 import React, {FC} from 'react';
 import './App.css';
 import {css} from "@emotion/react";
-import Header from "./components/header";
-import {HashRouter} from "react-router-dom";
+import {Header} from "./components/header";
+import {BrowserRouter} from "react-router-dom";
 import {NavBar} from "./components/navBar";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import styles from "./portfolio.module.css"
@@ -43,30 +43,32 @@ export const theme = createTheme({
 
 // noinspection CssInvalidPropertyValue
 const App: FC = () => (
-        <ThemeProvider theme={theme}>
-            <CssBaseline/>
-            <div
-                className={styles.svgBackground}
-                css={css`
-                  padding: 14px;
-                  background-size: cover;
-                  overflow: scroll;
-                  overflow: overlay;
-                  background-attachment: fixed;
-                  background-repeat: no-repeat;
-                  box-sizing: border-box;
-                  display: flex;
-                  flex-direction: column;
-                  min-height: 100vh;
-                `}
-            >
-                <Header/>
-                <HashRouter>
-                    <NavBar/>
-                </HashRouter>
+    <ThemeProvider theme={theme}>
+        <CssBaseline/>
+        <div
+            className={styles.svgBackground}
+            css={css`
+              @media not screen and (max-width: 550px) {
+                padding: 14px;
+              };
+              background-size: cover;
+              overflow: scroll;
+              overflow: overlay;
+              background-attachment: fixed;
+              background-repeat: no-repeat;
+              box-sizing: border-box;
+              display: flex;
+              flex-direction: column;
+              min-height: 100vh;
+            `}
+        >
+            <Header/>
+            <BrowserRouter>
+                <NavBar/>
+            </BrowserRouter>
 
-            </div>
-        </ThemeProvider>
-    );
+        </div>
+    </ThemeProvider>
+);
 
 export default App;

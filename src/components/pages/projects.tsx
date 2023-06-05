@@ -3,12 +3,12 @@ import React, {FC, useEffect, useRef, useState} from "react";
 import {Accordion, AccordionDetails, AccordionSummary, Link, Typography} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import styles from "../portfolio.module.css";
+import styles from "../../portfolio.module.css";
 import {css} from "@emotion/react";
-import {theme} from "../App";
-import {MdRenderer} from "./MdFile";
-import {PanelEntry, PanelName, panels} from "./projectPanels";
-import {Defer} from "./Defer";
+import {theme} from "../../App";
+import {MdRenderer} from "../markdown/MdFile";
+import {PanelEntry, PanelName, panels} from "../projectPanels";
+import {Defer} from "../util/Defer";
 
 type EntryProps = PanelEntry & {
     handleChange: (event: any, expanded: boolean) => void
@@ -84,7 +84,7 @@ export function Projects() {
 
     return (
         <div css={css`width: 100%`}>
-            <Defer chunkSize={2}>
+            {/*<Defer chunkSize={2}>*/}
                 {panels.map((p) => (
                     <ProjEntry
                         key={p.name}
@@ -94,7 +94,7 @@ export function Projects() {
                         {...p}
                     />
                 ))}
-            </Defer>
+            {/*</Defer>*/}
         </div>
     )
 

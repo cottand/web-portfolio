@@ -5,7 +5,9 @@ students' phones through AR.
 
 <img
 caption="The team receiving the prize"
-src="assets/ichackWin.jpeg" class="centered border-radius" style="width: min(100%, 500px)"/>
+src="assets/ichackWin.jpeg" class="centered border-radius"
+style="width: min(100%, 500px)"
+/>
 
 We targeted medical and engineering students, who are often taught
 complex models (say a plane turbine or a heart) and are often stuck with 2D, non interactive representations
@@ -14,4 +16,4 @@ part of teaching.
 
 We made the app with **Unity**, so in **C#**.
 
-<img src="assets/ichack.jpeg" class="centered border-radius" style="width: min(90%, 450px)"/>
+<img src="assets/ichack.jpeg" class="centered border-radius" style="width: min(90%, 350px)"/>

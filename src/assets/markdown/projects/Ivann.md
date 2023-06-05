@@ -13,11 +13,9 @@ graph where the layers (or simply components) of the model are nodes which can b
 
 This graph can then be used to perform static analysis to catch mistakes and provide
 early feedback to the user (much like an IDE would!).
-
 <img src="assets/ivannLinearLayersCheck.jpeg" class="centered border-radius" style="width: min(99%, 450px)"
 caption="Visual feedback of a check for matching matrix dimensions"
 />
-
 In order to cater to all niches, Ivann supports _custom nodes_, which means the user can make
 a node out of inline python. This allows using the UI to quickly access the most common bits
 of the network, while being able to fine-tune other parts of the graph.
