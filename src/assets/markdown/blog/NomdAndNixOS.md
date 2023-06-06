@@ -56,7 +56,8 @@ This will allow you to specify your NixOS config and then push it (via SSH) to t
 # Nomad on NixOS
 
 The main reason for this blog post - which is nothing too bleeding edge - is that while there is lots of documentation
-on running Nomad, I could find very little on running it on top of NixOS (which is configured very differently than in other
+on running Nomad, I could find very little on running it on top of NixOS (which is configured very differently than in
+other
 distros).
 
 There are plenty of guides out there about how to install and use NixOS - so I will keep to the Nomad-specific bits.
@@ -88,15 +89,20 @@ services.nomad = {
   };
 ```
 
-The tricky part here are `cni-plugins` - these are specified in [Nomad's docs](https://developer.hashicorp.com/nomad/docs/install#post-installation-steps)
+The tricky part here are `cni-plugins` - these are specified
+in [Nomad's docs](https://developer.hashicorp.com/nomad/docs/install#post-installation-steps)
 and are required for container networking (which is in turn a requirement for Consul Connect). The only gotcha is that
-we must tell Nomad where NixOS installs these binaries, as it looks in `/opt/cni/bin` [by default](https://developer.hashicorp.com/nomad/docs/v1.5.x/configuration/client),
+we must tell Nomad where NixOS installs these binaries, as it looks
+in `/opt/cni/bin` [by default](https://developer.hashicorp.com/nomad/docs/v1.5.x/configuration/client),
 and that is not where NixOS puts them.
 
 ### Specifying Nomad agent settings in HCL
 
-Now you _could_ SSH into your remote host and drop your preferred Nomad config there, but it is much better to tell NixOS
-about it and include it in our machine's definition; and then to just deploy said definition. There are two ways you can do this
+Now you _could_ SSH into your remote host and drop your preferred Nomad config there, but it is much better to tell
+NixOS
+about it and include it in our machine's definition; and then to just deploy said definition. There are two ways you can
+do this
+
 1. Through the `services.nomad.settings` variable, as I show in my example above
 2. By including HCL files as part of our spec
 
@@ -111,6 +117,7 @@ local-dev/
 ```
 
 That's easy to achieve in Nix:
+
 ```nix
 # file: deployment.nix #
 
@@ -131,15 +138,16 @@ services.nomad.extraSettingsPaths = [
 ];
 ```
 
-Where to put these files exactly, or how to split them up, is up to you. But if you are using 
+Where to put these files exactly, or how to split them up, is up to you. But if you are using
 [Morph](https://github.com/DBCDK/morph) to deploy to your remote Nomad host, this will allow you to write in HCL
 _in your local machine_ the config _of the remote machine_, and tell NixOS thanks to `builtins.readFile`, which
-is a function evaluated on your local environment. 
+is a function evaluated on your local environment.
 
 ### End result
 
-You can also create a [NixOS module](https://nixos.wiki/wiki/NixOS_modules) that specifies all your Nomad config if 
+You can also create a [NixOS module](https://nixos.wiki/wiki/NixOS_modules) that specifies all your Nomad config if
 you would prefer to split things up:
+
 ```
 local-dev/
 ├─ deployment.nix
@@ -150,6 +158,7 @@ local-dev/
 ```
 
 This will be useful once your Nomad and NixOS definitions start getting big.
+
 ```nix
 # file: deployment.nix #
 imports = [
@@ -159,8 +168,9 @@ imports = [
 ];
 ```
 
-The final Nomad config, for a Nomad agent acting as a Server and a Client (don't do that at work, but in your local 
+The final Nomad config, for a Nomad agent acting as a Server and a Client (don't do that at work, but in your local
 Raspberry Pi it's probably fine).
+
 ```nix
 # file: nomad/nomad.nix #
 { config, pkgs, ... }:
@@ -190,8 +200,8 @@ Raspberry Pi it's probably fine).
     };
   };
 }
-
 ```
+
 # Conclusion
 
 Both Nomad and NixOS have a lot of knobs to tweak, and they are not all easy to find. But once you
@@ -199,14 +209,15 @@ have determined a suitable specification it is very easy to deploy it to 1 or to
 1. NixOS declarative configs
 2. Being able to define an orchestrator like Nomad in this specification
 3. Remote deployments
+   
 
-<img src="assets/blog/nomad-nix.png" style="width: min(95%, 500px)"
-caption="Nomad client page, showing NixOS as the underlying distro"
-/>
+<img src="/assets/blog/nomad-nix.png" caption="Nomad client page, showing NixOS as the underlying distro" class="centered border-radius" style="width: min(95%, 500px);"/>
+
 
 # References
 
-- [Nomad `nixpkgs` definition](https://github.com/NixOS/nixpkgs/blob/22.11/nixos/modules/services/networking/nomad.nix) - always great to refer to the source
+- [Nomad `nixpkgs` definition](https://github.com/NixOS/nixpkgs/blob/22.11/nixos/modules/services/networking/nomad.nix) -
+  always great to refer to the source
 - [Morph](https://github.com/DBCDK/morph) - nicely abstracts away redundant config between remote hosts
 - [NixOS Modules](https://nixos.wiki/wiki/NixOS_modules) - a way to modularise your distro config
 

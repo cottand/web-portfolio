@@ -15,7 +15,9 @@ I made it thinking about how I would build a company's fleet as an SRE. It has a
 - Secure private networking through [Wireguard](https://www.wireguard.com/)
 - Reproducible, declarative deployments of the Linux OSs through [NixOS](https://nixos.org/) (although sometimes I install other OSs on some machines to experiment!)
 
-<img src="assets/selfhosted2.png" class="centered border-radius"
+<img
+src="/assets/selfhosted2.png"
+class="centered border-radius"
 caption="Screenshot of a Grafana monitoring dashboard"
 />
 

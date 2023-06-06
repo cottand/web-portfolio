@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import {FC} from "react";
-import {Typography} from "@mui/material";
+import {FC, Fragment} from "react";
+import {Card, Typography} from "@mui/material";
 import {css} from "@emotion/react";
 
 export const PicWithCaption: FC<{ caption?: string }> = (props) =>
@@ -16,23 +16,27 @@ export const PicWithCaption: FC<{ caption?: string }> = (props) =>
               border-radius: 5px;
             `}
             {...props}
-        />
-        :
-        <figure
-            css={
-                css`padding-top: 40px;
-                  padding-bottom: 40px;
-                  align-content: center`}>
+        /> :
+        <div
+            css={css`padding-top: 40px;
+              width: 100%;
+              padding-bottom: 40px;
+            `}
+            className="centered border-radius"
+        >
             <img
                 alt=""
-                className="centered border-radius"
                 css={css`
                   width: min(99%, 700px);
-                  padding-bottom: 10px
+                  padding-bottom: 10px;
+                  border-radius: 5px;
+                  display: block;
+                  margin-left: auto;
+                  margin-right: auto;
                 `}
                 {...props}
             />
             <Typography variant="caption" component={"figcaption"} align={"center"}>
                 {props.caption}
             </Typography>
-        </figure>
+        </div>
