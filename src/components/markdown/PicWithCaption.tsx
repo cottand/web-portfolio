@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import {FC, Fragment} from "react";
-import {Card, Typography} from "@mui/material";
+import {FC} from "react";
+import {Typography} from "@mui/material";
 import {css} from "@emotion/react";
 
 export const PicWithCaption: FC<{ caption?: string }> = (props) =>
