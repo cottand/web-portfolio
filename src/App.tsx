@@ -5,7 +5,6 @@ import {css} from "@emotion/react";
 import {BrowserRouter} from "react-router-dom";
 import {NavBar} from "./components/navBar";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
-import styles from "./portfolio.module.css"
 
 export const theme = createTheme({
 // @ts-ignore
