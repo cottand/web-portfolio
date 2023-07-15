@@ -17,17 +17,21 @@ import {Email, GitHub, LinkedIn, SaveAlt} from "@mui/icons-material";
 export const About: FC = () => (
     <div css={css`width: 100%`}>
         <Card css={css`
-          color: white;
+          //color: white;
           top: 50%;
-          padding-top: 50px;
-          background-color: rgba(30, 30, 30, 0.6);
+          padding: 50px;
+          border-bottom-color: rgba(198,79,49, 0.9);
+          border-width: 10px;
+          border-radius: 0px;
         `}>
             <Card
-                elevation={0}
-                sx={{bgcolor: "rgba(0,0,0,0)"}}
-                css={css`color: inherit;
+                sx={{
+                    bgcolor: "rgba(0,0,0,0)"
+            }}
+                css={css`
                   text-align: center;
-                  margin-bottom: 16px`}>
+                  margin-bottom: 16px
+`}>
 
                 <Typography variant={"h4"}>Hi</Typography>
                 <br/>
@@ -40,7 +44,10 @@ export const About: FC = () => (
             </Card>
 
 
-            <Grid container spacing={0} alignItems={"center"} justifySelf={"center"} direction={"column"}>
+            <Grid container spacing={0}
+                  alignItems={"center"}
+                  justifySelf={"center"}
+                  direction={"column"}>
                 <Grid item xs={8}>
                     <List component={"nav"}>
                         <ListItem disablePadding>

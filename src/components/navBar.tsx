@@ -16,10 +16,11 @@ const LinkTab: FC<{ icon: React.ReactElement, label: string; href: string }> = (
     const navigate = useNavigate();
     return <Tab
         disableRipple
-        css={css`color: white;
+        css={css`
+          //color: white;
           text-transform: lowercase;
           //justify-content: left
-`}
+        `}
         iconPosition={"start"}
         component="span"
         onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
