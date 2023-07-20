@@ -50,8 +50,7 @@ const App: FC = () => (
 
             <div css={css`
               align-self: center;
-              //width: min(800px, 100%);
-              width: min(1000px, 100%);
+              width: min(900px, 100%);
             `}
             >
 
