@@ -29,6 +29,7 @@ jobs:
           docker push ghcr.io/cottand/web-portfolio
 
   deploy-nomad:
+    needs: publish-docker
     runs-on: ubuntu-latest
     steps:
       - name: Install Nix
