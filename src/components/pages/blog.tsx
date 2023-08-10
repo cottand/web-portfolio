@@ -44,7 +44,7 @@ export const BlogEntriesList: FC = () =>
     <List component={"nav"}>
         <Entry
             type={"blog"}
-            title={"Running both ad-blocking and poor man's DNS for a self-hosted Nomad deployment"}
+            title={"Running both ad-blocking and poor man's DNS service-discovery for self-hosted Nomad"}
             href={"/blog/DNSServiceDiscoveryAdblockingNomad"}
             date={"10/08/2023"}
         />
