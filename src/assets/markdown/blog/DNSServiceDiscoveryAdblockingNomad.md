@@ -58,21 +58,21 @@ customdnsrecords = [
 
     {{- /* Iterate over all of the registered Nomad services */ -}}
     {{- range nomadServices -}}
-    {{ $service := . }}
+        {{ $service := . }}
 
-    {{- /* Iterate over all of the instances of a services */ -}}
-    {{- range nomadService $service.Name -}}
-    {{ $svc := . }}
+        {{- /* Iterate over all of the instances of a services */ -}}
+        {{- range nomadService $service.Name -}}
+            {{ $svc := . }}
 
 
-    {{- /* Generate a unique label for IP */ -}}
-    {{- $node := $svc.Address | md5sum | sprig_trunc 8 }}
+            {{- /* Generate a unique label for IP */ -}}
+            {{- $node := $svc.Address | md5sum | sprig_trunc 8 }}
 
-    {{- /* Record A & SRV RRs */ -}}
-    {{- $rr_a = sprig_append $rr_a (sprig_list $svc.Name $svc.Address) -}}
-    {{- $rr_a = sprig_append $rr_a (sprig_list $node $svc.Address) -}}
-    {{- $rr_srv = sprig_append $rr_srv (sprig_list $svc.Name $svc.Port $node) -}}
-    {{- end -}}
+            {{- /* Record A & SRV RRs */ -}}
+            {{- $rr_a = sprig_append $rr_a (sprig_list $svc.Name $svc.Address) -}}
+            {{- $rr_a = sprig_append $rr_a (sprig_list $node $svc.Address) -}}
+            {{- $rr_srv = sprig_append $rr_srv (sprig_list $svc.Name $svc.Port $node) -}}
+        {{- end -}}
     {{- end -}}
 
     {{- /* Iterate over lists and print everything */ -}}
@@ -91,7 +91,14 @@ customdnsrecords = [
 EOF
     }
 ```
+This template
+- looks at all your Nomad services (so make sure you don't duplicate their names!)
+- for each service, generates an A record that maps its name to its IP
+- for each service's IP, generates an A record that maps unique labels to each IP
+- for each service, generates an SRV record that maps its name to its port and the unique A record of its IP (which points to the IP itself)
 
+So a service's instance will uniquely map to a SRV record,
+which will uniquely map to: the instance's port, and an A record which maps to the instance's IP.
 This will result in the following DNS records...
 
 ```toml
@@ -123,8 +130,7 @@ customdnsrecords = [
 | `web-portfolio`  &emsp;  | 10.8.0.5:28740  |
 | `web-portfolio`  &emsp;  | 10.8.0.1:23107  |
 
-I find the trick of mapping an IP to a unique hash, which goes in an A record and then point
-the SRV record to that hash genius. I wish I could take credit for that!
+And Nomad will update this generated list for you every time a service comes up or down, or moves IPs - free of charge!
 
 There is a caveat to this poor man's Consul, which comes in form of [a bug present in grimd](https://github.com/looterz/grimd/issues/114):
 **only a single DNS record (be it A or SRV) will be returned in lookups**. For now this does
