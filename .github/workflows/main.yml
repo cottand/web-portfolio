@@ -25,8 +25,10 @@ jobs:
       - name: Build the hello-docker Docker image
         run: |
           git_sha=$(git rev-parse --short "$GITHUB_SHA")
-          docker build . --tag ghcr.io/cottand/web-portfolio:$git_sha
-          docker push ghcr.io/cottand/web-portfolio
+          docker build . --tag ghcr.io/cottand/web-portfolio:latest
+          docker tag ghcr.io/cottand/web-portfolio:latest ghcr.io/cottand/web-portfolio:$git_sha
+          docker push ghcr.io/cottand/web-portfolio:latest
+          docker push ghcr.io/cottand/web-portfolio:$git_sha
 
   deploy-nomad:
     needs: publish-docker
