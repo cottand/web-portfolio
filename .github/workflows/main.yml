@@ -31,18 +31,18 @@ jobs:
           docker push ghcr.io/cottand/web-portfolio:$git_sha
 
   deploy-nomad:
-    needs: publish-docker
+#    needs: publish-docker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Install Nix
         uses: cachix/install-nix-action@v22
         with:
-          nix_path: nixpkgs=channel:nixos-unstable
-#          nix_path: nixpkgs=https://github.com/Cottand/nixpkgs/archive/refs/tags/23.05.2.tar.gz
+#          nix_path: nixpkgs=channel:nixos-unstable
+          nix_path: nixpkgs=https://github.com/Cottand/nixpkgs/archive/refs/tags/23.05.2.tar.gz
       - name: Install Nomad
         run: |
-          nix-env -i nomad_1_6 -f '<nixpkgs>'
+          nix-env -i nomad -f '<nixpkgs>'
       - name: Set up WireGuard
         uses: egor-tensin/setup-wireguard@v1
         with:
@@ -51,9 +51,11 @@ jobs:
           ips: '${{ secrets.WG_IPS }}'
           allowed_ips: '${{ secrets.WG_ALLOWED_IPS }}'
           private_key: '${{ secrets.WG_PRIVATE_KEY }}'
+      - run: nomad -v
       - name: Nomad plan
         run: |
           set -e
+          
           
           git_sha=$(git rev-parse --short "$GITHUB_SHA")
           job=$(curl "https://raw.githubusercontent.com/Cottand/selfhosted/master/jobs/web-portfolio.hcl" )
