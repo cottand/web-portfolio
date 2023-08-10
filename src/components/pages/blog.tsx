@@ -4,11 +4,20 @@ import {Card, List, ListItemButton, ListItemText, Typography} from "@mui/materia
 import {Route, Routes, useNavigate} from "react-router-dom";
 import {MdRenderer} from "../markdown/MdFile";
 import nomad from "../../assets/markdown/blog/NomdAndNixOS.md"
+import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md"
 import {css} from "@emotion/react";
 
 export const Blog = () => (
     <Card css={css`min-height: 400px`}>
         <Routes>
+            <Route
+                path="/blog/DNSServiceDiscoveryAdblockingNomad"
+                element={<BlogEntry file={nomadDnsAdblock}/>}
+            />
+            <Route
+                path="/blog/nomadNixos"
+                element={<BlogEntry file={nomad}/>}
+            />
             <Route
                 path="/blog/nomad"
                 element={<BlogEntry file={nomad}/>}
@@ -28,15 +37,21 @@ export const Blog = () => (
 // noinspection HtmlUnknownAttribute
 export const BlogEntry: FC<{ file: string }> = (props) =>
     <div css={css`padding: 20px`}>
-        <MdRenderer foldCode={true} {...props}/>
+        <MdRenderer foldCode={true} extendGhm={true} {...props}/>
     </div>
 
 export const BlogEntriesList: FC = () =>
     <List component={"nav"}>
         <Entry
             type={"blog"}
+            title={"Running both ad-blocking and poor man's DNS for a self-hosted Nomad deployment"}
+            href={"/blog/DNSServiceDiscoveryAdblockingNomad"}
+            date={"10/08/2023"}
+        />
+        <Entry
+            type={"blog"}
             title={"Nomad + NixOS"}
-            href={"/blog/nomad"}
+            href={"/blog/nomadNixos"}
             date={"22/05/23"}
         />
         <Entry

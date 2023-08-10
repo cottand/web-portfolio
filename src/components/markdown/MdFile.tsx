@@ -6,6 +6,7 @@ import rehypeRaw from "rehype-raw";
 import {Prism as SyntaxHighlighter, SyntaxHighlighterProps} from 'react-syntax-highlighter'
 import {atomDark} from 'react-syntax-highlighter/dist/esm/styles/prism'
 import {css} from "@emotion/react";
+import remarkGfm from 'remark-gfm'
 import {
     Accordion,
     AccordionDetails,
@@ -18,7 +19,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {PicWithCaption} from "./PicWithCaption";
 
-export const MdRenderer: FC<{ file: string, foldCode: boolean }> = ({foldCode, file}) => {
+export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boolean }> = ({foldCode, file, extendGhm}) => {
     const makemSourceRequest = useCallback(
         () => fetch(file).then((r) => r.text()),
         [file]
@@ -29,7 +30,6 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean }> = ({foldCode, f
         if (!req) return
         req.then(setContent);
     }, [makemSourceRequest])
-
 
     return useMemo(() => (
         <ReactMarkdown
@@ -61,11 +61,11 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean }> = ({foldCode, f
                     )
                 }
             }}
-            rehypePlugins={[rehypeRaw]}
+            rehypePlugins={extendGhm ? [rehypeRaw, remarkGfm] : [rehypeRaw]}
             children={content}
         />
 
-    ), [content, foldCode])
+    ), [content, foldCode, extendGhm])
 };
 
 const FoldingHighlighter: FC<{ filename?: string, foldCode: boolean, highlighting: SyntaxHighlighterProps }> = (props) => {
