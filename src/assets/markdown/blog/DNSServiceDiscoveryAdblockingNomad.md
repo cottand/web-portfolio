@@ -17,7 +17,9 @@ they become unhealthy. It can also store secrets as Nomad variables.
 So what does Nomad do that Consul can't now? A few things, it turns out. I won't list them,
 but they include stuff like a service mesh, its K/V storage, and **service discovery through DNS**.
 
-This last item is what I would like to tackle in this post! 
+This last item is what I would like to tackle in this post! I assume you
+already have a working Nomad deployment going, and know how to make
+a job spec for a docker container.
 
 ## The problem
 I would like to achieve service discovery with **poor man's
@@ -42,8 +44,12 @@ create A and SRV records based on Nomad's service catalog.
 We can adapt this a bit to grimd config, remove dealing with Nomad tags, and shove this in grimd's TOML
 config:
 
-```toml
+```hcl
 # file: grimd/config.toml (template) #
+    template {
+    destination = "local/config.toml"
+    data = <<EOF
+# ...your usual grimd config here, see https://github.com/looterz/grimd#configuration
 customdnsrecords = [
     {{- $base_domain := ".nomad" -}} {{- /* Change this field for a diferent tld! */ -}}
     {{- $ttl := 3600 -}}             {{- /* Change this field for a diferent ttl! */ -}}
@@ -81,6 +87,9 @@ customdnsrecords = [
     {{ end }}
 
 ]
+# ...the rest of your config
+EOF
+    }
 ```
 
 This will result in the following DNS records...
@@ -123,6 +132,26 @@ not bother me too much, but it is definitely a deal-breaker for using SRV and A 
 time, with the same domain (not the case here). I mitigated this in the snippet given
 above by using different
 hostnames for SRV records (`.nomad.srv`) vs A records (`nomad`).
+
+You can now make your services use this DNS server by adding the following to _their_ job files:
+
+```hcl
+# file my-other-job.hcl #
+# inside the group {} block of a job that needs service discovery:
+network {
+    dns {
+        servers = ["<IP_OF_DNS_SERVER_HERE!", "<MORE_IPs_IF_YOU_WANT>"]
+    }
+}
+```
+
+Personally, I just run the DNS server on all boxes [as a system job](https://developer.hashicorp.com/nomad/docs/schedulers#system),
+make sure it is bound to port 53,
+and set `servers` to a list of IPs of my boxes in the cluster (so if one fails,
+there are still available DNS servers).
+But this there are more ways to do this (like more templating!) and how
+you want to distribute your DNS server is up to you.
+
 
 ## Conclusion
 You _mostly_ don't need Consul if all you want is service discovery based on templates - which
