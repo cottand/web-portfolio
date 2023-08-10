@@ -15,7 +15,7 @@ jobs:
   publish-docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2.2.0
         with:
@@ -34,7 +34,7 @@ jobs:
     needs: publish-docker
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Nix
         uses: cachix/install-nix-action@v22
         with:
@@ -56,6 +56,6 @@ jobs:
           set -e
           
           git_sha=$(git rev-parse --short "$GITHUB_SHA")
-          job=$(curl https://raw.githubusercontent.com/Cottand/selfhosted/master/jobs/web-portfolio.hcl)
+          job=$(curl "https://raw.githubusercontent.com/Cottand/selfhosted/master/jobs/web-portfolio.hcl" )
           echo $job | nomad plan -var docker_tag=$git_sha -
           echo $job | nomad run  -var docker_tag=$git_sha -
