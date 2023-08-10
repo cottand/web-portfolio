@@ -34,6 +34,7 @@ jobs:
     needs: publish-docker
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Install Nix
         uses: cachix/install-nix-action@v22
         with:
