@@ -14,7 +14,7 @@ like [Traefik](https://doc.traefik.io/traefik/providers/nomad/) (for your ingres
 metrics). Nomad even health checks your services and removes them from their downstream when
 they become unhealthy. It can also store secrets as Nomad variables.
 
-So what does Nomad do that Consul can't now? A few things, it turns out. I won't list them,
+So what does Nomad do that Consul can't now? A few things, it turns out. I won't list them all,
 but they include stuff like a service mesh, its K/V storage, and **service discovery through DNS**.
 
 This last item is what I would like to tackle in this post! I assume you
@@ -142,7 +142,7 @@ hostnames for SRV records (`.nomad.srv`) vs A records (`nomad`).
 You can now make your services use this DNS server by adding the following to _their_ job files:
 
 ```hcl
-# file my-other-job.hcl #
+# file: my-other-job.hcl #
 # inside the group {} block of a job that needs service discovery:
 network {
     dns {
