@@ -59,4 +59,4 @@ jobs:
           curl "https://raw.githubusercontent.com/Cottand/selfhosted/master/jobs/web-portfolio.hcl" >> job.hcl
           
           nomad plan -var docker_tag=$git_sha job.hcl
-          nomad run  -var docker_tag=$git_sha job.hcl
+          nomad run -detach -var docker_tag=$git_sha job.hcl
