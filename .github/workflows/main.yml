@@ -35,14 +35,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Nix
-        uses: cachix/install-nix-action@v22
-        with:
-          nix_path: nixpkgs=channel:nixos-23.05
-#          nix_path: nixpkgs=https://github.com/Cottand/nixpkgs/archive/refs/tags/23.05.2.tar.gz
       - name: Install Nomad
         run: |
-          nix-env -i nomad -f '<nixpkgs>'
+          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update && sudo apt install nomad
+          
+          nomad -v
       - name: Set up WireGuard
         uses: egor-tensin/setup-wireguard@v1
         with:
