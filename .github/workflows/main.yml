@@ -31,7 +31,7 @@ jobs:
           docker push ghcr.io/cottand/web-portfolio:$git_sha
 
   deploy-nomad:
-#    needs: publish-docker
+    needs: publish-docker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
