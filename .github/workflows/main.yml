@@ -31,7 +31,7 @@ jobs:
           docker push ghcr.io/cottand/web-portfolio:$git_sha
 
   deploy-nomad:
-    needs: publish-docker
+#    needs: publish-docker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -58,5 +58,5 @@ jobs:
           
           curl "https://raw.githubusercontent.com/Cottand/selfhosted/master/jobs/web-portfolio.hcl" >> job.hcl
           
-          nomad plan -var docker_tag=$git_sha job.hcl
+          # nomad plan -var docker_tag=$git_sha job.hcl
           nomad run -detach -var docker_tag=$git_sha job.hcl
