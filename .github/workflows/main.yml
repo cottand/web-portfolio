@@ -56,6 +56,8 @@ jobs:
           set -e
           NOMAD_ADDR=http://${{ secrets.NOMAD_ADDR }}:4646
           git_sha=$(git rev-parse --short "$GITHUB_SHA")
-          job=$(curl "https://raw.githubusercontent.com/Cottand/selfhosted/master/jobs/web-portfolio.hcl" )
-          echo $job | nomad plan -var docker_tag=$git_sha -
-          echo $job | nomad run  -var docker_tag=$git_sha -
+          
+          curl "https://raw.githubusercontent.com/Cottand/selfhosted/master/jobs/web-portfolio.hcl" >> job.hcl
+          
+          nomad plan -var docker_tag=$git_sha job.hcl
+          nomad run  -var docker_tag=$git_sha job.hcl
