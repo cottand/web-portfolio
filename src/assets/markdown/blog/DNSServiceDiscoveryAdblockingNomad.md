@@ -132,6 +132,11 @@ customdnsrecords = [
 
 And Nomad will update this generated list for you every time a service comes up or down, or moves IPs - free of charge!
 
+[//]: # (![Discovery flow diagram][])
+
+
+<img src="/assets/blog/nomad_dns_discovery.png" caption="Discovery flow using our poor man's DNS" class="centered border-radius" style="width: min(95%, 700px);"/>
+
 There is a caveat to this poor man's Consul, which comes in form of [a bug present in grimd](https://github.com/looterz/grimd/issues/114):
 **only a single DNS record (be it A or SRV) will be returned in lookups**. For now this does
 not bother me too much, but it is definitely a deal-breaker for using SRV and A records at the same
