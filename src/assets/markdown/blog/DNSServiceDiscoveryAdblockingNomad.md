@@ -104,11 +104,11 @@ This will result in the following DNS records...
 ```toml
 # file: grimd/config.toml (rendered result) #
 customdnsrecords = [
-    "traefik.nomad.srv                              IN SRV 0 0   8080 029c1900",
-    "traefik-metrics.nomad.srv                      IN SRV 0 0  31934 029c1900",
-    "web-portfolio.nomad.srv                        IN SRV 0 0  28740 0543953b",
-    "web-portfolio.nomad.srv                        IN SRV 0 0  23107 029c1900",
-    "whoami.nomad.srv                               IN SRV 0 0  27465 c3b8ae24",
+    "traefik.nomad.srv                              IN SRV 0 0   8080 029c1900.nomad",
+    "traefik-metrics.nomad.srv                      IN SRV 0 0  31934 029c1900.nomad",
+    "web-portfolio.nomad.srv                        IN SRV 0 0  28740 0543953b.nomad",
+    "web-portfolio.nomad.srv                        IN SRV 0 0  23107 029c1900.nomad",
+    "whoami.nomad.srv                               IN SRV 0 0  27465 c3b8ae24.nomad",
 
     "c3b8ae24.nomad                                3600 IN    A 10.10.1.1",
     "029c1900.nomad                                3600 IN    A 10.8.0.1",
