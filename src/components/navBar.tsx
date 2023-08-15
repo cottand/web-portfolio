@@ -41,11 +41,11 @@ export function NavBar() {
             case "/#/about":
             case "/about":
                 return 0;
-            case "/projects":
-            case "/#/projects":
-                return 1;
             case "/#/blog":
             case "/blog":
+                return 1;
+            case "/projects":
+            case "/#/projects":
                 return 2;
             default:
                 if (path.includes("/blog")) return 2;
@@ -82,15 +82,15 @@ export function NavBar() {
                       `}
                 >
                     <LinkTab label={"About"} icon=<EmojiPeople/> href={"/about"}/>
-                    <LinkTab label={"Projects"} icon=<Handyman/> href={"/projects"}/>
                     <LinkTab label={"Blog"} icon=<ChatBubble/> href={"/blog"}/>
+                    <LinkTab label={"Projects"} icon=<Handyman/> href={"/projects"}/>
                 </Tabs>
 
             </AppBar>
             <Fragment>
                 <TabPanel value={value} index={0}><About/></TabPanel>
-                <TabPanel value={value} index={1} keepMountedOnHide={false}><Projects/></TabPanel>
-                <TabPanel value={value} index={2}><Blog/></TabPanel>
+                <TabPanel value={value} index={1}><Blog/></TabPanel>
+                <TabPanel value={value} index={2} keepMountedOnHide={false}><Projects/></TabPanel>
             </Fragment>
         </Fragment>
     )
