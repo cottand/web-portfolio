@@ -2,7 +2,6 @@
     http_port 80
     auto_https off
 }
-
 :80 {
 	bind 0.0.0.0
 
@@ -16,4 +15,3 @@
         }
     }
 }
-

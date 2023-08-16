@@ -39,16 +39,18 @@ export function NavBar() {
     function fromPathToIndex(path: string): number {
         switch (path) {
             case "/#/about":
+            case "/about/":
             case "/about":
                 return 0;
             case "/#/blog":
             case "/blog":
                 return 1;
             case "/projects":
+            case "/projects/":
             case "/#/projects":
                 return 2;
             default:
-                if (path.includes("/blog")) return 2;
+                if (path.includes("/blog")) return 1;
                 return 0;
         }
     }
