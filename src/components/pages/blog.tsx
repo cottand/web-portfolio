@@ -3,24 +3,34 @@ import React, {FC} from "react";
 import {Card, List, ListItemButton, ListItemText, Typography} from "@mui/material";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import {MdRenderer} from "../markdown/MdFile";
-import nomad from "../../assets/markdown/blog/NomdAndNixOS.md"
+import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md"
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md"
 import {css} from "@emotion/react";
+
+const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+    {
+        title: "Running both ad-blocking and poor man's DNS service-discovery for self-hosted Nomad",
+        ref: "DNSServiceDiscoveryAdblockingNomad",
+        date: "10/08/2023",
+        file: nomadDnsAdblock,
+    },
+    {
+        title: "Nomad + NixOS",
+        ref: "nomadNixos",
+        date: "22/05/2023",
+        file: nomadNixos,
+    }
+]
 
 export const Blog = () => (
     <Card css={css`min-height: 400px`}>
         <Routes>
-            <Route
-                path="/blog/DNSServiceDiscoveryAdblockingNomad"
-                element={<BlogEntry file={nomadDnsAdblock}/>}
-            />
-            <Route
-                path="/blog/nomadNixos"
-                element={<BlogEntry file={nomad}/>}
-            />
-            <Route
+            {markdownBlogEntries.map(e =>
+                <Route path={"/blog/" + e.ref} element={<BlogEntry file={e.file}/>}/>
+            )}
+            <Route // this one is for backwards compatibility
                 path="/blog/nomad"
-                element={<BlogEntry file={nomad}/>}
+                element={<BlogEntry file={nomadNixos}/>}
             />
             <Route
                 path="/blog"
@@ -35,46 +45,39 @@ export const Blog = () => (
 )
 
 // noinspection HtmlUnknownAttribute
-export const BlogEntry: FC<{ file: string }> = (props) =>
+const BlogEntry: FC<{ file: string }> = (props) =>
     <div css={css`padding: 20px`}>
         <MdRenderer foldCode={true} extendGhm={true} {...props}/>
     </div>
 
 export const BlogEntriesList: FC = () =>
     <List component={"nav"}>
-        <Entry
-            type={"blog"}
-            title={"Running both ad-blocking and poor man's DNS service-discovery for self-hosted Nomad"}
-            href={"/blog/DNSServiceDiscoveryAdblockingNomad"}
-            date={"10/08/2023"}
+        {markdownBlogEntries.map(e =>
+            <Entry type={"blog"}
+                   title={e.title}
+                   href={"/blog/" + e.ref}
+                   date={e.date}
+            />
+        )}
+        <Entry type={"article"}
+               title={"Detailed Case Study of Blockchain.com, a Fast-growing Cryptocurrency Company"}
+               href={"https://github.com/Cottand/articles/raw/master/blockchainCaseStudy.pdf"}
+               date={"29/02/2022"}
         />
-        <Entry
-            type={"blog"}
-            title={"Nomad + NixOS"}
-            href={"/blog/nomadNixos"}
-            date={"22/05/23"}
-        />
-        <Entry
-            type={"article"}
-            title={"Detailed Case Study of Blockchain.com, a Fast-growing Cryptocurrency Company"}
-            href={"https://github.com/Cottand/articles/raw/master/blockchainCaseStudy.pdf"}
-            date={"29/02/22"}
-        />
-        <Entry
-            type={"article"}
-            title={"At Scale, Is it Worth Compromising on Stability for the Sake of Throughput?"}
-            href={"https://github.com/Cottand/articles/raw/master/stabilityVsThroughput.pdf"}
-            date={"24/02/22"}
+        <Entry type={"article"}
+               title={"At Scale, Is it Worth Compromising on Stability for the Sake of Throughput?"}
+               href={"https://github.com/Cottand/articles/raw/master/stabilityVsThroughput.pdf"}
+               date={"24/02/2022"}
         />
         <Entry type={"article"}
                title={"When Are Microservice Architectures Beneficial?"}
                href={"https://github.com/Cottand/articles/raw/master/whenMicroservices.pdf"}
-               date={"21/02/22"}
+               date={"21/02/2022"}
         />
         <Entry type={"talk"}
                title={"Adding Pattern Matching to Kotlin"}
                href={"https://youtu.be/Blj-7SGYUnE?t=215"}
-               date={"01/07/20"}
+               date={"01/07/2020"}
                divider={false}
         />
     </List>
