@@ -5,9 +5,16 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import {MdRenderer} from "../markdown/MdFile";
 import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md"
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md"
+import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleDocker.md"
 import {css} from "@emotion/react";
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+    {
+        title: "Reproducible and Cacheable builds with Gradle and Docker",
+        ref: "ReproducibleCacheableGradleDocker",
+        date: "25/08/2023",
+        file: gradleRepro,
+    },
     {
         title: "Running both ad-blocking and poor man's DNS service-discovery for self-hosted Nomad",
         ref: "DNSServiceDiscoveryAdblockingNomad",
