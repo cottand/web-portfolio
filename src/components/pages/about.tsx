@@ -30,12 +30,12 @@ export const About: FC = () => (
             }}
                 css={css`
                   text-align: center;
-                  margin-bottom: 16px
+                  margin-bottom: 50px
 `}>
 
                 <Typography variant={"h4"}>Hi</Typography>
                 <br/>
-                <Typography>
+                <Typography fontSize={20}>
                     I work as a backend software engineer at <Link href={"https://blockchain.com"}>Blockchain.com</Link>.
                     <br/>
                     <br/>
