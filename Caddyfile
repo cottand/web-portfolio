@@ -11,7 +11,13 @@
         try_files {path} /index.html
         encode gzip zstd
         tracing {
-            span web-portfolio
+            span root
+        }
+        route /projects/* {
+            span projects
+        }
+        route /blog/* {
+            span blog
         }
     }
 }
