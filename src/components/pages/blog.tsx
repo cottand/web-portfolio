@@ -95,7 +95,7 @@ type Type = "blog" | "talk" | "article"
 const Entry: FC<{ type: Type; title: string; href: string; date: string; divider?: boolean }> = (props) => {
     const navigate = useNavigate()
     const onClick: React.MouseEventHandler = (e) => {
-        // non-blog pages correspond to external websites so we should not navigate to them
+        // non-blog pages correspond to external websites, so we should not navigate to them
         if (props.type === "blog") {
             e.preventDefault();
             navigate(props.href);

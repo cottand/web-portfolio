@@ -311,7 +311,7 @@ which can be slow. Make sure you achieve the right tradeoff between splitting mo
 layers so your caching is more effective, and starting the Gradle daemon little enough
 that it slows down your builds less than the caching speeds them up.
 
-### Can we make it _faster_?
+### Can we make it faster? ⚡
 
 Sure we can!
 
