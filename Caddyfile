@@ -13,15 +13,5 @@
         tracing {
             span root
         }
-        route /projects/* {
-            tracing {
-                span projects
-            }
-        }
-        route /blog/* {
-            tracing {
-                span blog
-            }
-        }
     }
 }
