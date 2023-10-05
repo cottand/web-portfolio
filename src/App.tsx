@@ -9,6 +9,9 @@ import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 export const theme = createTheme({
 // @ts-ignore
     shadows: ["none"],
+    typography: {
+      fontSize: 15
+    },
     palette: {
         mode: 'light',
         primary: {

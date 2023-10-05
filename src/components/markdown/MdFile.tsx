@@ -33,7 +33,20 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
 
     return useMemo(() => (
         <ReactMarkdown
-            css={css`font-size: 15px;`}
+            css={css`
+              font-size: 17px;
+              font-family: Roboto, serif;
+
+              h1 {
+                font-weight: normal;
+              }
+              h2 {
+                font-weight: normal;
+              }
+              h3 {
+                font-weight: normal;
+              }
+            `}
             components={{
                 a: Util.mdAsMuiLink,
                 img: (props) => <PicWithCaption {...props}/>,
@@ -45,7 +58,7 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                             foldCode={foldCode}
                             highlighting={{
                                 children: [String(children).replace(/\n$/, '')],
-                                css: css`font-size: 12px`,
+                                css: css`font-size: 14px`,
                                 language: match[1],
                                 PreTag: "div",
                                 style: atomDark
@@ -79,7 +92,7 @@ const FoldingHighlighter: FC<{ filename?: string, foldCode: boolean, highlightin
             aria-controls="panel1a-content"
             id="panel1a-header"
         >
-            <Typography fontSize={13}
+            <Typography fontSize={15}
                         fontFamily={'Fira Code'}>{props.filename ? props.filename : "code block"}</Typography>
         </CodeAccordionSummary>
         <AccordionDetails css={css`padding: 0;
