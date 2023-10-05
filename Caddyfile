@@ -14,10 +14,14 @@
             span root
         }
         route /projects/* {
-            span projects
+            tracing {
+                span projects
+            }
         }
         route /blog/* {
-            span blog
+            tracing {
+                span blog
+            }
         }
     }
 }
