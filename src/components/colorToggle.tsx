@@ -1,5 +1,5 @@
 import {createContext, FC, ReactNode, useContext, useMemo, useState} from "react";
-import {createTheme, IconButton, ThemeProvider, useTheme} from "@mui/material";
+import {createTheme, IconButton, ThemeProvider, useMediaQuery, useTheme} from "@mui/material";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
@@ -19,11 +19,17 @@ export const ChangeColorButton: FC = () => {
 }
 
 export const ToggleColorMode = (props: { children: ReactNode }) => {
-    const [mode, setMode] = useState<'light' | 'dark'>('light');
+    const resultOfMedia = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
+    const initialMode = document.cookie === 'light' ? 'light' : (document.cookie === 'dark' ? 'dark' : resultOfMedia)
+    const [mode, setMode] = useState<'light' | 'dark'>(initialMode);
     const colorMode = useMemo(
         () => ({
             toggleColorMode: () => {
-                setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+                setMode((prevMode) => {
+                    const newMode = (prevMode === 'light' ? 'dark' : 'light')
+                    document.cookie = newMode
+                    return newMode
+                });
             },
         }),
         [],
@@ -33,11 +39,13 @@ export const ToggleColorMode = (props: { children: ReactNode }) => {
         () => {
             const commonOptions = {
                 palette: {mode},
-                shadows: ["none"],
                 typography: {
                     fontSize: 15
                 },
+                shadows: {}
             }
+            const shadows = Array.apply(null, Array(25)).map((_, i) => [`${i}`, "none"])
+            commonOptions.shadows = Object.fromEntries(shadows)
             const specificOptions = mode === 'dark' ? {} : {
                 palette: {
                     primary: {
