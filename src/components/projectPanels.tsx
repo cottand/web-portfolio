@@ -1,5 +1,4 @@
 import djStreamr from "../assets/markdown/projects/DJStreamr.md";
-import djStreamrLogo from "../assets/djstreamrLogoBlack.png"
 import selfhosted from "../assets/markdown/projects/Selfhosted.md";
 import ivann from "../assets/markdown/projects/Ivann.md";
 import wacc from "../assets/markdown/projects/Wacc.md"
@@ -21,6 +20,7 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import WebIcon from '@mui/icons-material/Web';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import SportsBarIcon from '@mui/icons-material/SportsBar';
+import AlbumIcon from '@mui/icons-material/Album';
 
 export type PanelName = string
 
@@ -36,13 +36,6 @@ const commonIconProps: { fontSize?: "large" } = { fontSize : "large" };
 
 export const panels: PanelEntry[] = [
     {
-        // blank - name is in the logo
-        name: "\u{2000}",
-        markdown: djStreamr,
-        summary: "Full-stack collaborative live DJ software",
-        icon: <img src={djStreamrLogo} height={24} alt={"DJStreamr"}/>
-    },
-    {
         name: "Selfhosted Infra"  ,
         markdown: selfhosted,
         summary: "Home SRE-like infra deployment, on my own hardware",
@@ -55,6 +48,13 @@ export const panels: PanelEntry[] = [
         summary: "Framework for specifying and querying legal agreements",
         gh: "cottand/confis",
         icon: <Balance {...commonIconProps} />
+    },
+    {
+        name: "DJStreamr",
+        markdown: djStreamr,
+        summary: "Full-stack collaborative live DJ software",
+        icon: <AlbumIcon {...commonIconProps} />
+        // <img src={djStreamrLogo} height={24} alt={"DJStreamr"}/>
     },
     {
         name: "Ivann",

@@ -1,11 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import React, {FC, useEffect, useRef, useState} from "react";
-import {Accordion, AccordionDetails, AccordionSummary, Link, Typography} from "@mui/material";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Link,
+    Typography,
+    useTheme
+} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import styles from "../../portfolio.module.css";
 import {css} from "@emotion/react";
-import {theme} from "../../App";
 import {MdRenderer} from "../markdown/MdFile";
 import {PanelEntry, PanelName, panels} from "../projectPanels";
 
@@ -15,28 +21,37 @@ type EntryProps = PanelEntry & {
     aligned: boolean
 }
 
-const ProjEntry:FC<EntryProps> = (props ) => {
-    const HeadingTypo = () => <Typography fontSize={"20px"} fontWeight={"bold"}>{props.name}</Typography>
+const ProjEntry: FC<EntryProps> = (props) => {
+    const HeadingTypo = () => <Typography
+        css={css`padding-left: 4px`}
+        fontSize={"20px"}
+        fontWeight={"bold"}
+    >{props.name}</Typography>
     const Heading = () =>
         <div className={styles.heading}>
             {props.icon ?? <></>}
             <HeadingTypo/>
         </div>
-    const Subheading = () => (
-        <Typography color={theme.palette.grey.A700} className={styles.subheading}>{props.summary}</Typography>)
+    const Subheading = () => {
+        const theme = useTheme()
+        return <Typography
+            color={theme.palette.text.secondary}
+            className={styles.subheading}>{props.summary}</Typography>
+    }
+
 
     const ref = useRef<HTMLDivElement>(null)
 
     const onTransitionEnd = () => {
-        if(props.expandedPanel === props.name)
+        if (props.expandedPanel === props.name)
             ref.current?.scrollIntoView({behavior: "smooth", block: "start", inline: "start"});
     }
     return (
-            <Accordion
-                expanded={props.expandedPanel === props.name}
-                onChange={props.handleChange}
-                onTransitionEnd={() => onTransitionEnd()}
-                >
+        <Accordion
+            expanded={props.expandedPanel === props.name}
+            onChange={props.handleChange}
+            onTransitionEnd={() => onTransitionEnd()}
+        >
             <AccordionSummary
                 ref={ref}
                 expandIcon={<ExpandMoreIcon color={"primary"}/>}
@@ -83,17 +98,15 @@ export function Projects() {
 
     return (
         <div css={css`width: 100%`}>
-            {/*<Defer chunkSize={2}>*/}
-                {panels.map((p) => (
-                    <ProjEntry
-                        key={p.name}
-                        handleChange={handleChange(p.name)}
-                        expandedPanel={expanded}
-                        aligned={aligned}
-                        {...p}
-                    />
-                ))}
-            {/*</Defer>*/}
+            {panels.map((p) => (
+                <ProjEntry
+                    key={p.name}
+                    handleChange={handleChange(p.name)}
+                    expandedPanel={expanded}
+                    aligned={aligned}
+                    {...p}
+                />
+            ))}
         </div>
     )
 
@@ -101,6 +114,7 @@ export function Projects() {
 
 function GithubBanner(props: { repo: string }) {
     const svgWidth = "32px"
+    const theme = useTheme()
     return (
         <div
             css={css`text-align: center;
