@@ -6,6 +6,7 @@ import {css} from "@emotion/react";
 import {ChangeColorButton} from "./colorToggle";
 
 export const Header: FC = () => {
+
     return <div css={css`
       display: flex;
       flex-direction: row;
@@ -17,13 +18,17 @@ export const Header: FC = () => {
           float: left;
           padding-top: 10px;
           padding-left: 14px;
-          padding-bottom: 10px;
+          padding-bottom: 6px;
           //text-shadow: 1px 1px;
-          font-size: 64px;
+          font-size: 48px;
+          @media not screen and (max-width: 550px) {
+            padding-bottom: 10px;
+            font-size: 64px;
+          };
           //font-family: 'Fira Code', monospace;
         `}>Nico D'Cotta</Typography>
         <div css={css`
-          padding-top: 12px;
+          padding-top: 10px;
         `}>
             <ChangeColorButton/>
         </div>
