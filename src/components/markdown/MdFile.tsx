@@ -53,6 +53,9 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                   h3 {
                     font-weight: normal;
                   }
+                  strong {
+                    font-weight: 500;
+                  }
                 `}
                 components={{
                     a: Util.mdAsMuiLink,

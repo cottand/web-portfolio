@@ -29,7 +29,7 @@ const markdownBlogEntries: { title: string, date: string, ref: string, file: str
     }
 ]
 
-export const Blog = () => (
+export const Blog: FC = () => (
     <Card css={css`min-height: 400px`}>
         <Routes>
             {markdownBlogEntries.map(e =>
