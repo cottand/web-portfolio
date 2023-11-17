@@ -54,7 +54,7 @@ export const Blog: FC = () => (
 // noinspection HtmlUnknownAttribute
 const BlogEntry: FC<{ file: string }> = (props) =>
     <div css={css`padding: 20px`}>
-        <MdRenderer foldCode={true} extendGhm={true} {...props}/>
+        <MdRenderer foldCode={true} extendGhm={true} makeAnchors={true} {...props}/>
     </div>
 
 export const BlogEntriesList: FC = () =>

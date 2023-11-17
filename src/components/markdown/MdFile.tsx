@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import {FC, ReactNode, useCallback, useEffect, useMemo, useState} from "react";
+import {FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {Util} from "../../util";
 import rehypeRaw from "rehype-raw";
@@ -18,26 +18,41 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {PicWithCaption} from "./PicWithCaption";
-import {HeadingProps} from "react-markdown/lib/ast-to-react";
+import {useLocation} from "react-router-dom";
 
-const withoutWhitespace = (s: string) => s.replaceAll(" ", "")
+const encode = (s: string) => encodeURI(s.replaceAll(" ", ""))
 
 
 const HWithAnchor: FC<{ children: ReactNode, href: ReactNode | undefined }> = (props) => {
 
-    const href = props.href ? withoutWhitespace(props.href.toString()) : ""
+    const location = useLocation()
+    const href = props.href ? encode(props.href.toString()) : ""
+    const ref = useRef<HTMLAnchorElement>(null)
+
+    // when the hash is set, it means we loaded the page to go to this h
+    const scroll = () => {
+        if (href !== "" && location.hash.includes(href)) {
+            ref.current?.scrollIntoView({behavior: "smooth", block: "start", inline: "start"});
+        }
+    }
+    useEffect(scroll, [href, location.hash])
+
     return <>
-        <a id={href}></a>
-        {/*<Link href={`#${href}`}>mylink</Link>*/}
-        {props.children}
+        {props.href ?
+            <Link
+                ref={ref} href={`#${href}`} underline={"hover"} color={(t) => t.palette.text.primary}>
+                {props.children}
+            </Link>
+            : props.children}
     </>
 }
 
-export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boolean }> =
+export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boolean, makeAnchors?: boolean }> =
     ({
          foldCode,
          file,
-         extendGhm
+         extendGhm,
+         makeAnchors,
      }) => {
         const makemSourceRequest = useCallback(
             () => fetch(file).then((r) => r.text()),
@@ -77,8 +92,15 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                     img: (props) => <PicWithCaption {...props}/>,
                     // h1: (props) => <h1 {...props}></h1>,
                     // @ts-ignore
-                    h2: (props) => <HWithAnchor href={props.children[0]}><h2 {...props}></h2></HWithAnchor>,
-                    h3: (props) => <h3 {...props}></h3>,
+                    h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                        <h2 {...props}></h2>
+                    </HWithAnchor>,
+                    h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                        <h3 {...props}></h3>
+                    </HWithAnchor>,
+                    h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                        <h4 {...props}></h4>
+                    </HWithAnchor>,
                     code: ({node, inline, className, children, ...props}) => {
                         const match = /language-(\w+)/.exec(className || '')
                         const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
@@ -107,7 +129,7 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                 children={content}
             />
 
-        ), [content, foldCode, extendGhm])
+        ), [content, foldCode, extendGhm, makeAnchors])
     };
 
 const FoldingHighlighter: FC<{
