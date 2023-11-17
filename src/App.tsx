@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+/** @jsximportsource @emotion/react */
 import React, {FC} from 'react';
 import './App.css';
 import {css} from "@emotion/react";

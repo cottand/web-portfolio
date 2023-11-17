@@ -1,0 +1,30 @@
+{
+  "short_name": "Nico D'Cotta ",
+  "name": "Nico D'Cotta's web portfolio",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+//    {
+//      "src": "logo192.png",
+//      "type": "image/png",
+//      "sizes": "192x192"
+//    },
+    {
+      "src": "water_lux_FILL0_wght300_GRAD0_opsz48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "icons8-wave-100.png",
+      "type": "image/png",
+      "sizes": "100x100"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
