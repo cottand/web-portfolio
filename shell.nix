@@ -2,5 +2,5 @@
   pkgs.mkShell {
     # nativeBuildInputs is usually what you want -- tools you need to run
     nativeBuildInputs = with pkgs.buildPackages; [ nodejs pkgs.fish];
-    shellHook = "webstorm &; npm install && fish && exit";
+    shellHook = "npm install && fish && exit";
 }

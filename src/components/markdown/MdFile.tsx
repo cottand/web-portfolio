@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import {FC, useCallback, useEffect, useMemo, useState} from "react";
+import {FC, ReactNode, useCallback, useEffect, useMemo, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {Util} from "../../util";
 import rehypeRaw from "rehype-raw";
@@ -12,12 +12,26 @@ import {
     AccordionDetails,
     AccordionProps,
     AccordionSummary,
-    AccordionSummaryProps, Card, CardContent,
+    AccordionSummaryProps, Card, CardContent, Link,
     styled,
     Typography, useTheme
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {PicWithCaption} from "./PicWithCaption";
+import {HeadingProps} from "react-markdown/lib/ast-to-react";
+
+const withoutWhitespace = (s: string) => s.replaceAll(" ", "")
+
+
+const HWithAnchor: FC<{ children: ReactNode, href: ReactNode | undefined }> = (props) => {
+
+    const href = props.href ? withoutWhitespace(props.href.toString()) : ""
+    return <>
+        <a id={href}></a>
+        {/*<Link href={`#${href}`}>mylink</Link>*/}
+        {props.children}
+    </>
+}
 
 export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boolean }> =
     ({
@@ -53,6 +67,7 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                   h3 {
                     font-weight: normal;
                   }
+
                   strong {
                     font-weight: 500;
                   }
@@ -60,6 +75,10 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                 components={{
                     a: Util.mdAsMuiLink,
                     img: (props) => <PicWithCaption {...props}/>,
+                    // h1: (props) => <h1 {...props}></h1>,
+                    // @ts-ignore
+                    h2: (props) => <HWithAnchor href={props.children[0]}><h2 {...props}></h2></HWithAnchor>,
+                    h3: (props) => <h3 {...props}></h3>,
                     code: ({node, inline, className, children, ...props}) => {
                         const match = /language-(\w+)/.exec(className || '')
                         const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
@@ -91,7 +110,11 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
         ), [content, foldCode, extendGhm])
     };
 
-const FoldingHighlighter: FC<{ filename?: string, foldCode: boolean, highlighting: SyntaxHighlighterProps }> = (props) => {
+const FoldingHighlighter: FC<{
+    filename?: string,
+    foldCode: boolean,
+    highlighting: SyntaxHighlighterProps
+}> = (props) => {
 
     const theme = useTheme()
     const cardBg = theme.palette.mode === 'light' ? theme.palette.grey["900"] : null
