@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import {FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {FC, ReactElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {Util} from "../../util";
 import rehypeRaw from "rehype-raw";
@@ -23,7 +23,7 @@ import {useLocation} from "react-router-dom";
 const encode = (s: string) => encodeURI(s.replaceAll(" ", ""))
 
 
-const HWithAnchor: FC<{ children: ReactNode, href: ReactNode | undefined }> = (props) => {
+const HWithAnchor: FC<{ children: ReactElement, href: ReactNode | undefined }> = (props) => {
 
     const location = useLocation()
     const href = props.href ? encode(props.href.toString()) : ""
@@ -37,14 +37,12 @@ const HWithAnchor: FC<{ children: ReactNode, href: ReactNode | undefined }> = (p
     }
     useEffect(scroll, [href, location.hash])
 
-    return <>
-        {props.href ?
-            <Link
-                ref={ref} href={`#${href}`} underline={"hover"} color={(t) => t.palette.text.primary}>
-                {props.children}
-            </Link>
-            : props.children}
-    </>
+    return props.href ?
+        <Link
+            ref={ref} href={`#${href}`} underline={"hover"} color={(t) => t.palette.text.primary}>
+            {props.children}
+        </Link>
+        :  props.children
 }
 
 export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boolean, makeAnchors?: boolean }> =
@@ -92,15 +90,12 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                     img: (props) => <PicWithCaption {...props}/>,
                     // h1: (props) => <h1 {...props}></h1>,
                     // @ts-ignore
-                    h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
-                        <h2 {...props}></h2>
-                    </HWithAnchor>,
-                    h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
-                        <h3 {...props}></h3>
-                    </HWithAnchor>,
-                    h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
-                        <h4 {...props}></h4>
-                    </HWithAnchor>,
+                    // eslint-disable-next-line
+                    h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h2 {...props}/></HWithAnchor>,
+                    // eslint-disable-next-line
+                    h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h3 {...props}/></HWithAnchor>,
+                    // eslint-disable-next-line
+                    h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h4 {...props}/></HWithAnchor>,
                     code: ({node, inline, className, children, ...props}) => {
                         const match = /language-(\w+)/.exec(className || '')
                         const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
