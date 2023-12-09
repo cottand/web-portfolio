@@ -33,8 +33,8 @@ export const About: FC = () => {
                     <Typography variant={"h4"}>Hi</Typography>
                     <br/>
                     <Typography fontSize={20}>
-                        I work as a backend software engineer at <Link
-                        href={"https://blockchain.com"}>Blockchain.com</Link>.
+                        I work as a security backend software engineer at <Link
+                        href={"https://monzo.com"}>Monzo</Link>.
                         <br/>
                         <br/>
                         I enjoy building things, music, bouldering, and kite surfing.

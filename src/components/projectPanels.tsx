@@ -1,5 +1,7 @@
 import djStreamr from "../assets/markdown/projects/DJStreamr.md";
 import selfhosted from "../assets/markdown/projects/Selfhosted.md";
+import leng from "../assets/markdown/projects/Leng.md";
+import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import ivann from "../assets/markdown/projects/Ivann.md";
 import wacc from "../assets/markdown/projects/Wacc.md"
 import paxos from "../assets/markdown/projects/Paxos.md"
@@ -35,6 +37,13 @@ export interface PanelEntry {
 const commonIconProps: { fontSize?: "large" } = { fontSize : "large" };
 
 export const panels: PanelEntry[] = [
+    {
+        name: "Leng DNS"  ,
+        markdown: leng,
+        summary: "DNS proxy server with ad-blocking",
+        gh: "cottand/leng",
+        icon: <DynamicFormIcon {...commonIconProps} />
+    },
     {
         name: "Selfhosted Infra"  ,
         markdown: selfhosted,
