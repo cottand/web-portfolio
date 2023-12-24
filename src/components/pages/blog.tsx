@@ -6,9 +6,16 @@ import {MdRenderer} from "../markdown/MdFile";
 import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md"
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md"
 import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleDocker.md"
+import nixShellHash from "../../assets/markdown/blog/NixShellFlakeScriptingForHashLanguages.md"
 import {css} from "@emotion/react";
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+    {
+        title: "Scripting via the Nix shell with hash languages",
+        ref: "NixShellFlakeScriptingForHashLanguages",
+        date: "23/11/2023",
+        file: nixShellHash,
+    },
     {
         title: "Reproducible and Cacheable builds with Gradle and Docker",
         ref: "ReproducibleCacheableGradleDocker",
