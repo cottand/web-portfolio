@@ -66,24 +66,28 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
         return useMemo(() => (
             <ReactMarkdown
                 css={css`
-                  font-size: 17px;
-                  font-family: Roboto, serif;
+                    font-size: 17px;
+                    font-family: Roboto, serif;
 
-                  h1 {
-                    font-weight: normal;
-                  }
+                    h1 {
+                        font-weight: normal;
+                    }
 
-                  h2 {
-                    font-weight: normal;
-                  }
+                    h2 {
+                        font-weight: normal;
+                    }
 
-                  h3 {
-                    font-weight: normal;
-                  }
+                    h3 {
+                        font-weight: normal;
+                    }
 
-                  strong {
-                    font-weight: 500;
-                  }
+                    h4 {
+                        font-weight: normal;
+                    }
+
+                    strong {
+                        font-weight: 500;
+                    }
                 `}
                 components={{
                     a: Util.mdAsMuiLink,
@@ -99,17 +103,19 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                     code: ({node, inline, className, children, ...props}) => {
                         const match = /language-(\w+)/.exec(className || '')
                         const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
+                        const hiddenFilenameRegex = /# hiddenfile: (.+) #\n/
+                        const hiddenFilenameMatch = hiddenFilenameRegex.exec(String(children) || '')
                         return !inline && match ? (
                             <FoldingHighlighter
                                 foldCode={foldCode}
                                 highlighting={{
-                                    children: [String(children).replace(/\n$/, '')],
+                                    children: [String(children).replace(/\n$/, '').replace(hiddenFilenameRegex, "")],
                                     css: css`font-size: 14px`,
                                     language: match[1],
                                     PreTag: "div",
                                     style: {...atomDark, ...{"pre[class*=\"language-\"]": {background: "transparent"}}},
                                 }}
-                                filename={filenameMatch ? filenameMatch[1] : undefined}
+                                filename={filenameMatch ? filenameMatch[1] : (hiddenFilenameMatch? hiddenFilenameMatch[1] : undefined)}
                                 // @ts-ignore
                                 {...props}
                             />

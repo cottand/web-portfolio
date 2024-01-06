@@ -16,6 +16,7 @@ down as to why).
 
 ```kotlin
 !# /usr/bin/env kotlin
+# hiddenfile: demo.main.kts #
 
 println("Hello world, I am a Kotlin script!")
 ```
@@ -36,20 +37,21 @@ TODO - airplane script :c
 ```kotlin
 #! /usr/bin/env nix-shell
 #! nix-shell -p kotlin -i kotlin
+# hiddenfile: broken.main.kts #
 
 println("Hello world, I am Kotlin script!")
 ```
 
 But when I try to run it, I get errors:
 
-```kotlin
-test_bad_main.kts:2:1: error: expecting an element
-#! nix-shell -p kotlin -i kotlin
-^
-test_bad_main.kts:2:4: error: unresolved reference: nix
-#! nix-shell -p kotlin -i kotlin
-   ^
 ```
+ test_bad_main.kts:2:1: error: expecting an element
+ #! nix-shell -p kotlin -i kotlin
+ ^
+ test_bad_main.kts:2:4: error: unresolved reference: nix
+ #! nix-shell -p kotlin -i kotlin
+    ^
+ ```
 
 This I did not expect - having Nix set up Kotlin worked, but then the Kotlin compiler couldn't
 handle the script. It is complaining about the shebangs (`#!`) not being valid Kotlin (which, in
@@ -89,6 +91,7 @@ my code.
 
 Here is how the end result looks (for Go):
 ```nix
+# hiddenfile: flake.nix #
 {
     inputs.nixpkgs.url = "github:nixos/nixpkgs";
     outputs = { nixpkgs, ... }: let
@@ -127,6 +130,7 @@ Let's try it out:
 ```go
 #! /usr/bin/env nix
 #! nix shell {YOUR_FLAKE_HERE}#go-yaegi --quiet --command go-yaegi
+# hiddenfile: replaced.go #
 
 package main
 func main() { println("Hello from Go") }
@@ -148,6 +152,7 @@ You can use it like so:
 ```go
 #! /usr/bin/env nix
 #! nix shell github:cottand/hash2slash#go-run --quiet --command hash2slash-go-run
+# hiddenfile: withHash2slash.go #
 
 package main
 func main() { println("Hello from Go") }
@@ -158,13 +163,14 @@ Or, for Kotlin:
 ```kotlin
 #! /usr/bin/env nix
 #! nix shell /home/cottand/dev/cottand/hash2slash#kotlin --quiet --command hash2slash-kotlin
+# hiddenfile: withHash2slash.main.kts #
 
 fun greet(greeting: String) = "Hello, $greeting!"
 
 println(greet("I am a script"))
 ```
 
-### Some thoughts on the trade-offs of this approach
+### Thoughts on the trade-offs
 
 #### Pinning
 
@@ -182,7 +188,7 @@ Because of this, you should pin your Nixpkgs to a specific revision, like so:
 #! /usr/bin/env nix
 #! nix shell github:cottand/hash2slash/v0.0.1#go-run --quiet --command hash2slash-go-run
 #! nix shell --override-input nixpkgs github:NixOS/nixpkgs/2691dec
-
+# hiddenfile: pinned.go #
 
 package main
 func main() { println("Hello from Go") }
