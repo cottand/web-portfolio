@@ -1,6 +1,17 @@
 /** @jsxImportSource @emotion/react */
-import React, {FC, ReactElement, ReactNode, Suspense, useCallback, useEffect, useMemo, useRef, useState} from "react";
-import ReactMarkdown from "react-markdown";
+import React, {
+    FC,
+    lazy,
+    ReactElement,
+    ReactNode,
+    Suspense,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
+// import ReactMarkdown from "react-markdown";
 import {Util} from "../../util";
 import rehypeRaw from "rehype-raw";
 import {Prism as SyntaxHighlighter, SyntaxHighlighterProps} from 'react-syntax-highlighter'
@@ -46,6 +57,8 @@ const HWithAnchor: FC<{ children: ReactElement, href: ReactNode | undefined }> =
         :  props.children
 }
 
+const ReactMarkdown = lazy(() => import("react-markdown"))
+
 export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boolean, makeAnchors?: boolean }> =
     ({
          foldCode,
@@ -64,8 +77,9 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
             req.then(setContent);
         }, [makemSourceRequest])
 
-        return <Suspense fallback={<Spinner/>}>{
+        return <Suspense>{
             useMemo(() => (
+                content === "" ? <Spinner/> :
                 <ReactMarkdown
                     css={css`
                         font-size: 17px;
@@ -220,3 +234,4 @@ const CodeAccordionSummary = styled((props: AccordionSummaryProps) =>
         // marginLeft: theme.spacing(1),
     },
 }));
+export default MdRenderer

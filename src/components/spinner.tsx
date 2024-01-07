@@ -1,4 +1,4 @@
 import React, {FC} from "react";
-import {CircularProgress} from "@mui/material";
+import {CircularProgress, LinearProgress} from "@mui/material";
 
-export const Spinner: FC<{}> = () => <CircularProgress/>
+export const Spinner: FC<{}> = () => <LinearProgress/>

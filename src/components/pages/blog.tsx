@@ -1,13 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import React, {FC} from "react";
+import React, {FC, lazy, Suspense} from "react";
 import {Card, List, ListItemButton, ListItemText, Typography} from "@mui/material";
 import {Route, Routes, useNavigate} from "react-router-dom";
-import {MdRenderer} from "../markdown/MdFile";
+// import {MdRenderer} from "../markdown/MdFile";
 import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md"
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md"
 import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleDocker.md"
 import nixShellHash from "../../assets/markdown/blog/NixShellFlakeScriptingForHashLanguages.md"
 import {css} from "@emotion/react";
+import {Spinner} from "../spinner";
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
     {
@@ -36,8 +37,10 @@ const markdownBlogEntries: { title: string, date: string, ref: string, file: str
     }
 ]
 
+const MdRenderer = lazy(() => import("../markdown/MdFile"))
 export const Blog: FC = () => (
     <Card css={css`min-height: 400px`} elevation={0}>
+        <Suspense fallback={<Spinner/>}>
         <Routes>
             {markdownBlogEntries.map(e =>
                 <Route path={"/blog/" + e.ref} key={e.ref} element={<BlogEntry file={e.file}/>}/>
@@ -55,6 +58,7 @@ export const Blog: FC = () => (
                 element={<BlogEntriesList/>}
             />
         </Routes>
+        </Suspense>
     </Card>
 )
 

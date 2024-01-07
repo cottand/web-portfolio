@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, {FC, useEffect, useRef, useState} from "react";
+import React, {FC, lazy, useEffect, useRef, useState} from "react";
 import {
     Accordion,
     AccordionDetails,
@@ -12,8 +12,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import styles from "../../portfolio.module.css";
 import {css} from "@emotion/react";
-import {MdRenderer} from "../markdown/MdFile";
 import {PanelEntry, PanelName, panels} from "../projectPanels";
+
+const MdRenderer = lazy(() => import("../markdown/MdFile"))
 
 type EntryProps = PanelEntry & {
     handleChange: (event: any, expanded: boolean) => void
