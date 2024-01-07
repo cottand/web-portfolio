@@ -46,21 +46,23 @@ export const ToggleColorMode = (props: { children: ReactNode }) => {
             }
             const shadows = Array.apply(null, Array(25)).map((_, i) => [`${i}`, "none"])
             commonOptions.shadows = Object.fromEntries(shadows)
-            const specificOptions = mode === 'dark' ? {} : {
-                palette: {
-                    primary: {
-                        main: "#B24F31",// orange-y ish
-                        light: "rgb(166, 212, 250)",
-                        dark: "rgb(100, 141, 174)",
+            const specificOptions = mode === 'dark' ?
+                {
+                } : {
+                    palette: {
+                        primary: {
+                            main: "#B24F31",// orange-y ish
+                            light: "rgb(166, 212, 250)",
+                            dark: "rgb(100, 141, 174)",
 
+                        },
+                        secondary: {
+                            main: "#651fff",
+                            light: "#834bff",
+                            dark: "#4615b2",
+                        },
                     },
-                    secondary: {
-                        main: "#651fff",
-                        light: "#834bff",
-                        dark: "#4615b2",
-                    },
-                },
-            }
+                }
             //@ts-ignore
             return createTheme({...commonOptions, ...specificOptions})
         },

@@ -1,4 +1,4 @@
-# Scripting via the Nix shell with hash languages
+# Scripting compiled languages via the Nix shell
 
 _22/11/2023 - #nix #script #kotlin #go #shebang #nix-flake_
 <br></br>
@@ -236,10 +236,11 @@ And, of course, we should write it in a language that
 but you read and debug it countless times!
 
 If the language that your team can achieve all of this is in is
-actually Bash, be my guest! Go break a leg.
+actually Bash, then stick to it, by all means.
 
-But chances are it is not (or you would also write your application
-code in it, right?). Most likely, the best language for this is
+But chances are it is not - it is usually not the main language for developers,
+and it is just plain hard.
+Most likely, the best language for this is
 one your team is already proficient in: the language
 you write application code in.
 

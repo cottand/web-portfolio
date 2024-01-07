@@ -4,8 +4,11 @@ import './App.css';
 import {css} from "@emotion/react";
 import {BrowserRouter} from "react-router-dom";
 import {NavBar} from "./components/navBar";
+import {useTheme} from "@mui/material";
+import {grey} from "@mui/material/colors";
 
 const App: FC = () => {
+    const theme = useTheme()
     // noinspection CssInvalidPropertyValue
     return <div
         css={css`
@@ -21,6 +24,7 @@ const App: FC = () => {
           display: flex;
           flex-direction: column;
           min-height: 100vh;
+            // background: ${theme.palette.mode === 'dark' ? theme.palette.background.default : undefined};
         `}
     >
         <div css={css`

@@ -37,7 +37,7 @@ const markdownBlogEntries: { title: string, date: string, ref: string, file: str
 ]
 
 export const Blog: FC = () => (
-    <Card css={css`min-height: 400px`}>
+    <Card css={css`min-height: 400px`} elevation={0}>
         <Routes>
             {markdownBlogEntries.map(e =>
                 <Route path={"/blog/" + e.ref} key={e.ref} element={<BlogEntry file={e.file}/>}/>

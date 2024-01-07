@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import {FC, ReactElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from "react";
+import React, {FC, ReactElement, ReactNode, Suspense, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {Util} from "../../util";
 import rehypeRaw from "rehype-raw";
@@ -19,6 +19,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {PicWithCaption} from "./PicWithCaption";
 import {useLocation} from "react-router-dom";
+import {Spinner} from "../spinner";
 
 const encode = (s: string) => encodeURI(s.replaceAll(" ", ""))
 
@@ -63,75 +64,81 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
             req.then(setContent);
         }, [makemSourceRequest])
 
-        return useMemo(() => (
-            <ReactMarkdown
-                css={css`
-                    font-size: 17px;
-                    font-family: Roboto, serif;
+        return <Suspense fallback={<Spinner/>}>{
+            useMemo(() => (
+                <ReactMarkdown
+                    css={css`
+                        font-size: 17px;
+                        font-family: Roboto, serif;
 
-                    h1 {
-                        font-weight: normal;
-                    }
+                        h1 {
+                            font-weight: normal;
+                        }
 
-                    h2 {
-                        font-weight: normal;
-                    }
+                        h2 {
+                            font-weight: normal;
+                        }
 
-                    h3 {
-                        font-weight: normal;
-                    }
+                        h3 {
+                            font-weight: normal;
+                        }
 
-                    h4 {
-                        font-weight: normal;
-                    }
+                        h4 {
+                            font-weight: normal;
+                        }
 
-                    strong {
-                        font-weight: 500;
-                    }
-                `}
-                components={{
-                    a: Util.mdAsMuiLink,
-                    img: (props) => <PicWithCaption {...props}/>,
-                    // h1: (props) => <h1 {...props}></h1>,
-                    // @ts-ignore
-                    // eslint-disable-next-line
-                    h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h2 {...props}/></HWithAnchor>,
-                    // eslint-disable-next-line
-                    h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h3 {...props}/></HWithAnchor>,
-                    // eslint-disable-next-line
-                    h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h4 {...props}/></HWithAnchor>,
-                    code: ({node, inline, className, children, ...props}) => {
-                        const match = /language-(\w+)/.exec(className || '')
-                        const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
-                        const hiddenFilenameRegex = /# hiddenfile: (.+) #\n/
-                        const hiddenFilenameMatch = hiddenFilenameRegex.exec(String(children) || '')
-                        return !inline && match ? (
-                            <FoldingHighlighter
-                                foldCode={foldCode}
-                                highlighting={{
-                                    children: [String(children).replace(/\n$/, '').replace(hiddenFilenameRegex, "")],
-                                    css: css`font-size: 14px`,
-                                    language: match[1],
-                                    PreTag: "div",
-                                    style: {...atomDark, ...{"pre[class*=\"language-\"]": {background: "transparent"}}},
-                                }}
-                                filename={filenameMatch ? filenameMatch[1] : (hiddenFilenameMatch? hiddenFilenameMatch[1] : undefined)}
-                                // @ts-ignore
-                                {...props}
-                            />
-                        ) : (
-                            <code className={className} {...props}>
-                                {children}
-                            </code>
-                        )
-                    }
-                }}
-                rehypePlugins={extendGhm ? [rehypeRaw, remarkGfm] : [rehypeRaw]}
-                children={content}
-            />
+                        strong {
+                            font-weight: 500;
+                        }
+                    `}
+                    components={{
+                        a: Util.mdAsMuiLink,
+                        img: (props) => <PicWithCaption {...props}/>,
+                        // h1: (props) => <h1 {...props}></h1>,
+                        // @ts-ignore
+                        // eslint-disable-next-line
+                        h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h2 {...props}/>
+                        </HWithAnchor>,
+                        // eslint-disable-next-line
+                        h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h3 {...props}/>
+                        </HWithAnchor>,
+                        // eslint-disable-next-line
+                        h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h4 {...props}/>
+                        </HWithAnchor>,
+                        code: ({node, inline, className, children, ...props}) => {
+                            const match = /language-(\w+)/.exec(className || '')
+                            const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
+                            const hiddenFilenameRegex = /# hiddenfile: (.+) #\n/
+                            const hiddenFilenameMatch = hiddenFilenameRegex.exec(String(children) || '')
+                            return !inline && match ? (
+                                <FoldingHighlighter
+                                    foldCode={foldCode}
+                                    highlighting={{
+                                        children: [String(children).replace(/\n$/, '').replace(hiddenFilenameRegex, "")],
+                                        css: css`font-size: 14px`,
+                                        language: match[1],
+                                        PreTag: "div",
+                                        style: {...atomDark, ...{"pre[class*=\"language-\"]": {background: "transparent"}}},
+                                    }}
+                                    filename={filenameMatch ? filenameMatch[1] : (hiddenFilenameMatch ? hiddenFilenameMatch[1] : undefined)}
+                                    // @ts-ignore
+                                    {...props}
+                                />
+                            ) : (
+                                <code className={className} {...props}>
+                                    {children}
+                                </code>
+                            )
+                        }
+                    }}
+                    rehypePlugins={extendGhm ? [rehypeRaw, remarkGfm] : [rehypeRaw]}
+                    children={content}
+                />
 
-        ), [content, foldCode, extendGhm, makeAnchors])
-    };
+            ), [content, foldCode, extendGhm, makeAnchors])
+        }
+        </Suspense>
+    }
 
 const FoldingHighlighter: FC<{
     filename?: string,

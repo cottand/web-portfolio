@@ -13,8 +13,6 @@ export const Header: FC = () => {
     const smallHeader = location.pathname.split("/").length > 2
     const fontSize = smallHeader ? 42 : 64
 
-    console.log(location.pathname.split("/"))
-
     return <div css={css`
       display: flex;
       flex-direction: row;
