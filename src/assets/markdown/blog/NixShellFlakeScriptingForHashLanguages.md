@@ -5,7 +5,7 @@ _22/11/2023 - #nix #script #kotlin #go #shebang #nix-flake_
 
 ## The problem
 
-If you are like my and _cannot stand_ scripting in loosely
+If you are like me and _cannot stand_ scripting in loosely
 typed languages, then you probably have heard of [Yaegi for Go](https://github.com/traefik/yaegi),
 or have been following the developments of [Rust's `cargo-script`](https://github.com/rust-lang/rfcs/pull/3502)
 and [Kotlin's .kts scripts](https://github.com/Kotlin/KEEP/blob/master/proposals/scripting-support.md).
