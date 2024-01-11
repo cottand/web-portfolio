@@ -186,7 +186,7 @@ Because of this, you should pin your Nixpkgs to a specific revision, like so:
 
 ```go
 #! /usr/bin/env nix
-#! nix shell github:cottand/hash2slash/v0.0.1#go-run --quiet --command hash2slash-go-run
+#! nix shell github:cottand/hash2slash/v0.1#go-run --quiet --command hash2slash-go-run
 #! nix shell --override-input nixpkgs github:NixOS/nixpkgs/2691dec
 # hiddenfile: pinned.go #
 
