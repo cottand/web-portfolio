@@ -38,23 +38,23 @@ jobs:
           docker push ghcr.io/cottand/web-portfolio:$git_sha
 
 
-  publish-docker:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2.2.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Docker image
-        run: |
-          git_sha=$(git rev-parse --short "$GITHUB_SHA")
-          docker build . --tag ghcr.io/cottand/web-portfolio:latest
-          docker tag ghcr.io/cottand/web-portfolio:latest ghcr.io/cottand/web-portfolio:$git_sha
-          docker push ghcr.io/cottand/web-portfolio:latest
-          docker push ghcr.io/cottand/web-portfolio:$git_sha
+  # publish-docker:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Login to GitHub Container Registry
+  #       uses: docker/login-action@v2.2.0
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Build Docker image
+  #       run: |
+  #         git_sha=$(git rev-parse --short "$GITHUB_SHA")
+  #         docker build . --tag ghcr.io/cottand/web-portfolio:latest
+  #         docker tag ghcr.io/cottand/web-portfolio:latest ghcr.io/cottand/web-portfolio:$git_sha
+  #         docker push ghcr.io/cottand/web-portfolio:latest
+  #         docker push ghcr.io/cottand/web-portfolio:$git_sha
 
   # deploy-nomad:
   #   needs: publish-docker
