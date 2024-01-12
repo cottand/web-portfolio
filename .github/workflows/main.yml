@@ -2,8 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    workflow_dispatch:
-    branches: [ "master" ]
+    branches: [ "master", "flake" ]
 
 jobs:
   build:
@@ -16,6 +15,7 @@ jobs:
   publish-nix-container:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2.2.0
         with:
@@ -27,7 +27,8 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/setup-qemu-action@v1
       - run: nix build .#containerImage
-      - run: |
+      - name: Push image
+        run: |
           git_sha=$(git rev-parse --short "$GITHUB_SHA")
 
           docker load < result
