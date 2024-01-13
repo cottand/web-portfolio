@@ -25,7 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         system:
-          # - aarch64-linux
+          - aarch64-linux
           - x86_64-linux
     steps:
       - uses: actions/checkout@v3
@@ -42,12 +42,15 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           extra_nix_config: |
             extra-platforms = ${{ matrix.system }}
+      
+      # - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - uses: docker/setup-qemu-action@v1
 
       - run: nix build .#packages.${{ matrix.system }}.containerImage
 
-      - name: Build and push image
+      - name: Tag and push image
         run: |
           git_sha=$(git rev-parse --short "$GITHUB_SHA")
           label=$git_sha-${{ matrix.system}}
@@ -60,8 +63,10 @@ jobs:
 
           # export digest
           docker pull ${{ env.REGISTRY_IMAGE }}:$label
-          digest=$(docker image inspect ${{ env.REGISTRY_IMAGE }}:$label --format "{{.Id}}")
+          full=$(docker image inspect ${{ env.REGISTRY_IMAGE }}:$label --format "{{index .RepoDigests 0}}")
+          digest=${full#${{ env.REGISTRY_IMAGE }}@}
           mkdir -p /tmp/digests
+
           touch "/tmp/digests/${digest#sha256:}"
 
       - name: Upload digest
