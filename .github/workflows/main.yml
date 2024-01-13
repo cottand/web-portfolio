@@ -4,6 +4,13 @@ on:
   push:
     branches: [ "master" ]
 
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY_IMAGE: "ghcr.io/cottand/web-portfolio"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,33 +24,95 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - linux/amd64
-          - linux/arm/v6
-          - linux/arm/v7
-          - linux/arm64
+        system:
+          # - aarch64-linux
+          - x86_64-linux
     steps:
       - uses: actions/checkout@v3
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2.2.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: cachix/install-nix-action@v22
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            extra-platforms = ${{ matrix.system }}
+
       - uses: docker/setup-qemu-action@v1
-      - run: nix build .#containerImage
-      - name: Push image
+
+      - run: nix build .#packages.${{ matrix.system }}.containerImage
+
+      - name: Build and push image
         run: |
           git_sha=$(git rev-parse --short "$GITHUB_SHA")
+          label=$git_sha-${{ matrix.system}}
 
           docker load < result
-          docker tag nico.dcotta.eu:nix ghcr.io/cottand/web-portfolio:latest
-          docker tag ghcr.io/cottand/web-portfolio:latest ghcr.io/cottand/web-portfolio:$git_sha
-          docker push ghcr.io/cottand/web-portfolio:latest
-          docker push ghcr.io/cottand/web-portfolio:$git_sha
+          docker tag nico.dcotta.eu:nix ${{ env.REGISTRY_IMAGE }}:$label
+          # docker tag ghcr.io/cottand/web-portfolio:latest ghcr.io/cottand/web-portfolio:$git_sha
+          # docker push ghcr.io/cottand/web-portfolio:latest
+          docker push ${{ env.REGISTRY_IMAGE }}:$label
+
+          # export digest
+          docker pull ${{ env.REGISTRY_IMAGE }}:$label
+          digest=$(docker image inspect ${{ env.REGISTRY_IMAGE }}:$label --format "{{.Id}}")
+          mkdir -p /tmp/digests
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v3
+        with:
+          name: digests
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge-docker:
+    runs-on: ubuntu-latest
+    needs: [publish-nix-container]
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v3
+        with:
+          name: digests
+          path: /tmp/digests
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # list of Docker images to use as base name for tags
+          images: ${{ env.REGISTRY_IMAGE }}
+          tags: |
+            type=sha,event=push
+
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
+
+      - name: Inspect image
+        run: |
+          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}          
+
+      - name: Summary
+        run: |
+          echo "# Published \`${{ steps.meta.outputs.tags }}\`" >> $GITHUB_STEP_SUMMARY
 
 
   # deploy-nomad:
