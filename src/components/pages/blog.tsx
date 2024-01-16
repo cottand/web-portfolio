@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, {FC, lazy, Suspense} from "react";
-import {Card, List, ListItemButton, ListItemText, Typography} from "@mui/material";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Card, List, ListItem, ListItemButton, ListItemText, Typography} from "@mui/material";
+import {Link as RouterLink, Route, Routes, useNavigate} from "react-router-dom";
 // import {MdRenderer} from "../markdown/MdFile";
 import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md"
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md"
@@ -43,18 +43,13 @@ export const Blog: FC = () => (
         <Suspense fallback={<Spinner/>}>
         <Routes>
             {markdownBlogEntries.map(e =>
-                <Route path={"/blog/" + e.ref} key={e.ref} element={<BlogEntry file={e.file}/>}/>
+                <Route path={e.ref} key={e.ref} element={<BlogEntry file={e.file}/>}/>
             )}
-            <Route // this one is for backwards compatibility
-                path="/blog/nomad"
+            {/*// this one is for backwards compatibility*/}
+            <Route path="nomad"
                 element={<BlogEntry file={nomadNixos}/>}
             />
-            <Route
-                path="/blog"
-                element={<BlogEntriesList/>}
-            />
-            <Route
-                path="*"
+            <Route path="*"
                 element={<BlogEntriesList/>}
             />
         </Routes>
@@ -73,7 +68,8 @@ export const BlogEntriesList: FC = () =>
         {markdownBlogEntries.map(e =>
             <Entry type={"blog"}
                    title={e.title}
-                   href={"/blog/" + e.ref}
+                   href={e.ref}
+                   // href={"/blog/" + e.ref}
                    date={e.date}
                    key={e.ref}
             />
@@ -113,12 +109,14 @@ const Entry: FC<{ type: Type; title: string; href: string; date: string; divider
     const onClick: React.MouseEventHandler = (e) => {
         // non-blog pages correspond to external websites, so we should not navigate to them
         if (props.type === "blog") {
-            e.preventDefault();
-            navigate(props.href);
+            // e.preventDefault();
+            // navigate(props.href);
         }
     };
 
-    return <ListItemButton href={props.href} divider={props.divider ?? true} onClick={onClick}>
+    return <ListItemButton component={RouterLink as any} to={props.href} divider={props.divider ?? true}
+                           // onClick={onClick}
+    >
         <div>
             <Typography variant={"caption"}>{props.date}</Typography>
             <ListItemText secondary={props.type}>{props.title}</ListItemText>

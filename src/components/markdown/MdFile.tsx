@@ -17,7 +17,7 @@ import rehypeRaw from "rehype-raw";
 import {Prism as SyntaxHighlighter, SyntaxHighlighterProps} from 'react-syntax-highlighter'
 import {atomDark} from 'react-syntax-highlighter/dist/esm/styles/prism'
 import {css} from "@emotion/react";
-import remarkGfm from 'remark-gfm'
+import remarkGfm from 'remark-gfm';
 import {
     Accordion,
     AccordionDetails,

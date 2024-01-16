@@ -13,6 +13,7 @@ import {
     Typography,
 } from "@mui/material";
 import {Email, GitHub, LinkedIn, SaveAlt} from "@mui/icons-material";
+import {Link as RouterLink} from "react-router-dom";
 
 export const About: FC = () => {
     return <div css={css`width: 100%`}>
@@ -50,6 +51,18 @@ export const About: FC = () => {
                     <Grid item xs={8}>
                         <List component={"nav"}>
                             <ListItem disablePadding>
+                                <ListItemButton component={RouterLink as any} to={"/projects"}>
+                                    <ListItemText primary={"Projects"}/>
+                                    {/*{icon}*/}
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton component={RouterLink as any} to={"/blog"}>
+                                    <ListItemText primary={"Blog"}/>
+                                    {/*{icon}*/}
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
                                 <ListItemButton component={"a"} href={"https://github.com/cottand"}>
                                     <ListItemIcon><GitHub/></ListItemIcon>
                                     <ListItemText>github.com/cottand</ListItemText>
@@ -57,7 +70,7 @@ export const About: FC = () => {
                             </ListItem>
                             <ListItem disablePadding>
                                 <ListItemButton component={"a"} href={"mailto:nico@dcotta.eu"}>
-                                    <ListItemIcon><Email/></ListItemIcon>
+                                <ListItemIcon><Email/></ListItemIcon>
                                     <ListItemText>nico@dcotta.eu</ListItemText>
                                 </ListItemButton>
                             </ListItem>

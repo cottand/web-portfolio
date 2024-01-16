@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import React, {FC, Fragment, Suspense} from "react";
+import React, {FC, Fragment, lazy, Suspense} from "react";
 import {AppBar, Tab, Tabs} from "@mui/material";
 import {css} from "@emotion/react";
-import {useLocation, useNavigate} from "react-router-dom";
-import {Projects} from "./pages/projects";
+import {Route, Routes, useLocation, useMatch, useNavigate} from "react-router-dom";
 import {About} from "./pages/about";
 import {Blog} from "./pages/blog";
 import {TabPanel} from "./tabPanel";
@@ -33,6 +32,7 @@ const LinkTab: FC<{ icon: React.ReactElement, label: string; href: string }> = (
         ;
 }
 
+const Projects = lazy(() => import("./pages/projects"))
 
 export function NavBar() {
     const [value, setValue] = React.useState(fromPathToIndex(useLocation().pathname));
@@ -44,7 +44,9 @@ export function NavBar() {
             case "/about":
                 return 0;
             case "/#/blog":
+            case "/#/blog/":
             case "/blog":
+            case "/blog/":
                 return 1;
             case "/projects":
             case "/projects/":
@@ -56,7 +58,21 @@ export function NavBar() {
         }
     }
 
+    function indexToPath(index: number): string {
+        switch (index) {
+            case 0:
+                return "about";
+            case 1: return "projects";
+            case 2: return "blog";
+            default:
+                return "about";
+        }
+    }
+
+    const nav = useNavigate()
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        event.preventDefault()
         setValue(newValue)
     };
     return (
