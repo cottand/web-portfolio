@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -15,12 +16,13 @@ import {
   Route,
   Routes,
   MemoryRouter,
-  useLocation,
+  useLocation, BrowserRouter,
 } from 'react-router-dom';
 import {About} from "./components/pages/about";
 import {ListItemButton} from "@mui/material";
 import {Blog} from "./components/pages/blog";
 import Projects from "./components/pages/projects";
+import {css} from "@emotion/react";
 
 interface ListItemLinkProps extends ListItemProps {
   to: string;
@@ -30,7 +32,6 @@ interface ListItemLinkProps extends ListItemProps {
 const breadcrumbNameMap: { [key: string]: string } = {
   '/projects': 'Projects',
   '/blog': 'Blog',
-  '/blog/important': 'Important',
 };
 
 function ListItemLink(props: ListItemLinkProps) {
@@ -66,7 +67,7 @@ const Page = () => {
   const fontProps = { fontSize: 22 }
 
   return (
-    <Breadcrumbs aria-label="breadcrumb">
+    <Breadcrumbs aria-label="breadcrumb" css={css`padding-bottom: 12px`}>
       <LinkRouter underline="hover" color="inherit" to="/">
         <Typography {...fontProps}>
           Nico D'Cotta
@@ -98,17 +99,17 @@ export default function RouterBreadcrumbs() {
   };
 
   return (
-    <MemoryRouter initialEntries={['/about']} initialIndex={0}>
+    <BrowserRouter>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: 360 }}>
         <Routes>
           <Route path="*" element={<Page />} />
         </Routes>
       </Box>
       <Routes>
-        <Route path={"/"} element={<About/>}/>
+        <Route path={"*"} element={<About/>}/>
         <Route path={"blog/*"} element={<Blog/>}/>
         <Route path={"projects/*"} element={<Projects/>}/>
       </Routes>
-    </MemoryRouter>
+    </BrowserRouter>
   );
 }

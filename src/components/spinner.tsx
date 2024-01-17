@@ -1,4 +1,8 @@
+/** @jsxImportSource @emotion/react */
 import React, {FC} from "react";
-import {CircularProgress, LinearProgress} from "@mui/material";
 
-export const Spinner: FC<{}> = () => <LinearProgress/>
+export const Spinner: FC<{}> = () =>
+    <></>
+// <CircularProgress css={css`
+//      padding: 20px;
+//  `}/>
