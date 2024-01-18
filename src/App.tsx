@@ -3,7 +3,6 @@ import React, {FC} from 'react';
 import './App.css';
 import {css} from "@emotion/react";
 import {BrowserRouter, useNavigate, useRouteError} from "react-router-dom";
-import {NavBar} from "./components/navBar";
 import {Breadcrumbs, Link, Typography, useTheme} from "@mui/material";
 import RouterBreadcrumbs     from './crumbs';
 

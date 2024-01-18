@@ -57,10 +57,15 @@ export const About: FC = () => {
                         </ListItemButton>
                     </ListItem>
                 </Grid>
+                <Grid item xs={1} flexGrow={0}>
+                    <ListItem disablePadding>
+                        <ListItemText primary={""} primaryTypographyProps={{align: "center"}}/>
+                    </ListItem>
+                </Grid>
                 <Grid item xs={4}>
                     <ListItem disablePadding divider={true}>
                         <ListItemButton component={RouterLink as any} to={"/projects"}>
-                            <ListItemText primary={"explore projects"} primaryTypographyProps={{align: "center"}}/>
+                            <ListItemText primary={"see projects"} primaryTypographyProps={{align: "center"}}/>
                             {/*{icon}*/}
                         </ListItemButton>
                     </ListItem>

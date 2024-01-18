@@ -13,7 +13,7 @@ export const ChangeColorButton: FC = () => {
     const theme = useTheme();
     const colorMode = useContext(ColorModeContext);
 
-    return <IconButton sx={{ml: 1}} onClick={colorMode.toggleColorMode} color="inherit" size={"medium"}>
+    return <IconButton sx={{ml: 1, mt: -0.09}} onClick={colorMode.toggleColorMode} color="primary" size={"small"}>
         {theme.palette.mode === 'dark' ? <Brightness4Icon/> : <Brightness7Icon/>}
     </IconButton>
 }
