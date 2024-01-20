@@ -47,10 +47,11 @@
           installPhase = ''
             mkdir $out
             mkdir $out/bin
-            cp $src $out
+            mkdir $out/etc/
+            cp $src/* $out/etc
             cp -r ${packages.static}/srv $out
             echo "#! /bin/env sh" >> $out/bin/serve
-            echo "caddy run --config $out/Caddyfile" >> $out/bin/serve
+            echo "caddy run --config $out/etc/Caddyfile" >> $out/bin/serve
 
             chmod +x $out/bin/serve
 

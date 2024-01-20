@@ -4,7 +4,6 @@ import * as React from 'react';
 import {Fragment} from 'react';
 import Box from '@mui/material/Box';
 import Link, {LinkProps} from '@mui/material/Link';
-import {ListItemProps} from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import {
@@ -18,17 +17,11 @@ import {
 } from 'react-router-dom';
 import {About} from "./components/pages/about";
 import {Grid} from "@mui/material";
-import {BlogEntriesList, BlogEntry, markdownBlogEntries} from "./components/pages/blog";
-import Projects from "./components/pages/projects";
 import {css} from "@emotion/react";
 import {ChangeColorButton} from "./components/colorToggle";
 import {findFromId} from "./components/projectPanels";
-import {ProjPage} from "./components/pages/projPage";
+import markdownBlogEntries from "./components/const/markdownBlogEntries";
 
-interface ListItemLinkProps extends ListItemProps {
-    to: string;
-    open?: boolean;
-}
 
 const breadcrumbNameMap: { [key: string]: string } = {
     '/projects': 'Projects',
@@ -104,7 +97,7 @@ const blogChildren = markdownBlogEntries.map(e => {
         return {
             path: "blog/" + e.ref,
             async lazy() {
-                let {BlogEntry} = await import("./components/pages/blog");
+                let {BlogEntry} = await import("./components/pages/blogPage");
                 return {element: <BlogEntry file={e.file}/>};
             },
             loader: loader,
@@ -124,8 +117,20 @@ const projectLoader: (args: { params: Params<string> }) => Promise<unknown> = as
 
 let mainRoutes = [
     {path: "*", element: <About/>},
-    {path: "blog", element: <BlogEntriesList/>},
-    {path: "projects", element: <Projects/>},
+    {
+        path: "projects",
+        lazy: async () => {
+            let {Projects} = await import("./components/pages/projects");
+            return {Component: Projects};
+        }
+    },
+    {
+        path: "blog",
+        lazy: async () => {
+            let {BlogEntriesList} = await import("./components/pages/blog");
+            return {Component: BlogEntriesList};
+        }
+    },
     {
         path: "projects/:projectId",
         async lazy() {

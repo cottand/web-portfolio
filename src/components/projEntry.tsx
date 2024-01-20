@@ -28,17 +28,15 @@ const ProjEntry: FC<EntryProps> = (props) => {
             className={styles.subheading}>{props.summary}</Typography>
     }
 
-
-    const ref = useRef<HTMLDivElement>(null)
     return props.aligned ? <>
-                <Heading/>
-                <Subheading/>
-            </>
+            <Heading/>
+            <Subheading/>
+        </>
         :
-            <div css={css`vertical-align: middle`}>
-                <Heading/>
-                <Subheading/>
-            </div>
+        <div css={css`vertical-align: middle`}>
+            <Heading/>
+            <Subheading/>
+        </div>
 
 }
 

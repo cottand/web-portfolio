@@ -6,11 +6,10 @@ import {PanelEntry, PanelName, panels} from "../projectPanels";
 import {Spinner} from "../spinner";
 import {List, ListItemButton, ListItemText, Typography} from "@mui/material";
 import {Link as RouterLink} from "react-router-dom";
+import ProjEntry from "../projEntry";
 
 
-const ProjEntry = lazy(() => import("../projEntry"))
-
-export default function Projects() {
+export function Projects() {
     const [aligned, setAligend] = useState(window.innerWidth > 600);
     const updater = () => setAligend(window.innerWidth > 600);
     useEffect(() => {

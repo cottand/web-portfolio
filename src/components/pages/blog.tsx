@@ -1,47 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import React, {FC, lazy, Suspense} from "react";
-import {Card, List, ListItem, ListItemButton, ListItemText, Typography} from "@mui/material";
-import {Link as RouterLink, Route, Routes, useNavigate} from "react-router-dom";
+import React, {FC} from "react";
+import {List, ListItemButton, ListItemText, Typography} from "@mui/material";
+import {Link as RouterLink} from "react-router-dom";
 // import {MdRenderer} from "../markdown/MdFile";
-import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md"
-import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md"
-import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleDocker.md"
-import nixShellHash from "../../assets/markdown/blog/NixShellFlakeScriptingForHashLanguages.md"
-import {css} from "@emotion/react";
-import {MdRenderer} from "../markdown/MdFile";
+import markdownBlogEntries from "../const/markdownBlogEntries";
 
-export const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
-    {
-        title: "Scripting via the Nix shell with hash languages",
-        ref: "NixShellFlakeScriptingForHashLanguages",
-        date: "23/11/2023",
-        file: nixShellHash,
-    },
-    {
-        title: "Reproducible and Cacheable builds with Gradle and Docker",
-        ref: "ReproducibleCacheableGradleDocker",
-        date: "25/08/2023",
-        file: gradleRepro,
-    },
-    {
-        title: "Running both ad-blocking and poor man's DNS service-discovery for self-hosted Nomad",
-        ref: "DNSServiceDiscoveryAdblockingNomad",
-        date: "10/08/2023",
-        file: nomadDnsAdblock,
-    },
-    {
-        title: "Nomad + NixOS",
-        ref: "nomadNixos",
-        date: "22/05/2023",
-        file: nomadNixos,
-    }
-]
-
-// noinspection HtmlUnknownAttribute
-export const BlogEntry: FC<{ file: string }> = (props) =>
-    <div css={css`padding: 20px`}>
-        <MdRenderer foldCode={true} extendGhm={true} makeAnchors={true} {...props}/>
-    </div>
 
 export const BlogEntriesList: FC = () =>
     <List component={"nav"}>
