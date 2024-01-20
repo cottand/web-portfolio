@@ -1,0 +1,43 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f855e6bc.css",
+    "main.js": "/static/js/main.f8b4b4d7.js",
+    "static/js/788.0a47ecb4.chunk.js": "/static/js/788.0a47ecb4.chunk.js",
+    "static/css/632.2a84a92b.chunk.css": "/static/css/632.2a84a92b.chunk.css",
+    "static/js/632.66e2f17b.chunk.js": "/static/js/632.66e2f17b.chunk.js",
+    "static/js/209.c62a3c19.chunk.js": "/static/js/209.c62a3c19.chunk.js",
+    "static/js/30.9df18a8b.chunk.js": "/static/js/30.9df18a8b.chunk.js",
+    "static/js/787.170e9299.chunk.js": "/static/js/787.170e9299.chunk.js",
+    "static/js/806.ae9ca209.chunk.js": "/static/js/806.ae9ca209.chunk.js",
+    "static/media/ReproducibleCacheableGradleDocker.md": "/static/media/ReproducibleCacheableGradleDocker.0d57a8b94071ecd5c47f.md",
+    "static/media/NixShellFlakeScriptingForHashLanguages.md": "/static/media/NixShellFlakeScriptingForHashLanguages.82ddad9a8bc22d0ff575.md",
+    "static/media/DNSServiceDiscoveryAdblockingNomad.md": "/static/media/DNSServiceDiscoveryAdblockingNomad.7a058caf94c47642b998.md",
+    "static/media/NomdAndNixOS.md": "/static/media/NomdAndNixOS.34abf70aca9ad9b2d0dc.md",
+    "static/media/Confis.md": "/static/media/Confis.8784472096a8c4f16a90.md",
+    "static/media/Ivann.md": "/static/media/Ivann.ac676210f8f392e52cff.md",
+    "static/media/keep213.md": "/static/media/keep213.8335aec3d90099558406.md",
+    "static/media/Selfhosted.md": "/static/media/Selfhosted.3eda5f378c22c692baa8.md",
+    "static/media/Wacc.md": "/static/media/Wacc.2d385c28f533208f449f.md",
+    "static/media/Leng.md": "/static/media/Leng.ab2aebd6fe480763ed71.md",
+    "index.html": "/index.html",
+    "static/media/DJStreamr.md": "/static/media/DJStreamr.b61e9c22b38e5ec3bcf6.md",
+    "static/media/Paxos.md": "/static/media/Paxos.f1c960e9399fccc64c9c.md",
+    "static/media/ichack19.md": "/static/media/ichack19.f0dac798d1ce430a2cca.md",
+    "static/media/website.md": "/static/media/website.826d2ae892af933e36bd.md",
+    "static/media/Checkm8.md": "/static/media/Checkm8.39e2d3b8d3b22904f0b7.md",
+    "static/media/Pintos.md": "/static/media/Pintos.77c1a0b437dbeddaab37.md",
+    "main.f855e6bc.css.map": "/static/css/main.f855e6bc.css.map",
+    "main.f8b4b4d7.js.map": "/static/js/main.f8b4b4d7.js.map",
+    "788.0a47ecb4.chunk.js.map": "/static/js/788.0a47ecb4.chunk.js.map",
+    "632.2a84a92b.chunk.css.map": "/static/css/632.2a84a92b.chunk.css.map",
+    "632.66e2f17b.chunk.js.map": "/static/js/632.66e2f17b.chunk.js.map",
+    "209.c62a3c19.chunk.js.map": "/static/js/209.c62a3c19.chunk.js.map",
+    "30.9df18a8b.chunk.js.map": "/static/js/30.9df18a8b.chunk.js.map",
+    "787.170e9299.chunk.js.map": "/static/js/787.170e9299.chunk.js.map",
+    "806.ae9ca209.chunk.js.map": "/static/js/806.ae9ca209.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.f8b4b4d7.js"
+  ]
+}
