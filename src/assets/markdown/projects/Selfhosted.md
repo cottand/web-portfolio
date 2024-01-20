@@ -5,7 +5,7 @@ I run a personal fleet of a few old computers in my living room which run servic
 - VPN, with adblocking
 - ... and hosts some of the projects you see in this website!
 
-<img src="assets/selfhosted1.png" class="centered border-radius"
+<img src="/assets/selfhosted1.png" class="centered border-radius"
 caption="Screenshot of the Nomad Job page for Grafana"
 />
 

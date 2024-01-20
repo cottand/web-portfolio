@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/styles/markdown.module.css">
 
-[//]: # (<img alt="DJStreamr" height="32px" src="assets/djstreamrLogoBlack.png"/>)
+[//]: # (<img alt="DJStreamr" height="32px" src="/assets/djstreamrLogoBlack.png"/>)
 
 [DJStreamr](https://djstreamr.com) is a collaborative platform for simultaneous, real-time DJ-ing.
 
@@ -8,7 +8,7 @@ The frontend uses **VueJS** and is written in **Kotlin/JS** and **Typescript**, 
 the backend is fully written in **Kotlin/JVM** and is distributed between **AWS Lambda**
 functions and a server.
 
-<img src="assets/djstreamrLancelot_downscaled.jpg" class="centered border-radius" style="width: min(75%, 500px)"/>
+<img src="/assets/djstreamrLancelot_downscaled.jpg" class="centered border-radius" style="width: min(75%, 500px)"/>
 
 
 

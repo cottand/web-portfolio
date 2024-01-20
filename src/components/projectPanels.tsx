@@ -35,15 +35,15 @@ export interface PanelEntry {
     gh?: string
 }
 
-const commonIconProps: { fontSize?: "large" } = { fontSize : "large" };
+const commonIconProps: { fontSize?: "large" } = {fontSize: "large"};
 
-export const findMarkdownFileFromId: (id: string) => string | undefined =
-    (id: string) => panels.find(p => p.id == id)?.markdown
+export const findFromId =
+    (id: string) => panels.find(p => p.id == id)
 
 export const panels: PanelEntry[] = [
     {
         id: "leng",
-        name: "Leng DNS"  ,
+        name: "Leng DNS",
         markdown: leng,
         summary: "DNS proxy server with ad-blocking",
         gh: "cottand/leng",
@@ -51,7 +51,7 @@ export const panels: PanelEntry[] = [
     },
     {
         id: "selfhosted-homelab",
-        name: "Selfhosted Infra"  ,
+        name: "Selfhosted Infra",
         markdown: selfhosted,
         summary: "Home SRE-like infra deployment, on my own hardware",
         gh: "cottand/selfhosted",
@@ -59,7 +59,7 @@ export const panels: PanelEntry[] = [
     },
     {
         id: "confis",
-        name: "Confis"  ,
+        name: "Confis",
         markdown: confis,
         summary: "Framework for specifying and querying legal agreements",
         gh: "cottand/confis",

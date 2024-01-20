@@ -5,4 +5,4 @@ It consists of basic implementations of an ARM emulator and an assembler,
 and of its extension, an autonomous chess player powered by computer vision and SingularityNet's
 AI AlphaZero service.
 
-<img src="assets/checkm8_downscaled.jpeg" style="width: min(95%, 450px)"/>
+<img src="/assets/checkm8_downscaled.jpeg" style="width: min(95%, 450px)"/>

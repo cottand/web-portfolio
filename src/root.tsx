@@ -1,33 +1,28 @@
 /** @jsxImportSource @emotion/react */
 
 import * as React from 'react';
+import {Fragment} from 'react';
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
 import Link, {LinkProps} from '@mui/material/Link';
-import ListItem, {ListItemProps} from '@mui/material/ListItem';
-import Collapse from '@mui/material/Collapse';
-import ListItemText from '@mui/material/ListItemText';
+import {ListItemProps} from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import {
+    createBrowserRouter,
+    defer,
     Link as RouterLink,
-    Route,
-    Routes,
-    MemoryRouter,
-    useLocation, BrowserRouter, createBrowserRouter, RouterProvider, Outlet, defer, Params,
+    Outlet,
+    Params,
+    RouterProvider,
+    useLocation,
 } from 'react-router-dom';
 import {About} from "./components/pages/about";
-import {Grid, ListItemButton} from "@mui/material";
-import {Blog, BlogEntriesList, BlogEntry, markdownBlogEntries} from "./components/pages/blog";
+import {Grid} from "@mui/material";
+import {BlogEntriesList, BlogEntry, markdownBlogEntries} from "./components/pages/blog";
 import Projects from "./components/pages/projects";
 import {css} from "@emotion/react";
 import {ChangeColorButton} from "./components/colorToggle";
-import {Fragment} from "react";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
-import {findMarkdownFileFromId} from "./components/projectPanels";
+import {findFromId} from "./components/projectPanels";
 import {ProjPage} from "./components/pages/projPage";
 
 interface ListItemLinkProps extends ListItemProps {
@@ -73,14 +68,15 @@ const Page = () => {
                     {pathnames.map((value, index) => {
                         const last = index === pathnames.length - 1;
                         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+                        const breadcrumbName = breadcrumbNameMap[to] ?? findFromId(value)?.name ?? "";
 
                         return last ? (
                             <Typography color="text.primary" key={to} {...fontProps}>
-                                {breadcrumbNameMap[to]}
+                                {breadcrumbName}
                             </Typography>
                         ) : (
                             <LinkRouter underline="hover" color="inherit" to={to} key={to} {...fontProps}>
-                                {breadcrumbNameMap[to]}
+                                {breadcrumbName}
                             </LinkRouter>
                         );
                     })}
@@ -100,33 +96,51 @@ const Layout = () => <Fragment>
 
 const blogChildren = markdownBlogEntries.map(e => {
         const loader = async function () {
-                return defer({
-                        content: fetch(e.file).then(r => r.text())
-                    }
-                )
-            }
-        return {path: "blog/" + e.ref, element: <BlogEntry file={e.file}/>, loader: loader};
+            return defer({
+                    content: fetch(e.file).then(r => r.text())
+                }
+            )
+        }
+        return {
+            path: "blog/" + e.ref,
+            async lazy() {
+                let {BlogEntry} = await import("./components/pages/blog");
+                return {element: <BlogEntry file={e.file}/>};
+            },
+            loader: loader,
+        };
     }
 )
 
-const projectLoader: (args: {params: Params<string>}) => Promise<unknown> = async ({ params }) => {
-    const md = findMarkdownFileFromId(params["projectId"] ?? "TODO") ?? "TODO2"
+const projectLoader: (args: { params: Params<string> }) => Promise<unknown> = async ({params}) => {
+    const p = findFromId(params["projectId"] ?? "TODO")
+    const md = p?.markdown ?? "TODO1"
     return defer({
-            content: fetch(md).then(r => r.text())
+            content: fetch(p?.markdown ?? "TODO").then(r => r.text()),
+            gh: p?.gh
         }
     );
 }
 
+let mainRoutes = [
+    {path: "*", element: <About/>},
+    {path: "blog", element: <BlogEntriesList/>},
+    {path: "projects", element: <Projects/>},
+    {
+        path: "projects/:projectId",
+        async lazy() {
+            let {ProjPage} = await import("./components/pages/projPage");
+            return {Component: ProjPage};
+        },
+        // element: <ProjPage/>,
+        loader: projectLoader,
+    },
+];
 const router = createBrowserRouter([
     {
         Component: Layout,
-        children: [
-            {path: "*", element: <About/>},
-            {path: "blog", element: <BlogEntriesList/>},
-            {path: "projects", element: <Projects/>},
-            {path: "projects/:projectId", element: <ProjPage gh={""} markdown={""}/>, loader: projectLoader},
-        ].concat(blogChildren),
+        children: [...mainRoutes, ...blogChildren]
     },
-], { future: { v7_fetcherPersist: true }})
+], {future: {v7_fetcherPersist: true}})
 
 export const Root = () => <RouterProvider router={router}/>

@@ -5,7 +5,7 @@ students' phones through AR.
 
 <img
 caption="The team receiving the prize"
-src="assets/ichackWin.jpeg" class="centered border-radius"
+src="/assets/ichackWin.jpeg" class="centered border-radius"
 style="width: min(100%, 500px)"
 />
 
@@ -16,4 +16,4 @@ part of teaching.
 
 We made the app with **Unity**, so in **C#**.
 
-<img src="assets/ichack.jpeg" class="centered border-radius" style="width: min(90%, 350px)"/>
+<img src="/assets/ichack.jpeg" class="centered border-radius" style="width: min(90%, 350px)"/>

@@ -4,5 +4,6 @@ import {CircularProgress} from "@mui/material";
 import {css} from "@emotion/react";
 
 export const Spinner: FC<{}> = () => <CircularProgress css={css`
-     padding: 50px;
+     margin-left: 50%;
+    margin-right: 50%;
  `}/>

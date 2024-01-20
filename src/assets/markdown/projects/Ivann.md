@@ -3,7 +3,7 @@
 [IVANN](https://icivann.github.io/ivann) is an online visual network builder, written using **Typescript** and **VueJS**
 . It generates Python files that can then be run anywhere in order to train and evaluate models.
 
-<img src="assets/ivannLancelot_downscaled.jpeg" class="centered border-radius" style="width: min(95%, 450px)"/>
+<img src="/assets/ivannLancelot_downscaled.jpeg" class="centered border-radius" style="width: min(95%, 450px)"/>
 
 It is aimed at Machine Learning researchers,
 it looks to abstract away the coding aspect of coming up with a neural network model so
@@ -13,7 +13,7 @@ graph where the layers (or simply components) of the model are nodes which can b
 
 This graph can then be used to perform static analysis to catch mistakes and provide
 early feedback to the user (much like an IDE would!).
-<img src="assets/ivannLinearLayersCheck.jpeg" class="centered border-radius" style="width: min(99%, 450px)"
+<img src="/assets/ivannLinearLayersCheck.jpeg" class="centered border-radius" style="width: min(99%, 450px)"
 caption="Visual feedback of a check for matching matrix dimensions"
 />
 In order to cater to all niches, Ivann supports _custom nodes_, which means the user can make

@@ -8,8 +8,7 @@ import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblo
 import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleDocker.md"
 import nixShellHash from "../../assets/markdown/blog/NixShellFlakeScriptingForHashLanguages.md"
 import {css} from "@emotion/react";
-import {Spinner} from "../spinner";
-import MdRenderer from "../markdown/MdFile";
+import {MdRenderer} from "../markdown/MdFile";
 
 export const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
     {
@@ -37,23 +36,6 @@ export const markdownBlogEntries: { title: string, date: string, ref: string, fi
         file: nomadNixos,
     }
 ]
-
-export const Blog: FC = () => (
-    <Card css={css`min-height: 400px`} elevation={0}>
-        <Routes>
-            {markdownBlogEntries.map(e =>
-                <Route path={e.ref} key={e.ref} element={<BlogEntry file={e.file}/>}/>
-            )}
-            {/*// this one is for backwards compatibility*/}
-            <Route path="nomad"
-                element={<BlogEntry file={nomadNixos}/>}
-            />
-            <Route path="*"
-                element={<BlogEntriesList/>}
-            />
-        </Routes>
-    </Card>
-)
 
 // noinspection HtmlUnknownAttribute
 export const BlogEntry: FC<{ file: string }> = (props) =>

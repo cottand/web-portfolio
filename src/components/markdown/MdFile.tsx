@@ -35,6 +35,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {PicWithCaption} from "./PicWithCaption";
 import {Await, defer, useLoaderData, useLocation} from "react-router-dom";
 import {Spinner} from "../spinner";
+import ReactMarkdown from "react-markdown";
 
 const encode = (s: string) => encodeURI(s.replaceAll(" ", ""))
 
@@ -61,11 +62,8 @@ const HWithAnchor: FC<{ children: ReactElement, href: ReactNode | undefined }> =
         : props.children
 }
 
-const ReactMarkdown = lazy(() => import("react-markdown"))
-
 
 export const MdRenderer: FC<{
-    file: string,
     foldCode: boolean,
     extendGhm?: boolean,
     makeAnchors?: boolean,
@@ -235,4 +233,3 @@ const CodeAccordionSummary = styled((props: AccordionSummaryProps) =>
         // marginLeft: theme.spacing(1),
     },
 }));
-export default MdRenderer

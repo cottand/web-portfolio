@@ -6,8 +6,6 @@ import styles from "../portfolio.module.css";
 import {css} from "@emotion/react";
 import {PanelEntry, PanelName} from "./projectPanels";
 
-const MdRenderer = lazy(() => import("./markdown/MdFile"))
-
 type EntryProps = PanelEntry & {
     aligned: boolean
 }

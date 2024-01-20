@@ -1,17 +1,22 @@
 /** @jsxImportSource @emotion/react */
-import React, {FC, Fragment} from "react";
+import React, {FC} from "react";
 import {css} from "@emotion/react";
-import {Link, Paper, Typography, useTheme} from "@mui/material";
+import {Card, CardContent, Link, Paper, Typography, useTheme} from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import MdRenderer from "../markdown/MdFile";
+import {MdRenderer} from "../markdown/MdFile";
+import {useLoaderData, useMatch} from "react-router-dom";
 
-export const ProjPage: FC<{gh: string, markdown: string}> = (props) =>  <Paper>
-                <div className={css`width: 100%`.name}>
-                    {props.gh === undefined ? (<div/>) : (<GithubBanner repo={props.gh}/>)}
-                    {props.gh === undefined ? (<div/>) : (<br/>)}
-                </div>
-                <MdRenderer foldCode={false} file={props.markdown}/>
-</Paper>
+export const ProjPage: FC = () => {
+    // @ts-ignore
+    const gh = useLoaderData().gh
+    return <CardContent>
+            <div className={css`width: 100%`.name}>
+                {gh === undefined ? (<div/>) : (<GithubBanner repo={gh}/>)}
+                {gh === undefined ? (<div/>) : (<br/>)}
+            </div>
+            <MdRenderer foldCode={false}/>
+        </CardContent>
+}
 
 function GithubBanner(props: { repo: string }) {
     const svgWidth = "32px"
@@ -21,7 +26,8 @@ function GithubBanner(props: { repo: string }) {
             css={css`text-align: center;
                 position: relative;
                 width: fit-content;
-                height: fit-content`}
+                height: fit-content;
+            `}
         >
 
             <Link href={`https://github.com/${props.repo}`}>
