@@ -30,6 +30,7 @@
             cp Caddyfile $out/
           '';
         };
+	packages.default = packages.static;
 
         packages.serve = pkgs.stdenv.mkDerivation {
           pname = "serve";

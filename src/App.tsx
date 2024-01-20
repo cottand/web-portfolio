@@ -4,7 +4,7 @@ import './App.css';
 import {css} from "@emotion/react";
 import {BrowserRouter, useNavigate, useRouteError} from "react-router-dom";
 import {Breadcrumbs, Link, Typography, useTheme} from "@mui/material";
-import RouterBreadcrumbs     from './crumbs';
+import {Root} from './root';
 
 const App: FC = () => {
     const theme = useTheme()
@@ -33,7 +33,7 @@ const App: FC = () => {
             align-self: center;
             width: min(900px, 100%);
         `}>
-                <RouterBreadcrumbs/>
+                <Root/>
         </div>
     </div>;
 };

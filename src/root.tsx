@@ -16,11 +16,11 @@ import {
     Route,
     Routes,
     MemoryRouter,
-    useLocation, BrowserRouter,
+    useLocation, BrowserRouter, createBrowserRouter, RouterProvider, Outlet,
 } from 'react-router-dom';
 import {About} from "./components/pages/about";
 import {Grid, ListItemButton} from "@mui/material";
-import {Blog} from "./components/pages/blog";
+import {Blog, BlogEntriesList, BlogEntry, markdownBlogEntries} from "./components/pages/blog";
 import Projects from "./components/pages/projects";
 import {css} from "@emotion/react";
 import {ChangeColorButton} from "./components/colorToggle";
@@ -35,25 +35,6 @@ const breadcrumbNameMap: { [key: string]: string } = {
     '/projects': 'Projects',
     '/blog': 'Blog',
 };
-
-function ListItemLink(props: ListItemLinkProps) {
-    const {to, open, ...other} = props;
-    const primary = breadcrumbNameMap[to];
-
-    let icon = null;
-    if (open != null) {
-        icon = open ? <ExpandLess/> : <ExpandMore/>;
-    }
-
-    return (
-        <li>
-            <ListItemButton component={RouterLink as any} to={to} {...other}>
-                <ListItemText primary={primary}/>
-                {icon}
-            </ListItemButton>
-        </li>
-    );
-}
 
 interface LinkRouterProps extends LinkProps {
     to: string;
@@ -73,13 +54,10 @@ const Page = () => {
               alignItems={"left"}
               justifySelf={"center"}
               direction={"row"}
-              sx={{m:1}}
+              sx={{m: 1}}
         >
-            <Grid item xs={1}>
+            <Grid item xs={2}>
                 <ChangeColorButton/>
-            </Grid>
-            <Grid item xs={1}>
-                {/*<ChangeColorButton/>*/}
             </Grid>
             <Grid item xs={10}>
                 <Breadcrumbs aria-label="breadcrumb" css={css`padding-bottom: 12px`}>
@@ -108,25 +86,28 @@ const Page = () => {
     );
 };
 
-export default function RouterBreadcrumbs() {
-    const [open, setOpen] = React.useState(true);
 
-    const handleClick = () => {
-        setOpen((prevOpen) => !prevOpen);
-    };
+const Layout = () => <Fragment>
+    <Box sx={{display: 'flex', flexDirection: 'column', width: 360}}>
+        <Page/>
+    </Box>
+    <Outlet/>
+</Fragment>
 
-    return (
-        <BrowserRouter>
-            <Box sx={{display: 'flex', flexDirection: 'column', width: 360}}>
-                <Routes>
-                    <Route path="*" element={<Page/>}/>
-                </Routes>
-            </Box>
-            <Routes>
-                <Route path={"*"} element={<About/>}/>
-                <Route path={"blog/*"} element={<Blog/>}/>
-                <Route path={"projects/*"} element={<Projects/>}/>
-            </Routes>
-        </BrowserRouter>
-    );
-}
+const blogChildren = markdownBlogEntries.map(e => {
+        return {path: "blog/" + e.ref, element: <BlogEntry file={e.file}/>};
+    }
+)
+
+const router = createBrowserRouter([
+    {
+        Component: Layout,
+        children: [
+            {path: "*", element: <About/>},
+            {path: "blog", element: <BlogEntriesList/>},
+            {path: "projects/*", element: <Projects/>},
+        ].concat(blogChildren),
+    },
+], { future: { v7_fetcherPersist: true }})
+
+export const Root = () => <RouterProvider router={router}/>

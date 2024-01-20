@@ -29,7 +29,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {PicWithCaption} from "./PicWithCaption";
-import {useLocation} from "react-router-dom";
+import {Await, defer, useLoaderData, useLocation} from "react-router-dom";
 import {Spinner} from "../spinner";
 
 const encode = (s: string) => encodeURI(s.replaceAll(" ", ""))
@@ -54,10 +54,16 @@ const HWithAnchor: FC<{ children: ReactElement, href: ReactNode | undefined }> =
             ref={ref} href={`#${href}`} underline={"hover"} color={(t) => t.palette.text.primary}>
             {props.children}
         </Link>
-        :  props.children
+        : props.children
 }
 
 const ReactMarkdown = lazy(() => import("react-markdown"))
+
+async function loadFile(file: string) {
+    const fetchedPromise = fetch(file).then(r => r.text())
+
+    return defer({content: fetchedPromise})
+}
 
 export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boolean, makeAnchors?: boolean }> =
     ({
@@ -77,9 +83,13 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
             req.then(setContent);
         }, [makemSourceRequest])
 
-        return <Suspense>{
-            useMemo(() => (
-                content === "" ? <Spinner/> :
+        const data = useLoaderData()
+
+        return <Suspense fallback={<Spinner/>}>
+            <Await resolve={
+                // @ts-ignore
+                data.content
+            }>{ (content) =>
                 <ReactMarkdown
                     css={css`
                         font-size: 17px;
@@ -111,13 +121,16 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                         // h1: (props) => <h1 {...props}></h1>,
                         // @ts-ignore
                         // eslint-disable-next-line
-                        h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h2 {...props}/>
+                        h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                            <h2 {...props}/>
                         </HWithAnchor>,
                         // eslint-disable-next-line
-                        h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h3 {...props}/>
+                        h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                            <h3 {...props}/>
                         </HWithAnchor>,
                         // eslint-disable-next-line
-                        h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}><h4 {...props}/>
+                        h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                            <h4 {...props}/>
                         </HWithAnchor>,
                         code: ({node, inline, className, children, ...props}) => {
                             const match = /language-(\w+)/.exec(className || '')
@@ -148,11 +161,10 @@ export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boole
                     rehypePlugins={extendGhm ? [rehypeRaw, remarkGfm] : [rehypeRaw]}
                     children={content}
                 />
-
-            ), [content, foldCode, extendGhm, makeAnchors])
+            }
+            </Await>
+            </Suspense>
         }
-        </Suspense>
-    }
 
 const FoldingHighlighter: FC<{
     filename?: string,
@@ -173,8 +185,8 @@ const FoldingHighlighter: FC<{
             expanded={expanded}
             onChange={() => setExpanded(!expanded)}
             css={css`
-              border: none;
-              background-color: transparent;
+                border: none;
+                background-color: transparent;
             `}
         >
             <CodeAccordionSummary
@@ -186,8 +198,8 @@ const FoldingHighlighter: FC<{
                             fontFamily={'Fira Code'}>{props.filename ? props.filename : "code block"}</Typography>
             </CodeAccordionSummary>
             <AccordionDetails css={css`
-              padding: 6px 0 0;
-              height: min-content`}>
+                padding: 6px 0 0;
+                height: min-content`}>
                 <Card elevation={3} sx={{bgcolor: cardBg}}>
                     <CardContent>
                         <SyntaxHighlighter {...props.highlighting}/>

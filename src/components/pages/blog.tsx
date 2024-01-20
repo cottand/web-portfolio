@@ -9,8 +9,9 @@ import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleD
 import nixShellHash from "../../assets/markdown/blog/NixShellFlakeScriptingForHashLanguages.md"
 import {css} from "@emotion/react";
 import {Spinner} from "../spinner";
+import MdRenderer from "../markdown/MdFile";
 
-const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+export const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
     {
         title: "Scripting via the Nix shell with hash languages",
         ref: "NixShellFlakeScriptingForHashLanguages",
@@ -37,10 +38,8 @@ const markdownBlogEntries: { title: string, date: string, ref: string, file: str
     }
 ]
 
-const MdRenderer = lazy(() => import("../markdown/MdFile"))
 export const Blog: FC = () => (
     <Card css={css`min-height: 400px`} elevation={0}>
-        <Suspense fallback={<Spinner/>}>
         <Routes>
             {markdownBlogEntries.map(e =>
                 <Route path={e.ref} key={e.ref} element={<BlogEntry file={e.file}/>}/>
@@ -53,12 +52,11 @@ export const Blog: FC = () => (
                 element={<BlogEntriesList/>}
             />
         </Routes>
-        </Suspense>
     </Card>
 )
 
 // noinspection HtmlUnknownAttribute
-const BlogEntry: FC<{ file: string }> = (props) =>
+export const BlogEntry: FC<{ file: string }> = (props) =>
     <div css={css`padding: 20px`}>
         <MdRenderer foldCode={true} extendGhm={true} makeAnchors={true} {...props}/>
     </div>

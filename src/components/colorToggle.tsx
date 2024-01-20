@@ -1,5 +1,5 @@
 import {createContext, FC, ReactNode, useContext, useMemo, useState} from "react";
-import {createTheme, IconButton, ThemeProvider, useMediaQuery, useTheme} from "@mui/material";
+import {createTheme, Fade, IconButton, ThemeProvider, useMediaQuery, useTheme} from "@mui/material";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
@@ -13,8 +13,9 @@ export const ChangeColorButton: FC = () => {
     const theme = useTheme();
     const colorMode = useContext(ColorModeContext);
 
+    let weAreDark = theme.palette.mode === 'dark';
     return <IconButton sx={{ml: 1, mt: -0.09}} onClick={colorMode.toggleColorMode} color="primary" size={"small"}>
-        {theme.palette.mode === 'dark' ? <Brightness4Icon/> : <Brightness7Icon/>}
+        {weAreDark ? <Brightness4Icon/> : <Brightness7Icon/>}
     </IconButton>
 }
 
@@ -47,8 +48,7 @@ export const ToggleColorMode = (props: { children: ReactNode }) => {
             const shadows = Array.apply(null, Array(25)).map((_, i) => [`${i}`, "none"])
             commonOptions.shadows = Object.fromEntries(shadows)
             const specificOptions = mode === 'dark' ?
-                {
-                } : {
+                {} : {
                     palette: {
                         primary: {
                             main: "#B24F31",// orange-y ish
