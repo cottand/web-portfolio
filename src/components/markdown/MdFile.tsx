@@ -23,9 +23,13 @@ import {
     AccordionDetails,
     AccordionProps,
     AccordionSummary,
-    AccordionSummaryProps, Card, CardContent, Link,
+    AccordionSummaryProps,
+    Card,
+    CardContent,
+    Link,
     styled,
-    Typography, useTheme
+    Typography,
+    useTheme
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {PicWithCaption} from "./PicWithCaption";
@@ -59,112 +63,97 @@ const HWithAnchor: FC<{ children: ReactElement, href: ReactNode | undefined }> =
 
 const ReactMarkdown = lazy(() => import("react-markdown"))
 
-async function loadFile(file: string) {
-    const fetchedPromise = fetch(file).then(r => r.text())
 
-    return defer({content: fetchedPromise})
-}
-
-export const MdRenderer: FC<{ file: string, foldCode: boolean, extendGhm?: boolean, makeAnchors?: boolean }> =
+export const MdRenderer: FC<{
+    file: string,
+    foldCode: boolean,
+    extendGhm?: boolean,
+    makeAnchors?: boolean,
+}> =
     ({
          foldCode,
-         file,
          extendGhm,
          makeAnchors,
      }) => {
-        const makemSourceRequest = useCallback(
-            () => fetch(file).then((r) => r.text()),
-            [file]
-        )
-        const [content, setContent] = useState<string>("")
-        useEffect(() => {
-            const req = makemSourceRequest();
-            if (!req) return
-            req.then(setContent);
-        }, [makemSourceRequest])
-
-        const data = useLoaderData()
+        // @ts-ignore
+        const promise = useLoaderData().content
 
         return <Suspense fallback={<Spinner/>}>
-            <Await resolve={
-                // @ts-ignore
-                data.content
-            }>{ (content) =>
-                <ReactMarkdown
-                    css={css`
-                        font-size: 17px;
-                        font-family: Roboto, serif;
+            <Await resolve={promise}>{(content) => useMemo(() => <ReactMarkdown
+                css={css`
+                    font-size: 17px;
+                    font-family: Roboto, serif;
 
-                        h1 {
-                            font-weight: normal;
-                        }
+                    h1 {
+                        font-weight: normal;
+                    }
 
-                        h2 {
-                            font-weight: normal;
-                        }
+                    h2 {
+                        font-weight: normal;
+                    }
 
-                        h3 {
-                            font-weight: normal;
-                        }
+                    h3 {
+                        font-weight: normal;
+                    }
 
-                        h4 {
-                            font-weight: normal;
-                        }
+                    h4 {
+                        font-weight: normal;
+                    }
 
-                        strong {
-                            font-weight: 500;
-                        }
-                    `}
-                    components={{
-                        a: Util.mdAsMuiLink,
-                        img: (props) => <PicWithCaption {...props}/>,
-                        // h1: (props) => <h1 {...props}></h1>,
-                        // @ts-ignore
-                        // eslint-disable-next-line
-                        h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
-                            <h2 {...props}/>
-                        </HWithAnchor>,
-                        // eslint-disable-next-line
-                        h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
-                            <h3 {...props}/>
-                        </HWithAnchor>,
-                        // eslint-disable-next-line
-                        h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
-                            <h4 {...props}/>
-                        </HWithAnchor>,
-                        code: ({node, inline, className, children, ...props}) => {
-                            const match = /language-(\w+)/.exec(className || '')
-                            const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
-                            const hiddenFilenameRegex = /# hiddenfile: (.+) #\n/
-                            const hiddenFilenameMatch = hiddenFilenameRegex.exec(String(children) || '')
-                            return !inline && match ? (
-                                <FoldingHighlighter
-                                    foldCode={foldCode}
-                                    highlighting={{
-                                        children: [String(children).replace(/\n$/, '').replace(hiddenFilenameRegex, "")],
-                                        css: css`font-size: 14px`,
-                                        language: match[1],
-                                        PreTag: "div",
-                                        style: {...atomDark, ...{"pre[class*=\"language-\"]": {background: "transparent"}}},
-                                    }}
-                                    filename={filenameMatch ? filenameMatch[1] : (hiddenFilenameMatch ? hiddenFilenameMatch[1] : undefined)}
-                                    // @ts-ignore
-                                    {...props}
-                                />
-                            ) : (
-                                <code className={className} {...props}>
-                                    {children}
-                                </code>
-                            )
-                        }
-                    }}
-                    rehypePlugins={extendGhm ? [rehypeRaw, remarkGfm] : [rehypeRaw]}
-                    children={content}
-                />
+                    strong {
+                        font-weight: 500;
+                    }
+                `}
+                components={{
+                    a: Util.mdAsMuiLink,
+                    img: (props) => <PicWithCaption {...props}/>,
+                    // h1: (props) => <h1 {...props}></h1>,
+                    // @ts-ignore
+                    // eslint-disable-next-line
+                    h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                        <h2 {...props}/>
+                    </HWithAnchor>,
+                    // eslint-disable-next-line
+                    h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                        <h3 {...props}/>
+                    </HWithAnchor>,
+                    // eslint-disable-next-line
+                    h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                        <h4 {...props}/>
+                    </HWithAnchor>,
+                    code: ({node, inline, className, children, ...props}) => {
+                        const match = /language-(\w+)/.exec(className || '')
+                        const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
+                        const hiddenFilenameRegex = /# hiddenfile: (.+) #\n/
+                        const hiddenFilenameMatch = hiddenFilenameRegex.exec(String(children) || '')
+                        return !inline && match ? (
+                            <FoldingHighlighter
+                                foldCode={foldCode}
+                                highlighting={{
+                                    children: [String(children).replace(/\n$/, '').replace(hiddenFilenameRegex, "")],
+                                    css: css`font-size: 14px`,
+                                    language: match[1],
+                                    PreTag: "div",
+                                    style: {...atomDark, ...{"pre[class*=\"language-\"]": {background: "transparent"}}},
+                                }}
+                                filename={filenameMatch ? filenameMatch[1] : (hiddenFilenameMatch ? hiddenFilenameMatch[1] : undefined)}
+                                // @ts-ignore
+                                {...props}
+                            />
+                        ) : (
+                            <code className={className} {...props}>
+                                {children}
+                            </code>
+                        )
+                    }
+                }}
+                rehypePlugins={extendGhm ? [rehypeRaw, remarkGfm] : [rehypeRaw]}
+                children={content}
+            />, [content, makeAnchors, foldCode, extendGhm])
             }
             </Await>
-            </Suspense>
-        }
+        </Suspense>
+    }
 
 const FoldingHighlighter: FC<{
     filename?: string,

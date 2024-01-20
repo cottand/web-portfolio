@@ -27,6 +27,7 @@ import AlbumIcon from '@mui/icons-material/Album';
 export type PanelName = string
 
 export interface PanelEntry {
+    id: string,
     name: PanelName,
     markdown: string,
     summary: string,
@@ -36,8 +37,12 @@ export interface PanelEntry {
 
 const commonIconProps: { fontSize?: "large" } = { fontSize : "large" };
 
+export const findMarkdownFileFromId: (id: string) => string | undefined =
+    (id: string) => panels.find(p => p.id == id)?.markdown
+
 export const panels: PanelEntry[] = [
     {
+        id: "leng",
         name: "Leng DNS"  ,
         markdown: leng,
         summary: "DNS proxy server with ad-blocking",
@@ -45,6 +50,7 @@ export const panels: PanelEntry[] = [
         icon: <DynamicFormIcon {...commonIconProps} />
     },
     {
+        id: "selfhosted-homelab",
         name: "Selfhosted Infra"  ,
         markdown: selfhosted,
         summary: "Home SRE-like infra deployment, on my own hardware",
@@ -52,6 +58,7 @@ export const panels: PanelEntry[] = [
         icon: <StorageIcon {...commonIconProps} />
     },
     {
+        id: "confis",
         name: "Confis"  ,
         markdown: confis,
         summary: "Framework for specifying and querying legal agreements",
@@ -59,6 +66,7 @@ export const panels: PanelEntry[] = [
         icon: <Balance {...commonIconProps} />
     },
     {
+        id: "djstreamr",
         name: "DJStreamr",
         markdown: djStreamr,
         summary: "Full-stack collaborative live DJ software",
@@ -66,6 +74,7 @@ export const panels: PanelEntry[] = [
         // <img src={djStreamrLogo} height={24} alt={"DJStreamr"}/>
     },
     {
+        id: "ivann",
         name: "Ivann",
         markdown: ivann,
         summary: "Web visual neural network builder",
@@ -73,6 +82,7 @@ export const panels: PanelEntry[] = [
         icon: <ShareOutlined {...commonIconProps} />,
     },
     {
+        id: "wacc",
         name: "WACC",
         markdown: wacc,
         summary: "Multiplatform compiler of a small language for ARM and the JVM",
@@ -80,6 +90,7 @@ export const panels: PanelEntry[] = [
         icon: <DataObjectIcon {...commonIconProps} />,
     },
     {
+        id: "paxos",
         name: "Paxos",
         markdown: paxos,
         summary: "An implementation of the Multi-Paxos consensus algorithm",
@@ -87,6 +98,7 @@ export const panels: PanelEntry[] = [
         icon: <Handshake {...commonIconProps} />,
     },
     {
+        id: "kotlinKeep213",
         name: "KEEP 213",
         markdown: keep,
         summary: "Pattern matching proposal for the Kotlin language",
@@ -94,6 +106,7 @@ export const panels: PanelEntry[] = [
         icon: <Code {...commonIconProps} />,
     },
     {
+        id: "icHack19",
         name: "ICHack 19",
         markdown: ichack,
         summary: "Hackathon project on AR-assisted teaching",
@@ -101,6 +114,7 @@ export const panels: PanelEntry[] = [
         icon: <QrCodeScannerIcon {...commonIconProps} />,
     },
     {
+        id: "webPortfolio",
         name: "This website",
         markdown: web,
         summary: "Made with React",
@@ -108,6 +122,7 @@ export const panels: PanelEntry[] = [
         icon: <WebIcon {...commonIconProps} />,
     },
     {
+        id: "pintOS",
         name: "PintOS",
         markdown: pintos,
         summary: "UNIX-like pint-sized OS",
@@ -115,6 +130,7 @@ export const panels: PanelEntry[] = [
         icon: <SportsBarIcon {...commonIconProps} />,
     },
     {
+        id: "checkm8",
         name: "Checkm8",
         markdown: checkm8,
         summary: "Chess player through computer vision and smart contracts",

@@ -16,7 +16,7 @@ import {
     Route,
     Routes,
     MemoryRouter,
-    useLocation, BrowserRouter, createBrowserRouter, RouterProvider, Outlet,
+    useLocation, BrowserRouter, createBrowserRouter, RouterProvider, Outlet, defer, Params,
 } from 'react-router-dom';
 import {About} from "./components/pages/about";
 import {Grid, ListItemButton} from "@mui/material";
@@ -25,6 +25,10 @@ import Projects from "./components/pages/projects";
 import {css} from "@emotion/react";
 import {ChangeColorButton} from "./components/colorToggle";
 import {Fragment} from "react";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
+import {findMarkdownFileFromId} from "./components/projectPanels";
+import {ProjPage} from "./components/pages/projPage";
 
 interface ListItemLinkProps extends ListItemProps {
     to: string;
@@ -95,9 +99,23 @@ const Layout = () => <Fragment>
 </Fragment>
 
 const blogChildren = markdownBlogEntries.map(e => {
-        return {path: "blog/" + e.ref, element: <BlogEntry file={e.file}/>};
+        const loader = async function () {
+                return defer({
+                        content: fetch(e.file).then(r => r.text())
+                    }
+                )
+            }
+        return {path: "blog/" + e.ref, element: <BlogEntry file={e.file}/>, loader: loader};
     }
 )
+
+const projectLoader: (args: {params: Params<string>}) => Promise<unknown> = async ({ params }) => {
+    const md = findMarkdownFileFromId(params["projectId"] ?? "TODO") ?? "TODO2"
+    return defer({
+            content: fetch(md).then(r => r.text())
+        }
+    );
+}
 
 const router = createBrowserRouter([
     {
@@ -105,7 +123,8 @@ const router = createBrowserRouter([
         children: [
             {path: "*", element: <About/>},
             {path: "blog", element: <BlogEntriesList/>},
-            {path: "projects/*", element: <Projects/>},
+            {path: "projects", element: <Projects/>},
+            {path: "projects/:projectId", element: <ProjPage gh={""} markdown={""}/>, loader: projectLoader},
         ].concat(blogChildren),
     },
 ], { future: { v7_fetcherPersist: true }})
