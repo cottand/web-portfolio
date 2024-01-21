@@ -6,7 +6,7 @@ import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md";
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
     {
-        title: "Multi-arch OCI Images With Nix on GitHub Actions",
+        title: "Multi-arch Docker Images With Nix on GitHub Actions",
         ref: "MultiArchNixDockerImages",
         date: "20/01/2024",
         file: multiArchNix,
