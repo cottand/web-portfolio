@@ -12,13 +12,6 @@ env:
   REGISTRY_IMAGE: "ghcr.io/cottand/web-portfolio"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build and Deploy to GitHub  Pages
-        uses: omkartapale/react-deployment-gh-pages@v1.0.0
-
   publish-nix-container:
     runs-on: ubuntu-latest
     strategy:
@@ -43,7 +36,6 @@ jobs:
           extra_nix_config: |
             extra-platforms = ${{ matrix.system }}
       
-      # - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - uses: docker/setup-qemu-action@v1
@@ -53,7 +45,7 @@ jobs:
       - name: Tag and push image
         run: |
           git_sha=$(git rev-parse --short "$GITHUB_SHA")
-          label=$git_sha-${{ matrix.system}}
+          label=$git_sha-${{ matrix.system }}
 
           docker load < result
           docker tag nico.dcotta.eu:nix ${{ env.REGISTRY_IMAGE }}:$label
@@ -118,35 +110,3 @@ jobs:
       - name: Summary
         run: |
           echo "# Published \`${{ steps.meta.outputs.tags }}\`" >> $GITHUB_STEP_SUMMARY
-
-
-  # deploy-nomad:
-  #   needs: publish-docker
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Install Nomad
-  #       run: |
-  #         wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-  #         echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-  #         sudo apt update && sudo apt install nomad
-          
-  #         nomad -v
-  #     - name: Set up WireGuard
-  #       uses: egor-tensin/setup-wireguard@v1
-  #       with:
-  #         endpoint: '${{ secrets.WG_ENDPOINT }}'
-  #         endpoint_public_key: '${{ secrets.WG_ENDPOINT_PUBLIC_KEY }}'
-  #         ips: '${{ secrets.WG_IPS }}'
-  #         allowed_ips: '${{ secrets.WG_ALLOWED_IPS }}'
-  #         private_key: '${{ secrets.WG_PRIVATE_KEY }}'
-  #     - name: "Nomad deploy 🚀"
-  #       run: |
-  #         set -e
-  #         export NOMAD_ADDR=http://${{ secrets.NOMAD_ADDR }}:4646
-  #         git_sha=$(git rev-parse --short "$GITHUB_SHA")
-          
-  #         curl "https://raw.githubusercontent.com/Cottand/selfhosted/master/jobs/web-portfolio.hcl" >> job.hcl
-          
-  #         # nomad plan -var docker_tag=$git_sha job.hcl
-  #         nomad run -detach -var docker_tag=$git_sha job.hcl

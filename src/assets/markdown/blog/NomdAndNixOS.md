@@ -209,10 +209,13 @@ have determined a suitable specification it is very easy to deploy it to 1 or to
 1. NixOS declarative configs
 2. Being able to define an orchestrator like Nomad in this specification
 3. Remote deployments
-   
+
+>**EDIT**: I have learnt a lot since writing this blog post and would like to enrich it with some more
+tips:
+> - [Colmena](https://github.com/zhaofengli/colmena) is like Morph, but I prefer it by far now beacuse of its better UX. The migration for Morph was easy too.
+> - You can use the NixOS option `systemd.services.nomad.restartTriggers` to make Nomad restart automatically whenever you modify its config via Nix. You can see an example [in my setup](https://github.com/Cottand/selfhosted/blob/cb7093aff38c621623ec7ab777b3930515d3b922/modules/nomad.nix#L57).
 
 <img src="/assets/blog/nomad-nix.png" caption="Nomad client page, showing NixOS as the underlying distro" class="centered border-radius" style="width: min(95%, 500px);"/>
-
 
 # References
 

@@ -1,9 +1,16 @@
+import multiArchNix from "../../assets/markdown/blog/MultiArchNixDockerImages.md";
 import nixShellHash from "../../assets/markdown/blog/NixShellFlakeScriptingForHashLanguages.md";
 import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleDocker.md";
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md";
 import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md";
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+    {
+        title: "Multi-arch OCI Images With Nix on GitHub Actions",
+        ref: "MultiArchNixDockerImages",
+        date: "20/01/2024",
+        file: multiArchNix,
+    },
     {
         title: "Scripting via the Nix shell with hash languages",
         ref: "NixShellFlakeScriptingForHashLanguages",

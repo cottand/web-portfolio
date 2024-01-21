@@ -101,6 +101,13 @@ export const MdRenderer: FC<{
                     strong {
                         font-weight: 500;
                     }
+
+                    blockquote {
+                        margin: 0;
+                        padding: 5px 15px;
+                        background-color: rgba(115, 124, 140, 0.18);
+                        border-radius: 7px;
+                    }
                 `}
                 components={{
                     a: Util.mdAsMuiLink,
