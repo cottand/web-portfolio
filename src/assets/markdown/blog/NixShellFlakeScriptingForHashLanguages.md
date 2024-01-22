@@ -32,8 +32,6 @@ Nix to the rescue: I was keen to write scripts in Go or Kotlin, and so I tried
 out Nix's shebang (#!) feature:
 
 
-TODO - make sure the web parsing works for shebang scripts!
-TODO - airplane script :c
 ```kotlin
 #! /usr/bin/env nix-shell
 #! nix-shell -p kotlin -i kotlin
