@@ -35,13 +35,13 @@ export const BlogEntriesList: FC = () =>
                date={"21/02/2022"}
                key={"seMicroS"}
         />
-        <Entry type={"talk"}
-               title={"Adding Pattern Matching to Kotlin"}
-               href={"https://youtu.be/Blj-7SGYUnE?t=215"}
-               date={"01/07/2020"}
-               key={"sePatterns"}
-               divider={false}
-        />
+        {/*<Entry type={"talk"}*/}
+        {/*       title={"Adding Pattern Matching to Kotlin"}*/}
+        {/*       href={"https://youtu.be/Blj-7SGYUnE?t=215"}*/}
+        {/*       date={"01/07/2020"}*/}
+        {/*       key={"sePatterns"}*/}
+        {/*       divider={false}*/}
+        {/*/>*/}
     </List>
 
 

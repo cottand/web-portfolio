@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import React, {FC, lazy, startTransition, Suspense, useEffect, useState, useTransition} from "react";
-import GitHubIcon from '@mui/icons-material/GitHub';
+import React, {Fragment, Suspense, useEffect, useState} from "react";
 import {css} from "@emotion/react";
-import {PanelEntry, PanelName, panels} from "../projectPanels";
+import {panels} from "../projectPanels";
 import {Spinner} from "../spinner";
-import {List, ListItemButton, ListItemText, Typography} from "@mui/material";
+import {Card, CardActionArea, CardContent, Grid, List, ListItemButton, useTheme} from "@mui/material";
 import {Link as RouterLink} from "react-router-dom";
 import ProjEntry from "../projEntry";
 
@@ -18,26 +17,59 @@ export function Projects() {
         }
     );
 
+    const theme = useTheme()
+
 
     return (
-        <div css={css`width: 100%`}>
-            <List>
+        <Fragment
+            // css={css`width: 100%`}
+        >
+            <Grid container spacing={2}
+                  alignItems={"center"}
+                  justifySelf={"center"}
+                  direction={"row"}
+                  justifyContent={"center"}
+                  sx={{
+                      // width: "100%",
+                      // display: "flex",
+                      // flexDirection: "column",
+                      // alignContent: "flex-start",
+                      // flex: "1 1 0px",
+                      flexGrow: "0",
+                      flexWrap: "wrap",
+                      alignItems: "stretch",
+                  }}
+
+            >
                 {panels.map((p) => (
-                    <ListItemButton component={RouterLink as any}
-                                    key={p.id}
-                                    to={p.id}
-                                    divider={true}
-                    ><Suspense fallback={<Spinner/>}>
-                        <ProjEntry
-                            key={p.name}
-                            aligned={aligned}
-                            {...p}
-                        />
-                    </Suspense>
-                    </ListItemButton>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <Card sx={{height: "100%"}}>
+                            <CardActionArea
+                                sx={{height: "100%"}}
+                                component={RouterLink as any}
+                                key={p.id}
+                                to={p.id}
+
+                                // divider={true}
+                            >
+                                <CardContent css={css`
+                                    width: 100%;
+                                    height: 100%
+                                `}>
+                                    <Suspense fallback={<Spinner/>}>
+                                        <ProjEntry
+                                            key={p.name}
+                                            aligned={aligned}
+                                            {...p}
+                                        />
+                                    </Suspense>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
                 ))}
-            </List>
-        </div>
+            </Grid>
+        </Fragment>
     )
 }
 

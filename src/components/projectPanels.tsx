@@ -23,6 +23,8 @@ import WebIcon from '@mui/icons-material/Web';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import SportsBarIcon from '@mui/icons-material/SportsBar';
 import AlbumIcon from '@mui/icons-material/Album';
+import {SvgIconProps, SvgIconTypeMap} from "@mui/material";
+import {OverridableComponent} from "@mui/material/OverridableComponent";
 
 export type PanelName = string
 
@@ -31,11 +33,14 @@ export interface PanelEntry {
     name: PanelName,
     markdown: string,
     summary: string,
-    icon?: React.ReactElement,
+    icon: OverridableComponent<SvgIconTypeMap>,
     gh?: string
 }
 
-const commonIconProps: { fontSize?: "large" } = {fontSize: "large"};
+const commonIconProps: SvgIconProps = {
+    fontSize: "large",
+    color: "primary"
+};
 
 export const findFromId =
     (id: string) => panels.find(p => p.id == id)
@@ -47,7 +52,8 @@ export const panels: PanelEntry[] = [
         markdown: leng,
         summary: "DNS proxy server with ad-blocking",
         gh: "cottand/leng",
-        icon: <DynamicFormIcon {...commonIconProps} />
+        icon: DynamicFormIcon,
+            // <DynamicFormIcon {...commonIconProps} />
     },
     {
         id: "selfhosted-homelab",
@@ -55,7 +61,7 @@ export const panels: PanelEntry[] = [
         markdown: selfhosted,
         summary: "Home SRE-like infra deployment, on my own hardware",
         gh: "cottand/selfhosted",
-        icon: <StorageIcon {...commonIconProps} />
+        icon: StorageIcon,
     },
     {
         id: "confis",
@@ -63,14 +69,14 @@ export const panels: PanelEntry[] = [
         markdown: confis,
         summary: "Framework for specifying and querying legal agreements",
         gh: "cottand/confis",
-        icon: <Balance {...commonIconProps} />
+        icon: Balance,
     },
     {
         id: "djstreamr",
         name: "DJStreamr",
         markdown: djStreamr,
         summary: "Full-stack collaborative live DJ software",
-        icon: <AlbumIcon {...commonIconProps} />
+        icon: AlbumIcon
         // <img src={djStreamrLogo} height={24} alt={"DJStreamr"}/>
     },
     {
@@ -79,7 +85,7 @@ export const panels: PanelEntry[] = [
         markdown: ivann,
         summary: "Web visual neural network builder",
         gh: "icivann/ivann",
-        icon: <ShareOutlined {...commonIconProps} />,
+        icon: ShareOutlined,
     },
     {
         id: "wacc",
@@ -87,7 +93,7 @@ export const panels: PanelEntry[] = [
         markdown: wacc,
         summary: "Multiplatform compiler of a small language for ARM and the JVM",
         gh: "cottand/wacc",
-        icon: <DataObjectIcon {...commonIconProps} />,
+        icon: DataObjectIcon ,
     },
     {
         id: "paxos",
@@ -95,7 +101,7 @@ export const panels: PanelEntry[] = [
         markdown: paxos,
         summary: "An implementation of the Multi-Paxos consensus algorithm",
         gh: "cottand/multi-paxos",
-        icon: <Handshake {...commonIconProps} />,
+        icon: Handshake,
     },
     {
         id: "kotlinKeep213",
@@ -103,7 +109,7 @@ export const panels: PanelEntry[] = [
         markdown: keep,
         summary: "Pattern matching proposal for the Kotlin language",
         gh: "cottand/KEEP/blob/pattern-matching/proposals/pattern-matching.md",
-        icon: <Code {...commonIconProps} />,
+        icon: Code,
     },
     {
         id: "icHack19",
@@ -111,7 +117,7 @@ export const panels: PanelEntry[] = [
         markdown: ichack,
         summary: "Hackathon project on AR-assisted teaching",
         gh: "cottand/ICHack19",
-        icon: <QrCodeScannerIcon {...commonIconProps} />,
+        icon: QrCodeScannerIcon,
     },
     {
         id: "webPortfolio",
@@ -119,7 +125,7 @@ export const panels: PanelEntry[] = [
         markdown: web,
         summary: "Made with React",
         gh: "cottand/web-portfolio",
-        icon: <WebIcon {...commonIconProps} />,
+        icon: WebIcon ,
     },
     {
         id: "pintOS",
@@ -127,7 +133,7 @@ export const panels: PanelEntry[] = [
         markdown: pintos,
         summary: "UNIX-like pint-sized OS",
         gh: "cottand/pintos",
-        icon: <SportsBarIcon {...commonIconProps} />,
+        icon: SportsBarIcon ,
     },
     {
         id: "checkm8",
@@ -135,6 +141,6 @@ export const panels: PanelEntry[] = [
         markdown: checkm8,
         summary: "Chess player through computer vision and smart contracts",
         gh: "cottand/checkm8-public",
-        icon: <EmojiEventsIcon {...commonIconProps} />,
+        icon: EmojiEventsIcon ,
     }
 ]
