@@ -58,7 +58,7 @@ It turns out the Kotlin compiler only expects a single shebang line, but using
 the `nix-shell` magic requires several.
 
 The sad part is this may happen to every language that has slashes (`//`) rather than hashes (`#`) for comments.
-So I could make this work for Go via Yaegi either.
+So I could not make this work for Go via Yaegi either.
 
 ## Requirements 
 
