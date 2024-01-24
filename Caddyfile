@@ -1,6 +1,7 @@
 {
     http_port 80
     auto_https off
+    admin off
 }
 :80 {
 	bind 0.0.0.0
