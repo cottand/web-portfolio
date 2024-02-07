@@ -8,7 +8,7 @@ import {Typography} from "@mui/material";
 import {RepeatingBar} from "../repeatingBar";
 // noinspection HtmlUnknownAttribute
 export const BlogEntry: FC = (props) => {
-    let blogRef = useParams<{blogId: string}>().blogId
+    let blogRef = useParams<{ blogId: string }>().blogId
     let blog = blogFromRef(blogRef)
     return <div css={css`padding: 20px`}>
         <Typography variant={"h3"}>{blog?.title}</Typography>

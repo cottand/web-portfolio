@@ -33,7 +33,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {PicWithCaption} from "./PicWithCaption";
-import {Await, defer, useLoaderData, useLocation} from "react-router-dom";
+import {Await, defer, useLoaderData, useLocation, useNavigation} from "react-router-dom";
 import {Spinner} from "../spinner";
 import ReactMarkdown from "react-markdown";
 
@@ -45,10 +45,11 @@ const HWithAnchor: FC<{ children: ReactElement, href: ReactNode | undefined }> =
     const location = useLocation()
     const href = props.href ? encode(props.href.toString()) : ""
     const ref = useRef<HTMLAnchorElement>(null)
+    let loading = useNavigation().state == "loading"
 
     // when the hash is set, it means we loaded the page to go to this h
     const scroll = () => {
-        if (href !== "" && location.hash.includes(href)) {
+        if (href !== "" && location.hash.includes(href) && !loading) {
             ref.current?.scrollIntoView({behavior: "smooth", block: "start", inline: "start"});
         }
     }
