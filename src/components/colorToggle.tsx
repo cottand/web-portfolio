@@ -41,7 +41,13 @@ export const ToggleColorMode = (props: { children: ReactNode }) => {
             const commonOptions = {
                 palette: {mode},
                 typography: {
-                    fontSize: 15
+                    fontSize: 15,
+                    fontWeight: "normal",
+                    fontFamily: [
+                        // "Fira Code",
+                        "Roboto",
+                        "sans-serif"
+                    ].join(","),
                 },
                 shadows: {}
             }

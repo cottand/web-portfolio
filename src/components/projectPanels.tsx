@@ -42,8 +42,9 @@ const commonIconProps: SvgIconProps = {
     color: "primary"
 };
 
-export const findFromId =
-    (id: string) => panels.find(p => p.id == id)
+export const projectFromId =
+    (id: string | undefined) => panels.find(p => p.id == id)
+
 
 export const panels: PanelEntry[] = [
     {

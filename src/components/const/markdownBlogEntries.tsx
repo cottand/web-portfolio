@@ -3,6 +3,10 @@ import nixShellHash from "../../assets/markdown/blog/NixShellFlakeScriptingForHa
 import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleDocker.md";
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md";
 import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md";
+import {panels} from "../projectPanels";
+
+export const blogFromRef =
+    (ref: string | undefined) => markdownBlogEntries.find(p => p.ref == ref)
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
     {
@@ -12,7 +16,7 @@ const markdownBlogEntries: { title: string, date: string, ref: string, file: str
         file: multiArchNix,
     },
     {
-        title: "Scripting via the Nix shell with hash languages",
+        title: "Scripting compiled languages via the Nix shell",
         ref: "NixShellFlakeScriptingForHashLanguages",
         date: "23/11/2023",
         file: nixShellHash,
@@ -30,7 +34,7 @@ const markdownBlogEntries: { title: string, date: string, ref: string, file: str
         file: nomadDnsAdblock,
     },
     {
-        title: "Nomad + NixOS",
+        title: "Using NixOS to swiftly and reproducibly get Nomad clients up and running",
         ref: "nomadNixos",
         date: "22/05/2023",
         file: nomadNixos,

@@ -20,22 +20,18 @@ const ProjEntry: FC<EntryProps> = (props) => {
         // fontWeight={"bold"}
         variant={"h5"}
     >{props.name}</Typography>
-    const Heading = () =>
-        <div className={styles.heading} css={css`flex-direction: ${props.aligned ?  'column' : 'row'}`}>
+    const theme = useTheme()
+
+
+    return <>
+        <div className={styles.heading} css={css`flex-direction: ${props.aligned ? 'column' : 'row'}`}>
             <props.icon {...commonIconProps}/>
             <HeadingTypo/>
         </div>
-    const Subheading = () => {
-        const theme = useTheme()
-        return <Typography
+        <Typography
             color={theme.palette.text.secondary}
             className={styles.subheading}>{props.summary}</Typography>
-    }
-
-    return <>
-            <Heading/>
-            <Subheading/>
-        </>
+    </>
 }
 
 export default ProjEntry

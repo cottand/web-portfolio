@@ -1,25 +1,35 @@
 /** @jsxImportSource @emotion/react */
 import React, {FC} from "react";
 import {css} from "@emotion/react";
-import {Card, CardContent, Link, Paper, Typography, useTheme} from "@mui/material";
+import {CardContent, Link, Typography, useTheme} from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import {MdRenderer} from "../markdown/MdFile";
-import {useLoaderData, useMatch} from "react-router-dom";
+import {useParams} from "react-router-dom";
+import {projectFromId} from "../projectPanels";
+import {RepeatingBar} from "../repeatingBar";
 
 export const ProjPage: FC = () => {
+    let projectId = useParams<{ projectId: string }>().projectId
+    let project = projectFromId(projectId)
     // @ts-ignore
-    const gh = useLoaderData().gh
+    let gh = project?.gh
+    // @ts-ignore
+    // const projectId = loaderData.id
+
+
     return <CardContent>
-            <div className={css`width: 100%`.name}>
-                {gh === undefined ? (<div/>) : (<GithubBanner repo={gh}/>)}
-                {gh === undefined ? (<div/>) : (<br/>)}
-            </div>
-            <MdRenderer foldCode={false}/>
-        </CardContent>
+        <Typography variant={"h3"}>{project?.name}</Typography>
+        <RepeatingBar/>
+
+        <div css={css`width: 100%; padding-top: 14px;`}>
+        {gh === undefined ? (<div/>) : (<GithubBanner repo={gh}/>)}
+        {gh === undefined ? (<div/>) : (<br/>)}
+    </div><MdRenderer foldCode={false}/>
+    </CardContent>
 }
 
 function GithubBanner(props: { repo: string }) {
-    const svgWidth = "32px"
+    const svgWidth = "24px"
     const theme = useTheme()
     return (
         <div

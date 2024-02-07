@@ -1,5 +1,3 @@
-# Achieving Reproducible and Cacheable builds with Gradle and Docker
-
 _25/08/2023 - #docker #gradle #ci #caching_
 <br></br>
 

@@ -1,4 +1,3 @@
-# Using NixOS to swiftly and reproducibly get Nomad clients up and running
 
 _21/05/2023 - #noamd #nixos #cni #selfhosted_
 <br></br>

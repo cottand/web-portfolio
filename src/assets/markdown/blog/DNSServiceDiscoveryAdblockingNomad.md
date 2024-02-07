@@ -1,4 +1,3 @@
-# Running both ad-blocking and poor man's DNS service-discovery for self-hosted Nomad
 _10/08/2023 - #noamd #selfhosted #dns #adblock_
 <br></br>
 

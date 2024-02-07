@@ -1,5 +1,3 @@
-# Multi-arch Docker Images With Nix on GitHub Actions
-
 _20/01/2024 - #nix #docker #oci #arm #multi-arch #multi-platform_
 <br></br>
 

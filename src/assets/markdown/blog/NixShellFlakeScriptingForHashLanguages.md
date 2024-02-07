@@ -1,5 +1,3 @@
-# Scripting compiled languages via the Nix shell
-
 _22/11/2023 - #nix #script #kotlin #go #shebang #nix-flake_
 <br></br>
 

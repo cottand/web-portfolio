@@ -19,8 +19,8 @@ import {About} from "./components/pages/about";
 import {Grid} from "@mui/material";
 import {css} from "@emotion/react";
 import {ChangeColorButton} from "./components/colorToggle";
-import {findFromId} from "./components/projectPanels";
-import markdownBlogEntries from "./components/const/markdownBlogEntries";
+import {projectFromId} from "./components/projectPanels";
+import markdownBlogEntries, {blogFromRef} from "./components/const/markdownBlogEntries";
 
 
 const breadcrumbNameMap: { [key: string]: string } = {
@@ -61,7 +61,7 @@ const Page = () => {
                     {pathnames.map((value, index) => {
                         const last = index === pathnames.length - 1;
                         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
-                        const breadcrumbName = breadcrumbNameMap[to] ?? findFromId(value)?.name ?? "";
+                        const breadcrumbName = breadcrumbNameMap[to] ?? "";
 
                         return last ? (
                             <Typography color="text.primary" key={to} {...fontProps}>
@@ -87,30 +87,35 @@ const Layout = () => <Fragment>
     <Outlet/>
 </Fragment>
 
-const blogChildren = markdownBlogEntries.map(e => {
-        const loader = async function () {
-            return defer({
-                    content: fetch(e.file).then(r => r.text())
-                }
-            )
-        }
-        return {
-            path: "blog/" + e.ref,
-            async lazy() {
-                let {BlogEntry} = await import("./components/pages/blogPage");
-                return {element: <BlogEntry file={e.file}/>};
-            },
-            loader: loader,
-        };
-    }
-)
+// const blogChildren = markdownBlogEntries.map(e => {
+//         const loader = async function () {
+//             return defer({
+//                     content: fetch(e.file).then(r => r.text())
+//                 }
+//             )
+//         }
+//         return {
+//             path: "blog/" + e.ref,
+//             async lazy() {
+//                 let {BlogEntry} = await import("./components/pages/blogPage");
+//                 return {element: <BlogEntry file={e.file}/>};
+//             },
+//             loader: loader,
+//         };
+//     }
+// )
 
-const projectLoader: (args: { params: Params<string> }) => Promise<unknown> = async ({params}) => {
-    const p = findFromId(params["projectId"] ?? "TODO")
-    const md = p?.markdown ?? "TODO1"
+const blogLoader: (args: { params: Params<string> }) => Promise<unknown> = async ({params}) => {
+    const b = blogFromRef(params["blogId"] ?? "")
     return defer({
-            content: fetch(p?.markdown ?? "TODO").then(r => r.text()),
-            gh: p?.gh
+            content: fetch(b?.file ?? "").then(r => r.text()),
+        }
+    );
+}
+const projectLoader: (args: { params: Params<string> }) => Promise<unknown> = async ({params}) => {
+    const p = projectFromId(params["projectId"] ?? "")
+    return defer({
+            content: fetch(p?.markdown ?? "").then(r => r.text()),
         }
     );
 }
@@ -140,11 +145,19 @@ let mainRoutes = [
         // element: <ProjPage/>,
         loader: projectLoader,
     },
+    {
+        path: "blog/:blogId",
+        async lazy() {
+            let {BlogEntry} = await import("./components/pages/blogPage");
+            return {Component: BlogEntry};
+        },
+        loader: blogLoader,
+    },
 ];
 const router = createBrowserRouter([
     {
         Component: Layout,
-        children: [...mainRoutes, ...blogChildren]
+        children: [...mainRoutes]
     },
 ], {future: {v7_fetcherPersist: true}})
 
