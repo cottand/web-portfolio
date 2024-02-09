@@ -25,7 +25,7 @@ import {
     AccordionSummary,
     AccordionSummaryProps,
     Card,
-    CardContent,
+    CardContent, Fade,
     Link,
     styled,
     Typography,
@@ -36,6 +36,7 @@ import {PicWithCaption} from "./PicWithCaption";
 import {Await, defer, useLoaderData, useLocation, useNavigation} from "react-router-dom";
 import {Spinner} from "../spinner";
 import ReactMarkdown from "react-markdown";
+import {TransitionGroup} from "react-transition-group";
 
 const encode = (s: string) => encodeURI(s.replaceAll(" ", ""))
 
@@ -75,90 +76,92 @@ export const MdRenderer: FC<{
          makeAnchors,
      }) => {
         // @ts-ignore
-        const promise = useLoaderData().content
+        const promise: { content: Promise<string> } = useLoaderData()
 
-        return <Suspense fallback={<Spinner/>}>
-            <Await resolve={promise}>{(content) => useMemo(() => <ReactMarkdown
-                css={css`
-                    font-size: 17px;
-                    font-family: Roboto, serif;
+        return useMemo( () => <Suspense fallback={<Spinner/>}>
+            <Await resolve={promise.content}>{(content) =>
+                <ReactMarkdown
+                    css={css`
+                        font-size: 17px;
+                        font-family: Roboto, serif;
 
-                    h1 {
-                        font-weight: normal;
-                    }
+                        h1 {
+                            font-weight: normal;
+                        }
 
-                    h2 {
-                        font-weight: normal;
-                    }
+                        h2 {
+                            font-weight: normal;
+                        }
 
-                    h3 {
-                        font-weight: normal;
-                    }
+                        h3 {
+                            font-weight: normal;
+                        }
 
-                    h4 {
-                        font-weight: normal;
-                    }
+                        h4 {
+                            font-weight: normal;
+                        }
 
-                    strong {
-                        font-weight: 500;
-                    }
+                        strong {
+                            font-weight: 500;
+                        }
 
-                    blockquote {
-                        margin: 0;
-                        padding: 5px 15px;
-                        background-color: rgba(115, 124, 140, 0.18);
-                        border-radius: 7px;
-                    }
-                `}
-                components={{
-                    a: Util.mdAsMuiLink,
-                    img: (props) => <PicWithCaption {...props}/>,
-                    // h1: (props) => <h1 {...props}></h1>,
-                    // @ts-ignore
-                    // eslint-disable-next-line
-                    h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
-                        <h2 {...props}/>
-                    </HWithAnchor>,
-                    // eslint-disable-next-line
-                    h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
-                        <h3 {...props}/>
-                    </HWithAnchor>,
-                    // eslint-disable-next-line
-                    h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
-                        <h4 {...props}/>
-                    </HWithAnchor>,
-                    code: ({node, inline, className, children, ...props}) => {
-                        const match = /language-(\w+)/.exec(className || '')
-                        const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
-                        const hiddenFilenameRegex = /# hiddenfile: (.+) #\n/
-                        const hiddenFilenameMatch = hiddenFilenameRegex.exec(String(children) || '')
-                        return !inline && match ? (
-                            <FoldingHighlighter
-                                foldCode={foldCode}
-                                highlighting={{
-                                    children: [String(children).replace(/\n$/, '').replace(hiddenFilenameRegex, "")],
-                                    css: css`font-size: 14px`,
-                                    language: match[1],
-                                    PreTag: "div",
-                                    style: {...atomDark, ...{"pre[class*=\"language-\"]": {background: "transparent"}}},
-                                }}
-                                filename={filenameMatch ? filenameMatch[1] : (hiddenFilenameMatch ? hiddenFilenameMatch[1] : undefined)}
-                                // @ts-ignore
-                                {...props}
-                            />
-                        ) : (
-                            <code className={className} {...props}>
-                                {children}
-                            </code>
-                        )
-                    }
-                }}
-                rehypePlugins={extendGhm ? [rehypeRaw, remarkGfm] : [rehypeRaw]}
-                children={content}
-            />, [content, makeAnchors, foldCode, extendGhm])
+                        blockquote {
+                            margin: 0;
+                            padding: 5px 15px;
+                            background-color: rgba(115, 124, 140, 0.18);
+                            border-radius: 7px;
+                        }
+                    `}
+                    components={{
+                        a: Util.mdAsMuiLink,
+                        img: (props) => <PicWithCaption {...props}/>,
+                        // h1: (props) => <h1 {...props}></h1>,
+                        // @ts-ignore
+                        // eslint-disable-next-line
+                        h2: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                            <h2 {...props}/>
+                        </HWithAnchor>,
+                        // eslint-disable-next-line
+                        h3: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                            <h3 {...props}/>
+                        </HWithAnchor>,
+                        // eslint-disable-next-line
+                        h4: (props) => <HWithAnchor href={makeAnchors ? props.children[0] : undefined}>
+                            <h4 {...props}/>
+                        </HWithAnchor>,
+                        code: ({node, inline, className, children, ...props}) => {
+                            const match = /language-(\w+)/.exec(className || '')
+                            const filenameMatch = /# file: (.+) #/.exec(String(children) || '')
+                            const hiddenFilenameRegex = /# hiddenfile: (.+) #\n/
+                            const hiddenFilenameMatch = hiddenFilenameRegex.exec(String(children) || '')
+                            return !inline && match ? (
+                                <FoldingHighlighter
+                                    foldCode={foldCode}
+                                    highlighting={{
+                                        children: [String(children).replace(/\n$/, '').replace(hiddenFilenameRegex, "")],
+                                        css: css`font-size: 14px`,
+                                        language: match[1],
+                                        PreTag: "div",
+                                        style: {...atomDark, ...{"pre[class*=\"language-\"]": {background: "transparent"}}},
+                                    }}
+                                    filename={filenameMatch ? filenameMatch[1] : (hiddenFilenameMatch ? hiddenFilenameMatch[1] : undefined)}
+                                    // @ts-ignore
+                                    {...props}
+                                />
+                            ) : (
+                                <code className={className} {...props}>
+                                    {children}
+                                </code>
+                            )
+                        }
+                    }}
+                    rehypePlugins={extendGhm ? [rehypeRaw, remarkGfm] : [rehypeRaw]}
+                    children={content}
+                />
             }
             </Await>
         </Suspense>
+            , [makeAnchors, foldCode, extendGhm])
     }
 
 const FoldingHighlighter: FC<{

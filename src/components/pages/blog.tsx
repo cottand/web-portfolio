@@ -2,7 +2,6 @@
 import React, {FC} from "react";
 import {List, ListItemButton, ListItemText, Typography} from "@mui/material";
 import {Link as RouterLink} from "react-router-dom";
-// import {MdRenderer} from "../markdown/MdFile";
 import markdownBlogEntries from "../const/markdownBlogEntries";
 
 
@@ -48,9 +47,7 @@ export const BlogEntriesList: FC = () =>
 type Type = "blog" | "talk" | "article"
 
 const Entry: FC<{ type: Type; title: string; href: string; date: string; divider?: boolean; key: string }> = (props) =>
-    <ListItemButton component={RouterLink as any} to={props.href} divider={props.divider ?? true}
-        // onClick={onClick}
-    >
+    <ListItemButton component={RouterLink} to={props.href} divider={props.divider ?? true}>
         <div>
             <Typography variant={"caption"}>{props.date}</Typography>
             <ListItemText secondary={props.type}>{props.title}</ListItemText>

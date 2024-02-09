@@ -10,20 +10,18 @@
     (utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        version = "0.0.1";
       in
       rec {
 
         packages.static = pkgs.buildNpmPackage {
-          inherit version;
-          pname = "cottand-web-portfolio";
+          name = "cottand-web-portfolio";
 
           src = with pkgs.lib; cleanSourceWith {
             filter = path: _: !(builtins.elem (baseNameOf path) [ ".github" ".idea" "flake.nix" "flake.lock" "result" "Caddyfile" ]);
             src = (cleanSource ./.);
           };
 
-          npmDepsHash = "sha256-HRD/eThxVDOTe5bky4VEu9uDtci+SZoIM74YVr/00kI=";
+          npmDepsHash = "sha256-+yRsBcJ5VCO/xtze+ERgJVgwto6sbvAxAzOxG8ZFhKY=";
           npmPackFlags = [ "--ignore-scripts" ];
           installPhase = ''
             mkdir -p $out/srv
@@ -33,8 +31,7 @@
         packages.default = packages.static;
 
         packages.serve = pkgs.stdenv.mkDerivation {
-          pname = "serve";
-          inherit version;
+          name = "serve";
           buildInputs = [ pkgs.caddy packages.static ];
           nativeBuildInputs = [ pkgs.makeBinaryWrapper ];
 

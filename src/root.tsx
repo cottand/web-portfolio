@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import * as React from 'react';
-import {Fragment} from 'react';
+import {createRef, Fragment} from 'react';
 import Box from '@mui/material/Box';
 import Link, {LinkProps} from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
@@ -10,17 +10,16 @@ import {
     createBrowserRouter,
     defer,
     Link as RouterLink,
-    Outlet,
     Params,
     RouterProvider,
-    useLocation,
+    useLocation, useOutlet,
 } from 'react-router-dom';
-import {About} from "./components/pages/about";
-import {Grid} from "@mui/material";
+import {Fade, Grid, Zoom} from "@mui/material";
 import {css} from "@emotion/react";
 import {ChangeColorButton} from "./components/colorToggle";
 import {projectFromId} from "./components/projectPanels";
-import markdownBlogEntries, {blogFromRef} from "./components/const/markdownBlogEntries";
+import {blogFromRef} from "./components/const/markdownBlogEntries";
+import {SwitchTransition} from "react-transition-group";
 
 
 const breadcrumbNameMap: { [key: string]: string } = {
@@ -80,30 +79,27 @@ const Page = () => {
 };
 
 
-const Layout = () => <Fragment>
-    <Box sx={{display: 'flex', flexDirection: 'column', width: 360}}>
-        <Page/>
-    </Box>
-    <Outlet/>
-</Fragment>
-
-// const blogChildren = markdownBlogEntries.map(e => {
-//         const loader = async function () {
-//             return defer({
-//                     content: fetch(e.file).then(r => r.text())
-//                 }
-//             )
-//         }
-//         return {
-//             path: "blog/" + e.ref,
-//             async lazy() {
-//                 let {BlogEntry} = await import("./components/pages/blogPage");
-//                 return {element: <BlogEntry file={e.file}/>};
-//             },
-//             loader: loader,
-//         };
-//     }
-// )
+const Layout = () => {
+    const outlet = useOutlet()
+    const {nodeRef} = mainRoutes.find((route) => route.path === location.pathname) ?? {}
+    return <Fragment>
+        <Box sx={{display: 'flex', flexDirection: 'column', width: 360}}>
+            <Page/>
+        </Box>
+        <SwitchTransition>
+            <Fade
+                key={useLocation().pathname}
+                // @ts-ignore
+                nodeRef={nodeRef as any}
+                timeout={100}
+            >
+                <div ref={nodeRef as any} className="page">
+                    {outlet}
+                </div>
+            </Fade>
+        </SwitchTransition>
+    </Fragment>;
+}
 
 const blogLoader: (args: { params: Params<string> }) => Promise<unknown> = async ({params}) => {
     const b = blogFromRef(params["blogId"] ?? "")
@@ -121,43 +117,47 @@ const projectLoader: (args: { params: Params<string> }) => Promise<unknown> = as
 }
 
 let mainRoutes = [
-    {path: "*", element: <About/>},
+    {
+        path: "/",
+        nodeRef: createRef(),
+        lazy: async () =>
+            ({Component: await import("./components/pages/about").then(c => c.About)}),
+    },
     {
         path: "projects",
-        lazy: async () => {
-            let {Projects} = await import("./components/pages/projects");
-            return {Component: Projects};
-        }
+        lazy: async () =>
+            ({Component: await import("./components/pages/projects").then(c => c.Projects)}),
     },
     {
         path: "blog",
-        lazy: async () => {
-            let {BlogEntriesList} = await import("./components/pages/blog");
-            return {Component: BlogEntriesList};
-        }
+        lazy: async () =>
+            ({Component: await import("./components/pages/blog").then(c => c.BlogEntriesList)}),
     },
     {
         path: "projects/:projectId",
-        async lazy() {
-            let {ProjPage} = await import("./components/pages/projPage");
-            return {Component: ProjPage};
-        },
+        lazy: async () =>
+            ({Component: await import("./components/pages/projPage").then(c => c.ProjPage)}),
         // element: <ProjPage/>,
         loader: projectLoader,
     },
     {
         path: "blog/:blogId",
-        async lazy() {
-            let {BlogEntry} = await import("./components/pages/blogPage");
-            return {Component: BlogEntry};
-        },
+        lazy: async () =>
+            ({Component: await import("./components/pages/blogPage").then(c => c.BlogEntry)}),
         loader: blogLoader,
     },
 ];
 const router = createBrowserRouter([
     {
         Component: Layout,
-        children: [...mainRoutes]
+        // children: [...mainRoutes]
+        children: mainRoutes.map((route) => ({
+            index: route.path === '/',
+            path: route.path === '/' ? undefined : route.path,
+            nodeRef: createRef(),
+            loader: route.loader,
+            lazy: route.lazy,
+        }))
     },
 ], {future: {v7_fetcherPersist: true}})
 
