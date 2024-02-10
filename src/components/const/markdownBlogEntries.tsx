@@ -3,12 +3,18 @@ import nixShellHash from "../../assets/markdown/blog/NixShellFlakeScriptingForHa
 import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleDocker.md";
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md";
 import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md";
-import {panels} from "../projectPanels";
+import dockerNotRepro from "../../assets/markdown/blog/MultiStageDockerNotRepro.md";
 
 export const blogFromRef =
     (ref: string | undefined) => markdownBlogEntries.find(p => p.ref == ref)
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+    {
+        title: "Multi-stage Docker builds are not (usually) reproducible",
+        ref: "DockerNotReproducible",
+        date: "10/02/2024",
+        file: dockerNotRepro,
+    },
     {
         title: "Multi-arch Docker Images With Nix on GitHub Actions",
         ref: "MultiArchNixDockerImages",
