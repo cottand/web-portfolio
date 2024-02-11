@@ -24,7 +24,7 @@ export const ProjPage: FC = () => {
         <div css={css`width: 100%; padding-top: 14px;`}>
         {gh === undefined ? (<div/>) : (<GithubBanner repo={gh}/>)}
         {gh === undefined ? (<div/>) : (<br/>)}
-    </div><MdRenderer foldCode={false}/>
+    </div><MdRenderer foldCode={false} makeAnchors/>
     </CardContent>
 }
 
