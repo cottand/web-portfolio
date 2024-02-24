@@ -5,14 +5,12 @@
 
   };
 
-
   outputs = { self, nixpkgs, utils, ... }:
     (utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
       in
       rec {
-
         packages.static = pkgs.buildNpmPackage {
           name = "cottand-web-portfolio";
 

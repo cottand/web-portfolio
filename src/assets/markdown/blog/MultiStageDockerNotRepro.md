@@ -25,6 +25,8 @@ FROM ubuntu:focal
 
 If I started off with `ubuntu:focal` ([Ubuntu 20.04](https://www.releases.ubuntu.com/focal/), which came out in 2020), then I expected I would always be building my app in top of the same 'base' of dependencies. Even if Ubuntu released version 22, I would have to expclicitly change my Ubuntu version in my Dockerfile. Deep down, both you and me know this is a lie: Ubuntu will keep receiving security updates long after the distro has come out:
 
+<img src="/assets/blog/ubuntuFocal.png" caption="Dockerhub page for ubuntu:focal" class="centered border-radius" style="width: min(95%, 600px);"/>
+
 An indeed it has. As we can see there at the time of writing, Ubuntu had received an update only a few days ago.
 
 But even if I did know this, I thought _it didn't matter_. I thought bit-by-bit reproducibility of the build environment did not have benefits that warranted seeking it.
@@ -71,7 +73,7 @@ You can then use this tool to build, and can make a container out of the result 
 
 The best such tool I have tried is [Nix](https://nixos.org/). There are more, such as [Guix](https://guix.gnu.org/blog/2020/reproducible-computations-with-guix/). Some of the package managers from distros you are already used to also strive for reprodicibility, such as [Debian](https://tests.reproducible-builds.org/debian/reproducible.html).
 
-I admit to being a big fan of Nix, but the point of this post is not to evangelise Nix specifically, but to convince you that reprodiceble builds are good for you and well worth the headaches. So embrace whatever tool you prefer! And if it is a tool specifically made to achieve reproducibility (unlike Docker) then you will save yourself some headaches.
+I admit to being a big fan of Nix, but the point of this post is not to evangelise Nix specifically, but to convince you that reprodiceble builds are good for you and well worth the trouble. So embrace whatever tool you prefer! And if it is a tool specifically made to achieve reproducibility (unlike Docker) then you will save yourself some headaches.
 
 ## Read more
 
