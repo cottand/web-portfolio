@@ -1,4 +1,5 @@
 I run a personal fleet of a few old computers in my living room which run services like
+
 - Personal DB
 - Password manager
 - Personal storage and backups
@@ -6,29 +7,33 @@ I run a personal fleet of a few old computers in my living room which run servic
 - ... and hosts some of the projects you see in this website!
 
 I made it thinking about how I would build a company's fleet as an SRE. It has a mostly open-source stack with:
-- Container orchestration through [Nomad](https://www.nomadproject.io/) (an alternative to Kubernetes)
-- Metrics, performance monitoring, and logs management through [Grafana](https://grafana.net), [Prometheus](https://prometheus.io/docs/introduction/overview/) and [Loki](https://grafana.com/oss/loki/)
-- Secure private networking through [Wireguard](https://www.wireguard.com/)
-- Reproducible, declarative deployments of the Linux OSs through [NixOS](https://nixos.org/) (although sometimes I install other OSs on some machines to experiment!)
 
+- Container orchestration through [Nomad](https://www.nomadproject.io/) (an alternative to Kubernetes)
+- Metrics, performance monitoring, and logs management
+  through [Grafana](https://grafana.net), [Prometheus](https://prometheus.io/docs/introduction/overview/)
+  and [Loki](https://grafana.com/oss/loki/)
+- Secure private networking through [Wireguard](https://www.wireguard.com/)
+- Reproducible, declarative deployments of the Linux OSs through [NixOS](https://nixos.org/) (although sometimes I
+  install other OSs on some machines to experiment!)
 
 ## Networking
 
+### Getting around NATs
+
 The networking is not too complicated once you get past the VPN
 abstraction, which is the tricky bit to achieve without a SPOF.
-Some of my nodes are IPv6-capable and are IPv4-public, some are not IPv4-public, and one is neither and is behind a [CGNAT](https://en.wikipedia.org/wiki/Carrier-grade_NAT)
+Some of my nodes are IPv6-capable and are IPv4-public, some are not IPv4-public, and one is neither and is behind
+a [CGNAT](https://en.wikipedia.org/wiki/Carrier-grade_NAT)
 and doesn't have a IPv6 address.
+
 ```mermaid
 %% !caption: Networking setup. NATs in orange, ingress in green. Nodes are named after my cats
 graph RL
-    style Cosmo stroke:#693, stroke-width:2px,stroke-dasharray: 8 4
-    style Miki stroke:#693, stroke-width:2px,stroke-dasharray: 8 4
-    style Maco stroke:#693, stroke-width:2px,stroke-dasharray: 8 4
-    style Madrid stroke:#f75, stroke-width:3px, stroke-dasharray: 8 4
-    style London stroke:#fg75, stroke-width:3px, stroke-dasharray: 8 4
-    subgraph Hetzner["Hetzner \n (Nuremberg)"]
-        Miki("Miki")
-    end
+    style Cosmo stroke: #693, stroke-width: 2px, stroke-dasharray: 8 4
+    style Miki stroke: #693, stroke-width: 2px, stroke-dasharray: 8 4
+    style Maco stroke: #693, stroke-width: 2px, stroke-dasharray: 8 4
+    style Madrid stroke: #f75, stroke-width: 3px, stroke-dasharray: 8 4
+    style London stroke: #fg75, stroke-width: 3px, stroke-dasharray: 8 4
     subgraph Madrid["| Madrid (CGNAT, no IPv6) |"]
         Bianco(Bianco)
     end
@@ -36,26 +41,61 @@ graph RL
         Ari(Ari)
         Ziggy(Ziggy)
     end
-        
+
     subgraph "Contabo \n (Dusseldorf)"
         Cosmo(Cosmo)
         Maco(Maco)
+        Miki("Miki")
     end
 
     Cosmo -.-|no IPv6| Bianco
-    Cosmo & Maco -.- Miki
-    Ari -..-  Cosmo
+    Cosmo -.- Miki
+    Maco -.- Miki
+    Cosmo -.- Maco
+    Ari -..- Cosmo
     Ziggy -.- Maco & Cosmo
-    Ari -.-  Maco
-    Ziggy -.-  Miki
-    Ari -.-   Miki
+    Ari -.- Maco
+    Ziggy -.- Miki
+    Ari -.- Miki
     Ari -.- Ziggy
 ```
 
 To get around this, I made a mesh network where all IPv6 capable node
 establishes a VPN tunnel with each other.
 The only exception is Bianco, which is behind a Spanish ISP's CGNAT
-and it has no IPv6. To get around that, Bianco uses Cosmo as a hub-and-spoke. 
+and it has no IPv6. To get around that, Bianco uses Cosmo as a hub-and-spoke.
+
+Using Wireguard as a mesh VPN has the huge advantage of a flat network topology
+once inside the VPN, even when some Nodes get disconnected.
+
+### Service Mesh
+
+In a completely unnecessary impulse, I also deployed Consul to
+operate an Envoy [service mesh.](https://en.wikipedia.org/wiki/Service_mesh)
+
+```mermaid
+
+graph LR
+    subgraph Miki
+        A("workload A")
+        Aside("A's sidecar")
+        A -.->|plaintext| Aside
+    end
+
+    Aside ==>|mTLS| Bside
+
+    subgraph Maco
+        B("workload B")
+        Bside("B's sidecar")
+        Bside -.->|plaintext| B
+    end
+
+```
+
+Note that mTLS between containers was not strictly required as
+all traffic is encrypted via WireGuard anyway.
+
+### Ingress
 
 Ingress is structured as follows:
 
@@ -63,26 +103,30 @@ Ingress is structured as follows:
 %% !caption: Ingress setup
 graph LR
     Internet(("🌐 \nInternet"))
-        
+
     subgraph dcNode["non-CGNAT node"]
-%%            direction LR
-            traefik("traefik container")
+    %%            direction LR
+        traefik("traefik container")
     end
-        
+
     subgraph dcNode2["non-CGNAT node"]
         traefik2("traefik container")
     end
 
     subgraph anyNode["any node"]
+        sidecar("container's \n sidecar")
         containerServer("container with \nservice's HTTP")
     end
-        
-        Internet -.->|HTTPS|traefik
-        Internet -.->|HTTPS|traefik2
-        traefik & traefik2 -->containerServer
-        dcNode & dcNode2===|wireguard |anyNode
+
+    Internet -.->|HTTPS| traefik
+    Internet -.->|HTTPS| traefik2
+    traefik & traefik2 --> sidecar --> containerServer
+    dcNode & dcNode2 ===|wireguard| anyNode
 %%        dcNode===|wireguard|dcNode2
+
+
 ```
+
 ## Orchestration
 
 Container orchestration is done with Nomad. All nodes are clients (meaning
@@ -113,7 +157,7 @@ graph TD
     end
 
     NomadS -->|manages| NomadCdc
-    NomadS ~~~NomadCdc2
+    NomadS ~~~ NomadCdc2
     NomadS2 -->|manages| NomadCdc2
     NomadCdc2 -->|schedules| c3
 %%        NomadS<-.->|Gossip|NomadS2
@@ -125,10 +169,10 @@ graph TD
 All containers in the cluster are managed by Nomad. All non-containerised
 workloads (Nomad and Vault) are configuration-managed via NixOS.
 
-
 <img src="/assets/project/nomadWebPortfolio2-min.png" class="centered border-radius"
 caption="Nomad Job page for this website"
 />
+
 ## Monitoring
 
 All of this has a Grafana monitoring stack (Loki, Mimir, Grafana, etc).
@@ -140,10 +184,12 @@ class="centered border-radius"
 caption="Screenshot of a Grafana monitoring dashboard"
 />
 
-
 ## Looking back
 
-Overall, the setup is overkill for what I am running (a few containers, really). I could achieve most of this with SSH and docker compose alone, but
-I learnt a great deal of [SRE skills](https://en.wikipedia.org/wiki/Site_reliability_engineering) by trying to make a industry-grade platform that could scale to 10 or 1000 services!
+Overall, the setup is overkill for what I am running (a few containers, really). I could achieve most of this with SSH
+and docker compose alone, but
+I learnt a great deal of [SRE skills](https://en.wikipedia.org/wiki/Site_reliability_engineering) by trying to make a
+industry-grade platform that could scale to 10 or 1000 services!
 
-If I was to found a startup tomorrow and had to develop its platform, I would reuse much of the technology I used for this side-project.
+If I was to found a startup tomorrow and had to develop its platform, I would reuse much of the technology I used for
+this side-project.
