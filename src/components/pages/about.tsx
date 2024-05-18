@@ -84,11 +84,9 @@ export const About: FC = () => {
                                 <ListItemText>github.com/cottand</ListItemText>
                             </ListItemButton>
                         </ListItem>
-                        <ListItem disablePadding>
-                            <ListItemButton component={"a"} href={"mailto:nico@dcotta.eu"}>
-                                <ListItemIcon><Email/></ListItemIcon>
-                                <ListItemText>nico@dcotta.eu</ListItemText>
-                            </ListItemButton>
+                        <ListItem>
+                            <ListItemIcon><Email/></ListItemIcon>
+                            <ListItemText>nico (at) dcotta.com</ListItemText>
                         </ListItem>
                         <ListItem disablePadding>
                             <ListItemButton component={"a"} href={"https://www.linkedin.com/in/ndcotta/"}>
