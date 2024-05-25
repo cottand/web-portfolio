@@ -1,4 +1,4 @@
-[**Confis**](https://confis.dcotta.eu) was the final project of my Master's degree in Computer Science at
+[**Confis**](https://confis.dcotta.com) was the final project of my Master's degree in Computer Science at
 Imperial College London.
 It received high marks as well as a prizes for _Project Excellence_ and _Corporate Partnership_.
 

@@ -48,7 +48,7 @@ jobs:
           label=$git_sha-${{ matrix.system }}
 
           docker load < result
-          docker tag nico.dcotta.eu:nix ${{ env.REGISTRY_IMAGE }}:$label
+          docker tag nico.dcotta.com:nix ${{ env.REGISTRY_IMAGE }}:$label
           # docker tag ghcr.io/cottand/web-portfolio:latest ghcr.io/cottand/web-portfolio:$git_sha
           # docker push ghcr.io/cottand/web-portfolio:latest
           docker push ${{ env.REGISTRY_IMAGE }}:$label

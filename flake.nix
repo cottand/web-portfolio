@@ -54,7 +54,7 @@
         };
 
         packages.containerImage = pkgs.dockerTools.buildImage {
-          name = "nico.dcotta.eu";
+          name = "nico.dcotta.com";
           created = "now";
           tag = "nix";
           copyToRoot = pkgs.buildEnv {

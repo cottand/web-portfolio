@@ -26,7 +26,7 @@ you can [check out the repo](https://github.com/Cottand/web-portfolio/blob/maste
         pkgs = import nixpkgs { inherit system; };
       in rec {
         packages.containerImage = pkgs.dockerTools.buildImage {
-          name = "nico.dcotta.eu";
+          name = "nico.dcotta.com";
           created = "now";
           tag = "nix";
           copyToRoot = pkgs.buildEnv { /* ... */ };
@@ -39,7 +39,7 @@ you can [check out the repo](https://github.com/Cottand/web-portfolio/blob/maste
 }
 ```
 
-The above `containerImage` package will build a TAR, labeled `nico.dcotta.eu:nix` by default.
+The above `containerImage` package will build a TAR, labeled `nico.dcotta.com:nix` by default.
 To put this in CI, let's say we start with a plain, simple Actions workflow that builds an image and pushes it to
 your [ghcr.io](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) registry.
 
@@ -49,16 +49,16 @@ $ nix flake show .
 git+file:///home/.../dev/cottand/web-portfolio
 └───packages
     ├───aarch64-darwin
-    │   ├───containerImage: package 'docker-image-nico.dcotta.eu.tar.gz'
+    │   ├───containerImage: package 'docker-image-nico.dcotta.com.tar.gz'
     │   └───...
     ├───aarch64-linux
-    │   ├───containerImage: package 'docker-image-nico.dcotta.eu.tar.gz'
+    │   ├───containerImage: package 'docker-image-nico.dcotta.com.tar.gz'
     │   └───...
     ├───x86_64-darwin
-    │   ├───containerImage: package 'docker-image-nico.dcotta.eu.tar.gz'
+    │   ├───containerImage: package 'docker-image-nico.dcotta.com.tar.gz'
     │   └───...
     └───x86_64-linux
-        ├───containerImage: package 'docker-image-nico.dcotta.eu.tar.gz'
+        ├───containerImage: package 'docker-image-nico.dcotta.com.tar.gz'
         └───...
 ```
 
@@ -72,7 +72,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   REGISTRY_IMAGE: "ghcr.io/cottand/web-portfolio"
-  DEFAULT_TAG: nico.dcotta.eu:nix # Tag set by Nix
+  DEFAULT_TAG: nico.dcotta.com:nix # Tag set by Nix
 
 jobs:
   publish-nix-container:
@@ -309,7 +309,7 @@ jobs:
           label=$git_sha-${{ matrix.system }}
 
           docker load < result
-          docker tag nico.dcotta.eu:nix ${{ env.REGISTRY_IMAGE }}:$label
+          docker tag nico.dcotta.com:nix ${{ env.REGISTRY_IMAGE }}:$label
           # docker tag ghcr.io/cottand/web-portfolio:latest ghcr.io/cottand/web-portfolio:$git_sha
           # docker push ghcr.io/cottand/web-portfolio:latest
           docker push ${{ env.REGISTRY_IMAGE }}:$label

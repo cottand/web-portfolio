@@ -3,7 +3,7 @@ _03/02/2024 - #nix #docker #oci #reproducible_
 
 I do not often write opinionated articles - I tend to stick to more technical "Hey look at this clever trick!" kind of post.
 But this is an issue I have dealt with a bit now, and I would like
-to change a pre-conception that [I was myself wrong about](https://nico.dcotta.eu/blog/ReproducibleCacheableGradleDocker).
+to change a pre-conception that [I was myself wrong about](https://nico.dcotta.com/blog/ReproducibleCacheableGradleDocker).
 Most importantly, I am hoping to share what I have learnt since!
 
 > **TL;DR:** No, building your app inside your Dockerfile does not make your Docker images reproducible as in _"if it worked once, it will always work"_
