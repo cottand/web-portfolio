@@ -11,7 +11,7 @@ This post is about how I got there and what I did to fix it.
 ## How I got there
 
 My cluster consists of 3 nodes, one per machine and
-each with a single store, in a flat network. I set it up recently, so I was "planning to
+each with a single store. I set it up recently, so I was "planning to
 do backups soon™" (a lie I told myself). Even if all nodes shut down, or even
 if one dies permanently, CockroachDB black magic ensures I can start the nodes again
 just fine - so I felt in relative safety (relative to running a single PostgreSQL node for example).
@@ -63,6 +63,7 @@ like this (which is a guess, because I could not start it):
 | n4   | 10.0.0.1 | new clueless node |
 
 
+At this point despair starts to trickle in from the back of my mind.
 
 If you've ever maintained any Raft or Paxos based cluster, you know what this means:
 I lost quorum! I had 2/4 healthy nodes (I cannot count the new one, because you need
@@ -71,10 +72,9 @@ but on paper I had killed 2 nodes on what now was 4-node cluster.
 
 And I had no backups. 
 
-So I decided to take a break right about... here.
+I was now fully in facepalm mode. So I decided to take a break right about... here.
 
 ## Disaster recovery
-
 
 This is not the first time I have lost Raft quorum: almost all Hashicorp
 products come with Raft included, so I have messed up Nomad for example.
@@ -87,6 +87,9 @@ which says, helpfully: _"If you can’t recover 2 of the 3 failed nodes, contact
 
 But it's a Saturday morning, and this is my home-lab, so I don't think I am going to
 get help anytime soon.
+
+I tried several things, including crafting my own backup archive from the remaining
+leftover files (the restoration of which caused a segfault somewhere).
 
 After digging around the internet for a while, I found [this CockroachDB issue: _`cli: add debug recover commands for loss of quorum recovery`_](https://github.com/cockroachdb/cockroach/issues/71860).
 Exactly what I needed! But this command [was not documented](https://www.cockroachlabs.com/docs/v24.1/cockroach-commands) in the official docs.
@@ -114,17 +117,21 @@ cockroach debug recover apply-plan --store /roach.d plan.json
 
 This procedure recovered my cluster successfully 🎉
 
-I really think it was not going to make it. My understanding is this method does **not**
+I really think it was not going to make it. Quorum loss is pretty much
+the worst-case scenario for a Raft cluster, and the lack of documentation out there
+made me think this just was not possible for CockroachDB.
+
+My understanding is this method does **not**
 guarantee the ACID data consistency I had before I lost quorum, but at this point
 I do not care. I will take a corrupt row over losing the entire database (and so far,
 I have found no issues!)
 
 ## The lesson
 
-Just backup your data, so you don't need to waste an afternoon
+**Just backup your data**, so you don't need to waste an afternoon
 combing the internet for an obscure blog post like this one!
 
-When renewing nodes, make sure you also decommission them before shutting them down.
+When rotating machines, **make sure you decommission nodes** them before shutting them down.
 
 If, like me, you fail at all that, then know that the `cockroach` CLI has a very handy
 recovery toolkit, even if they do not publicise it (my guess is it is dangerous enough 
