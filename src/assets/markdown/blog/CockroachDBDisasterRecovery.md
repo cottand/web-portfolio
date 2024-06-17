@@ -92,7 +92,7 @@ get help anytime soon.
 I tried several things, including crafting my own backup archive from the remaining
 leftover files (the restoration of which caused a segfault somewhere).
 
-After digging around the internet for a while, I found [this CockroachDB issue: _`add debug recover commands for loss of quorum recovery`_](https://github.com/cockroachdb/cockroach/issues/71860).
+After digging around the internet for a while, I found [this CockroachDB issue: "_add debug recover commands for loss of quorum recovery_"](https://github.com/cockroachdb/cockroach/issues/71860).
 Exactly what I needed! But this command [was not documented](https://www.cockroachlabs.com/docs/v24.1/cockroach-commands) in the official docs.
 
 > Before you read on, here is my advice: even if your cluster is already broken, **back it up**. It's as simple as a `cp -r roach.d/ roach.d.bk`.

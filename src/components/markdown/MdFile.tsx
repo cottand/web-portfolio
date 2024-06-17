@@ -82,6 +82,23 @@ export const MdRenderer: FC<{
                             strong {
                                 font-weight: 500;
                             }
+                            
+                            
+                            th, td {
+                                padding: 8px;
+                                border-left: 1px solid grey;
+                                border-right: 1px solid grey;
+                            }
+                            
+                            table {
+                                border-collapse: collapse;
+                            }
+                            th {
+                                border-bottom: 1px solid grey;
+                            }
+                            td {
+                                border-bottom: 0;
+                            }
 
                             blockquote {
                                 margin: 0;
