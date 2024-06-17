@@ -4,11 +4,18 @@ import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleD
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md";
 import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md";
 import dockerNotRepro from "../../assets/markdown/blog/MultiStageDockerNotRepro.md";
+import cockroachDS from "../../assets/markdown/blog/CockroachDBDisasterRecovery.md"
 
 export const blogFromRef =
     (ref: string | undefined) => markdownBlogEntries.find(p => p.ref == ref)
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+    {
+        title: "CockroachDB quorum loss disaster recovery recovery",
+        ref: "CockroachDBDisasterRecovery",
+        date: "16/06/2024",
+        file: cockroachDS,
+    },
     {
         title: "Multi-stage Docker builds are not (usually) reproducible",
         ref: "DockerNotReproducible",

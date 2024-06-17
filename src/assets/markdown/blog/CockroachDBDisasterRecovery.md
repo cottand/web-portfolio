@@ -1,5 +1,6 @@
 _16/06/2024 - #cockroachdb #raft #quorum #disasterrecovery #backups #no,really,backups_
 
+
 Disclaimer: I do not really know what I am talking about, I am just glad I got
 out of the terrible state of affairs I found myself in.
 
@@ -91,7 +92,7 @@ get help anytime soon.
 I tried several things, including crafting my own backup archive from the remaining
 leftover files (the restoration of which caused a segfault somewhere).
 
-After digging around the internet for a while, I found [this CockroachDB issue: _`cli: add debug recover commands for loss of quorum recovery`_](https://github.com/cockroachdb/cockroach/issues/71860).
+After digging around the internet for a while, I found [this CockroachDB issue: _`add debug recover commands for loss of quorum recovery`_](https://github.com/cockroachdb/cockroach/issues/71860).
 Exactly what I needed! But this command [was not documented](https://www.cockroachlabs.com/docs/v24.1/cockroach-commands) in the official docs.
 
 > Before you read on, here is my advice: even if your cluster is already broken, **back it up**. It's as simple as a `cp -r roach.d/ roach.d.bk`.
@@ -136,3 +137,9 @@ When rotating machines, **make sure you decommission nodes** them before shuttin
 If, like me, you fail at all that, then know that the `cockroach` CLI has a very handy
 recovery toolkit, even if they do not publicise it (my guess is it is dangerous enough 
 to use that they want you to use it with support).
+
+# References
+
+- [Nomad documentation:  disaster recovery ](https://developer.hashicorp.com/nomad/tutorials/manage-clusters/outage-recovery#manual-recovery-using-peers-json)
+- [CockroachDB documentation: CLI docs for `cockroach`](https://www.cockroachlabs.com/docs/v24.1/cockroach-commands)
+- [cockroach/issues#71860 - _cli: add debug recover commands for loss of quorum recovery_](https://github.com/cockroachdb/cockroach/issues/71860)
