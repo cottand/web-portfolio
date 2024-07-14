@@ -7,6 +7,12 @@ import markdownBlogEntries from "../const/markdownBlogEntries";
 
 export const BlogEntriesList: FC = () =>
     <List component={"nav"}>
+        <Entry type={"external blog"}
+               title={"Securing Monzo's software supply-chain better with reproducible builds for enclaves"}
+               href={"https://monzo.com/blog/securing-our-software-supply-chain-better-with-reproducible-builds-for"}
+               date={"20/14/2024"}
+               key={"monzoReproducibleEnclaveBuilds"}
+        />
         {markdownBlogEntries.map(e =>
             <Entry type={"blog"}
                    title={e.title}
@@ -44,7 +50,7 @@ export const BlogEntriesList: FC = () =>
     </List>
 
 
-type Type = "blog" | "talk" | "article"
+type Type = "blog" | "talk" | "article" | "external blog"
 
 const Entry: FC<{ type: Type; title: string; href: string; date: string; divider?: boolean; key: string }> = (props) =>
     <ListItemButton component={RouterLink} to={props.href} divider={props.divider ?? true}>

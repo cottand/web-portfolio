@@ -19,7 +19,7 @@
             src = (cleanSource ./.);
           };
 
-          npmDepsHash = "sha256-/6+7DiuvKRQhva5A9arQPYM+hC9wuUY9FQB/97zg0RU=";
+          npmDepsHash = "sha256-VIwbN3xFLSBtLg8aE2bBwpsV8+Ld0zyDnXO6956aA7M=";
           npmPackFlags = [ "--ignore-scripts" ];
           installPhase = ''
             mkdir -p $out/srv
