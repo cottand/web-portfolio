@@ -4,12 +4,19 @@ import gradleRepro from "../../assets/markdown/blog/ReproducibleCacheableGradleD
 import nomadDnsAdblock from "../../assets/markdown/blog/DNSServiceDiscoveryAdblockingNomad.md";
 import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md";
 import dockerNotRepro from "../../assets/markdown/blog/MultiStageDockerNotRepro.md";
+import monorepoCiReproducibleBuilds from "../../assets/markdown/blog/ReproducibleInCi.md";
 import cockroachDS from "../../assets/markdown/blog/CockroachDBDisasterRecovery.md"
 
 export const blogFromRef =
     (ref: string | undefined) => markdownBlogEntries.find(p => p.ref == ref)
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+    {
+        title: "Dumb logic for smart monorepo CI thanks to reproducible builds",
+        ref: "MonorepoCiReproducibleBuilds",
+        date: "25/08/2024",
+        file: monorepoCiReproducibleBuilds,
+    },
     {
         title: "CockroachDB quorum loss disaster recovery recovery",
         ref: "CockroachDBDisasterRecovery",

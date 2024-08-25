@@ -1,5 +1,7 @@
 _25/08/2024 - #reproducible #nix #githubactions #gha #docker #caching #ghcr_
 
+> 🔧 This post talks about my self-hosted cluster, [you can find an overview of it here](/projects/selfhosted-homelab).
+
 I [have written before](https://monzo.com/blog/securing-our-software-supply-chain-better-with-reproducible-builds-for)
 about the benefits of (bit-by-bit) reproducible builds, specifically in the context of security. But this post is about
 a happy consequence of using those in my own homelab, which I later realised also applies to the bigger Nix binary
@@ -50,7 +52,7 @@ setup.
 
 But, to my slight surprise, when I started pumping out commits, I saw the following:
 
-![Screenshot 2024-08-18 at 11.48.38.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/007497c0-56dd-43ee-b214-b83ec648997a/33d70fc4-a177-4fce-aefa-8f6ef78ee0a5/Screenshot_2024-08-18_at_11.48.38.png)
+<img src="/assets/blog/reproInCiTags.png" caption="My GHCR repo for a service, showing a single image corresponding to multiple commits" class="centered border-radius" style="width: min(95%, 760px);"/>
 
 What we have here is several commits producing new tags in existing images, rather than each pushing an entirely new image.
 
@@ -111,10 +113,11 @@ To sum it up, we told GitHub CI to just compile everything on every single push,
 to Nix’s way of caching-via-inputs-hash, we achieved complex monorepo CI logic where we only built changed
 microservices. And almost by accident! Bit-by-bit reproducible builds hare tricky, but they have benefits beyond security.
 
-TODO add example!!
+> If you would like to see a working example of the above, you can [browse my repo](https://github.com/Cottand/selfhosted/tree/1652149db8480a5dbe6ae1669233791694d4995e) at the time of writing.
+> The GitHub actions workflow is [here](https://github.com/Cottand/selfhosted/blob/1652149db8480a5dbe6ae1669233791694d4995e/.github/workflows/main.yml),
+> while the Nix package definition is [here](https://github.com/Cottand/selfhosted/blob/1652149db8480a5dbe6ae1669233791694d4995e/services/s-rpc-portfolio-stats/package.nix).
 
 ## References
 
 - [`pkgs.dockerTools`, nixpkgs documentation for building Docker image with Nix](https://ryantm.github.io/nixpkgs/builders/images/dockertools/)
 - [`DeterminateSystems/magic-nix-cache-action`, to cache Nix in GitHub Actions](https://github.com/DeterminateSystems/magic-nix-cache-action)
-- 

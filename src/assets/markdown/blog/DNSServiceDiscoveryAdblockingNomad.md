@@ -1,6 +1,8 @@
 _10/08/2023 - #noamd #selfhosted #dns #adblock_
 <br></br>
 
+> 🔧 This post talks about my self-hosted cluster, [you can find an overview of it here](/projects/selfhosted-homelab).
+
 ## Background
 So, you would like to run a Nomad cluster but would rather not bother with a [Consul](https://github.com/hashicorp/consul) deployment?
 Fair enough! You run a self-hosted setup on your in-law's old Mac Mini and some Raspberry Pis - deploying _another_

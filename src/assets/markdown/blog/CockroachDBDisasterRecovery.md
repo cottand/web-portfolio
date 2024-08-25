@@ -1,5 +1,6 @@
 _16/06/2024 - #cockroachdb #raft #quorum #disasterrecovery #backups #no,really,backups_
 
+> 🔧 This post talks about my self-hosted cluster, [you can find an overview of it here](/projects/selfhosted-homelab).
 
 Disclaimer: I do not really know what I am talking about, I am just glad I got
 out of the terrible state of affairs I found myself in.

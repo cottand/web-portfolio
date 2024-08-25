@@ -45,7 +45,7 @@ These are tiny (a few Go files each) and use gRPC to communicate between
 each other as well as the CockroachDB cluster for a backing store.
 
 They are all built on CI on every [push to master](https://github.com/Cottand/selfhosted/actions/runs/10545182143/job/29215042623).
-You can find a blog post about how the automation around the builds works here.
+You can find a blog post about how the automation around the builds works [here](/blog/MonorepoCiReproducibleBuilds).
 
 ## Networking
 

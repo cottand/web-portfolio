@@ -2,6 +2,8 @@
 _21/05/2023 - #noamd #nixos #cni #selfhosted_
 <br></br>
 
+> 🔧 This post talks about my self-hosted cluster, [you can find an overview of it here](/projects/selfhosted-homelab).
+
 ## Background
 
 Skip this bit if you don't care to know _why_ I would use NixOS to run Nomad clients!

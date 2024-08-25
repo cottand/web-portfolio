@@ -7,17 +7,27 @@ import markdownBlogEntries from "../const/markdownBlogEntries";
 
 export const BlogEntriesList: FC = () =>
     <List component={"nav"}>
-        <Entry type={"external blog"}
-               title={"Securing Monzo's software supply-chain better with reproducible builds for enclaves"}
-               href={"https://monzo.com/blog/securing-our-software-supply-chain-better-with-reproducible-builds-for"}
-               date={"20/14/2024"}
-               key={"monzoReproducibleEnclaveBuilds"}
-        />
-        {markdownBlogEntries.map(e =>
+        {markdownBlogEntries.slice(0, -7).map(e =>
             <Entry type={"blog"}
                    title={e.title}
                    href={e.ref}
-                   // href={"/blog/" + e.ref}
+                // href={"/blog/" + e.ref}
+                   date={e.date}
+                   key={e.ref}
+            />
+        )}
+        <Entry type={"external blog"}
+               title={"Securing Monzo's software supply-chain better with reproducible builds for enclaves"}
+               href={"https://monzo.com/blog/securing-our-software-supply-chain-better-with-reproducible-builds-for"}
+               date={"20/07/2024"}
+               key={"monzoReproducibleEnclaveBuilds"}
+        />
+        {/*the last 7 entries are the oldest*/}
+        {markdownBlogEntries.slice(-7).map(e =>
+            <Entry type={"blog"}
+                   title={e.title}
+                   href={e.ref}
+                // href={"/blog/" + e.ref}
                    date={e.date}
                    key={e.ref}
             />
