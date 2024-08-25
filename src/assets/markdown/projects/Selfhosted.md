@@ -1,12 +1,16 @@
-I run a personal fleet of a few old computers in my living room which run services like
+I run a personal fleet of a several servers and few old computers in my living room which run services like
 
 - Personal DB
-- Password manager
 - Personal storage and backups
 - VPN, with adblocking
 - ... and hosts some of the projects you see in this website!
 
-I made it thinking about how I would build a company's fleet as an SRE. It has a mostly open-source stack with:
+It also hosts all the infrastructure required to support that deployment.
+Learning to create resilient low-maintenance infrastructure
+is a also a goal -- the means is an end in itself!
+
+I made it thinking about how I would build a company's platform as an SRE.
+It has a mostly open-source stack with:
 
 - Container orchestration through [Nomad](https://www.nomadproject.io/) (an alternative to Kubernetes)
 - Metrics, performance monitoring, and logs management
@@ -15,6 +19,33 @@ I made it thinking about how I would build a company's fleet as an SRE. It has a
 - Secure private networking through [Wireguard](https://www.wireguard.com/)
 - Reproducible, declarative deployments of the Linux OSs through [NixOS](https://nixos.org/) (although sometimes I
   install other OSs on some machines to experiment!)
+- Service discovery and a service mesh thanks to [Consul](https://github.com/hashicorp/consul)
+- Infra-as-code thanks to Terraform
+- Service-to-service communication via [gRPC](https://github.com/grpc)
+
+In this page I write up a technical overview of how I have architected the cluster.
+For findings and milestones I have achieved over time, you can [check out
+my blog](https://nico.dcotta.com/blog) (which is hosted here too!).
+
+I aim to update this page as the fleet evolves (I started in April 2023) so that
+it is up-to-date. Some notable milestones include, in order:
+- from docker-compose to Nomad
+- from plaintext orchestration to the mTLS Consul service mesh
+- from hardcoded secrets to a HA Vault cluster
+- from a single Postgres node to a HA CockroachDB cluster
+- from plain Nomad HCL jobs to Nix-templated jobs
+- from no-code containers to proper a Go microservices monorepo
+
+## Microservices
+
+Inspired by [Monzo's monorepo](https://monzo.com/blog/2022/09/29/migrating-our-monorepo-seamlessly-from-dep-to-go-modules/), my [selfhosted repo](https://github.com/cottand/seflhosted) includes a `services/`
+directory where I develop Go [microservices](https://www.youtube.com/watch?v=y8OnoxKotPQ).
+
+These are tiny (a few Go files each) and use gRPC to communicate between
+each other as well as the CockroachDB cluster for a backing store.
+
+They are all built on CI on every [push to master](https://github.com/Cottand/selfhosted/actions/runs/10545182143/job/29215042623).
+You can find a blog post about how the automation around the builds works here.
 
 ## Networking
 
@@ -123,9 +154,9 @@ graph LR
     traefik & traefik2 --> sidecar --> containerServer
     dcNode & dcNode2 ===|wireguard| anyNode
 %%        dcNode===|wireguard|dcNode2
-
-
 ```
+
+Where traefik is able to do mTLS with the Consul service mesh.
 
 ## Orchestration
 

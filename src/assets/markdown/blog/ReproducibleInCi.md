@@ -111,6 +111,8 @@ To sum it up, we told GitHub CI to just compile everything on every single push,
 to Nix’s way of caching-via-inputs-hash, we achieved complex monorepo CI logic where we only built changed
 microservices. And almost by accident! Bit-by-bit reproducible builds hare tricky, but they have benefits beyond security.
 
+TODO add example!!
+
 ## References
 
 - [`pkgs.dockerTools`, nixpkgs documentation for building Docker image with Nix](https://ryantm.github.io/nixpkgs/builders/images/dockertools/)
