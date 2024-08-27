@@ -111,7 +111,7 @@ complex logic around detecting files’ changes 🎉
 
 To sum it up, we told GitHub CI to just compile everything on every single push, but thanks to reproducible builds and
 to Nix’s way of caching-via-inputs-hash, we achieved complex monorepo CI logic where we only built changed
-microservices. And almost by accident! Bit-by-bit reproducible builds hare tricky, but they have benefits beyond security.
+microservices. And almost by accident! Bit-by-bit reproducible builds are tricky, but they have benefits beyond security.
 
 > If you would like to see a working example of the above, you can [browse my repo](https://github.com/Cottand/selfhosted/tree/1652149db8480a5dbe6ae1669233791694d4995e) at the time of writing.
 > The GitHub actions workflow is [here](https://github.com/Cottand/selfhosted/blob/1652149db8480a5dbe6ae1669233791694d4995e/.github/workflows/main.yml),

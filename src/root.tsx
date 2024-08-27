@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import * as React from 'react';
-import {createRef, Fragment} from 'react';
+import {createRef, Fragment, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Link, {LinkProps} from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
@@ -37,6 +37,14 @@ const LinkRouter = (props: LinkRouterProps) => <Link {...props} component={Route
 const Page = () => {
     const location = useLocation();
     const pathnames = location.pathname.split('/').filter((x) => x);
+
+    useEffect(() => {
+        fetch('/api/browse', {
+            method: 'POST',
+            body: JSON.stringify({url: location.pathname})
+        }).then(r => {
+        })
+    }, [location]);
 
     const fontProps = {fontSize: 22}
 
