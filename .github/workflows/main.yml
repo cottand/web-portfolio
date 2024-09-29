@@ -60,15 +60,6 @@ jobs:
           digest=${full#${{ env.REGISTRY_IMAGE }}@}
           mkdir -p /tmp/digests
 
-          touch "/tmp/digests/${digest#sha256:}"
-
-      - name: Upload digest
-        uses: actions/upload-artifact@v3
-        with:
-          name: digests
-          path: /tmp/digests/*
-          if-no-files-found: error
-          retention-days: 1
 
   merge-docker:
     runs-on: ubuntu-latest
