@@ -35,6 +35,7 @@ it is up-to-date. Some notable milestones include, in order:
 - from a single Postgres node to a HA CockroachDB cluster
 - from plain Nomad HCL jobs to Nix-templated jobs
 - from no-code containers to proper a Go microservices monorepo
+- from a Wireguard mesh to a Tailscale network
 
 ## Microservices
 

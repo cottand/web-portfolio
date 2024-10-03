@@ -6,11 +6,18 @@ import nomadNixos from "../../assets/markdown/blog/NomdAndNixOS.md";
 import dockerNotRepro from "../../assets/markdown/blog/MultiStageDockerNotRepro.md";
 import monorepoCiReproducibleBuilds from "../../assets/markdown/blog/ReproducibleInCi.md";
 import cockroachDS from "../../assets/markdown/blog/CockroachDBDisasterRecovery.md"
+import micromodules from "../../assets/markdown/blog/FromMicroservicesToMonolith.md"
 
 export const blogFromRef =
     (ref: string | undefined) => markdownBlogEntries.find(p => p.ref == ref)
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+    {
+        title: "From microservices to a monolith",
+        ref: "FromMicroservicesToMonolith",
+        date: "03/10/2024",
+        file: micromodules,
+    },
     {
         title: "Dumb logic for smart monorepo CI thanks to reproducible builds",
         ref: "MonorepoCiReproducibleBuilds",
