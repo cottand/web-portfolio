@@ -157,7 +157,7 @@ Thanks to limiting a module to at most a single database namespace, modules can 
 writes to said database and do not need to worry about writes from other modules. They only need to manage competing
 writes among instances of themselves.
 
-> If the homelab every becomes a bigger platform, I will write again about how I overcame the challenge of state beyond
+> If the homelab ever becomes a bigger platform, I will write again about how I overcame the challenge of state beyond
 > database locks!
 
 ```mermaid
