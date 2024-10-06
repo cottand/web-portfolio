@@ -7,11 +7,18 @@ import dockerNotRepro from "../../assets/markdown/blog/MultiStageDockerNotRepro.
 import monorepoCiReproducibleBuilds from "../../assets/markdown/blog/ReproducibleInCi.md";
 import cockroachDS from "../../assets/markdown/blog/CockroachDBDisasterRecovery.md"
 import micromodules from "../../assets/markdown/blog/FromMicroservicesToMonolith.md"
+import ociLbs from "../../assets/markdown/blog/ociPubLoadBalancer.md"
 
 export const blogFromRef =
     (ref: string | undefined) => markdownBlogEntries.find(p => p.ref == ref)
 
 const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
+    {
+        title: "Internet-to-internet load-balancing in OCI",
+        ref: "ociPublicLoadBalancer",
+        date: "06/10/2024",
+        file: ociLbs,
+    },
     {
         title: "From microservices to a monolith",
         ref: "FromMicroservicesToMonolith",
