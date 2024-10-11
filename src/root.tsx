@@ -39,7 +39,7 @@ const Page = () => {
     const pathnames = location.pathname.split('/').filter((x) => x);
 
     useEffect(() => {
-        fetch('/api/browse', {
+        fetch('https://web.dcotta.com/s-web-portfolio/api/browse', {
             method: 'POST',
             body: JSON.stringify({url: location.pathname})
         }).then(r => {
