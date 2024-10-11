@@ -1,0 +1,7 @@
+# https://developers.cloudflare.com/pages/configuration/headers/
+/*
+  Access-Control-Allow-Origin: https://web.dcotta.com
+
+/static/*
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: nosnippet
