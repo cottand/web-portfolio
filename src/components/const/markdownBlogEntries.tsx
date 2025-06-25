@@ -10,68 +10,70 @@ import micromodules from "../../assets/markdown/blog/FromMicroservicesToMonolith
 import ociLbs from "../../assets/markdown/blog/ociPubLoadBalancer.md"
 
 export const blogFromRef =
-    (ref: string | undefined) => markdownBlogEntries.find(p => p.ref == ref)
+    (ref: string | undefined) => ref ? (markdownBlogEntries as Record<string, MarkdownEntryProps>)[ref] : undefined
 
-const markdownBlogEntries: { title: string, date: string, ref: string, file: string }[] = [
-    {
+export type MarkdownEntryProps = { title: string, date: string, href: string, file: string }
+
+const markdownBlogEntries = {
+    ociPublicLoadBalancer: {
         title: "Internet-to-internet load-balancing in OCI",
-        ref: "ociPublicLoadBalancer",
         date: "06/10/2024",
+        href: "ociPublicLoadBalancer",
         file: ociLbs,
     },
-    {
+    FromMicroservicesToMonolith: {
         title: "From microservices to a monolith",
-        ref: "FromMicroservicesToMonolith",
+        href: "FromMicroservicesToMonolith",
         date: "03/10/2024",
         file: micromodules,
     },
-    {
+    MonorepoCiReproducibleBuilds: {
         title: "Dumb logic for smart monorepo CI thanks to reproducible builds",
-        ref: "MonorepoCiReproducibleBuilds",
+        href: "MonorepoCiReproducibleBuilds",
         date: "25/08/2024",
         file: monorepoCiReproducibleBuilds,
     },
-    {
+    CockroachDBDisasterRecovery: {
         title: "CockroachDB quorum loss disaster recovery recovery",
-        ref: "CockroachDBDisasterRecovery",
+        href: "CockroachDBDisasterRecovery",
         date: "16/06/2024",
         file: cockroachDS,
     },
-    {
+    DockerNotReproducible: {
         title: "Multi-stage Docker builds are not (usually) reproducible",
-        ref: "DockerNotReproducible",
+        href: "DockerNotReproducible",
         date: "10/02/2024",
         file: dockerNotRepro,
     },
-    {
+    MultiArchNixDockerImages: {
         title: "Multi-arch Docker Images With Nix on GitHub Actions",
-        ref: "MultiArchNixDockerImages",
+        href: "MultiArchNixDockerImages",
         date: "20/01/2024",
         file: multiArchNix,
     },
-    {
+    NixShellFlakeScriptingForHashLanguages: {
         title: "Scripting compiled languages via the Nix shell",
-        ref: "NixShellFlakeScriptingForHashLanguages",
+        href: "NixShellFlakeScriptingForHashLanguages",
         date: "23/11/2023",
         file: nixShellHash,
     },
-    {
+    ReproducibleCacheableGradleDocker: {
         title: "Reproducible and Cacheable builds with Gradle and Docker",
-        ref: "ReproducibleCacheableGradleDocker",
+        href: "ReproducibleCacheableGradleDocker",
         date: "25/08/2023",
         file: gradleRepro,
     },
-    {
+    DNSServiceDiscoveryAdblockingNomad: {
         title: "Running both ad-blocking and poor man's DNS service-discovery for self-hosted Nomad",
-        ref: "DNSServiceDiscoveryAdblockingNomad",
+        href: "DNSServiceDiscoveryAdblockingNomad",
         date: "10/08/2023",
         file: nomadDnsAdblock,
     },
-    {
+    nomadNixos: {
         title: "Using NixOS to swiftly and reproducibly get Nomad clients up and running",
-        ref: "nomadNixos",
+        href: "nomadNixos",
         date: "22/05/2023",
         file: nomadNixos,
     }
-]
+}
 export default markdownBlogEntries

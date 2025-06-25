@@ -34,14 +34,13 @@ export const About: FC = () => {
                 <Typography variant={"h4"}>Hi</Typography>
                 <br/>
                 <Typography fontSize={20}>
-                    I work as a senior backend software engineer at <Link
-                    href={"https://monzo.com"}>Monzo</Link>, building products customers love.
+                    I work as a senior backend software engineer at <Link href={"https://monzo.com"}>Monzo</Link>,
+                    building products customers love.
                     <br/>
                     <br/>
-                    I enjoy building things, music, bouldering, and kite surfing.
+                    I enjoy building things, music, gardening, and kite surfing.
                 </Typography>
             </Card>
-
 
             <Grid container spacing={0}
                   alignItems={"center"}
