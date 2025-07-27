@@ -8,7 +8,7 @@ import './assets/wasm_exec.js'
 
 // load and run our Go code
 // @ts-ignore
-export async function loadGoWasm()  {
+export async function loadIleWasm()  {
     if (!WebAssembly) {
         throw new Error('WebAssembly is not supported in your browser')
     }
@@ -17,7 +17,7 @@ export async function loadGoWasm()  {
     const go = new window.Go()
     const result = await WebAssembly.instantiateStreaming(
         // load the binary
-        fetch('/assets/bin/js_wasm/ile'),
+        fetch('/assets/bin/js_wasm/ile.wasm'),
         go.importObject
     )
 

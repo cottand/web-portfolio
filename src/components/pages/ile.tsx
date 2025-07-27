@@ -4,7 +4,7 @@ import {css} from '@emotion/react';
 import {useTheme, useMediaQuery} from '@mui/material';
 
 // Import the loadGoWasm function
-import {loadGoWasm} from '../../wasm';
+import {loadIleWasm} from '../../ile_wasm';
 
 export const IleCompiler = () => {
     const [code, setCode] = useState<string>('package main\n// Type your Ile code here\n');
@@ -19,11 +19,11 @@ export const IleCompiler = () => {
     useEffect(() => {
         const initWasm = async () => {
             try {
-                await loadGoWasm();
+                await loadIleWasm();
                 handleCodeChange(code);
                 // Run initial compilation
             } catch (error) {
-                setOutput(`Error initializing WebAssembly: ${error}`);
+                setOutput(`error initializing WebAssembly: ${error}`);
             }
         };
 

@@ -22,12 +22,12 @@
             src = (cleanSource ./.);
           };
 
-          npmDepsHash = "sha256-VIwbN3xFLSBtLg8aE2bBwpsV8+Ld0zyDnXO6956aA7M=";
+          npmDepsHash = "sha256-KqMeNCUGvAkeDBeWomlRD5IJRncXiHrqTw3eoxO5H1Y=";
           npmPackFlags = [ "--ignore-scripts" ];
 
           configurePhase = ''
             mkdir -p ./public/assets/bin/js_wasm
-            cp ${ile-wasm}/bin/js_wasm/ile ./public/assets/bin/js_wasm/ile
+            cp ${ile-wasm}/bin/js_wasm/ile ./public/assets/bin/js_wasm/ile.wasm
 
             mkdir -p ./src/assets/
             cp ${go-wasm-exec}/lib/wasm/wasm_exec.js ./src/assets
