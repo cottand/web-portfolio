@@ -25,6 +25,7 @@ import {SwitchTransition} from "react-transition-group";
 const breadcrumbNameMap: { [key: string]: string } = {
     '/projects': 'Projects',
     '/blog': 'Blog',
+    '/ile': 'Ile Compiler',
 };
 
 interface LinkRouterProps extends LinkProps {
@@ -140,6 +141,11 @@ let mainRoutes = [
         path: "blog",
         lazy: async () =>
             ({Component: await import("./components/pages/blog").then(c => c.BlogEntriesList)}),
+    },
+    {
+        path: "ile",
+        lazy: async () =>
+            ({Component: await import("./components/pages/ile").then(c => c.IleCompiler)}),
     },
     {
         path: "projects/:projectId",

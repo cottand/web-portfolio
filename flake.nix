@@ -3,12 +3,15 @@
     nixpkgs.url = "nixpkgs/nixos-23.11";
     utils.url = "github:numtide/flake-utils";
 
+    ile.url = "github:cottand/ile";
   };
 
-  outputs = { self, nixpkgs, utils, ... }:
+  outputs = { self, nixpkgs, utils, ile, ... }:
     (utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+        go-wasm-exec = ile.packages.${system}.go-wasm-exec;
+        ile-wasm = ile.packages.${system}.ile-wasm;
       in
       rec {
         packages.static = pkgs.buildNpmPackage {
@@ -21,6 +24,14 @@
 
           npmDepsHash = "sha256-VIwbN3xFLSBtLg8aE2bBwpsV8+Ld0zyDnXO6956aA7M=";
           npmPackFlags = [ "--ignore-scripts" ];
+
+          configurePhase = ''
+            mkdir -p ./public/assets/bin/js_wasm
+            cp ${ile-wasm}/bin/js_wasm/ile ./public/assets/bin/js_wasm/ile
+
+            mkdir -p ./src/assets/
+            cp ${go-wasm-exec}/lib/wasm/wasm_exec.js ./src/assets
+          '';
           installPhase = ''
             mkdir -p $out/srv
             cp -r build/* $out/srv

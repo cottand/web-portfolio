@@ -47,6 +47,14 @@ export const projectFromId =
 
 
 export const panels: PanelEntry[] = [
+//     {
+//         id: "ile",
+//         name: "Ile lang",
+//         summary: "A home-made pragmatic programming language",
+//         gh: "cottand/ile",
+//         icon: DynamicFormIcon,
+//         markdown: "",
+//     },
     {
         id: "leng",
         name: "Leng DNS",
@@ -54,7 +62,7 @@ export const panels: PanelEntry[] = [
         summary: "DNS proxy server with ad-blocking",
         gh: "cottand/leng",
         icon: DynamicFormIcon,
-            // <DynamicFormIcon {...commonIconProps} />
+        // <DynamicFormIcon {...commonIconProps} />
     },
     {
         id: "selfhosted-homelab",
@@ -94,7 +102,7 @@ export const panels: PanelEntry[] = [
         markdown: wacc,
         summary: "Multiplatform compiler of a small language for ARM and the JVM",
         gh: "cottand/wacc",
-        icon: DataObjectIcon ,
+        icon: DataObjectIcon,
     },
     {
         id: "paxos",
@@ -126,7 +134,7 @@ export const panels: PanelEntry[] = [
         markdown: web,
         summary: "Made with React",
         gh: "cottand/web-portfolio",
-        icon: WebIcon ,
+        icon: WebIcon,
     },
     {
         id: "pintOS",
@@ -134,7 +142,7 @@ export const panels: PanelEntry[] = [
         markdown: pintos,
         summary: "UNIX-like pint-sized OS",
         gh: "cottand/pintos",
-        icon: SportsBarIcon ,
+        icon: SportsBarIcon,
     },
     {
         id: "checkm8",
@@ -142,6 +150,6 @@ export const panels: PanelEntry[] = [
         markdown: checkm8,
         summary: "Chess player through computer vision and smart contracts",
         gh: "cottand/checkm8-public",
-        icon: EmojiEventsIcon ,
+        icon: EmojiEventsIcon,
     }
 ]
