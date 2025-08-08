@@ -25,13 +25,14 @@
           npmDepsHash = "sha256-KqMeNCUGvAkeDBeWomlRD5IJRncXiHrqTw3eoxO5H1Y=";
           npmPackFlags = [ "--ignore-scripts" ];
 
-          configurePhase = ''
+          configureScript = pkgs.writeScript "configure.sh" ''
             mkdir -p ./public/assets/bin/js_wasm
-            cp ${ile-wasm}/bin/js_wasm/ile ./public/assets/bin/js_wasm/ile.wasm
+            cp ${ile-wasm}/bin/js_wasm/ile ./public/assets/imported/bin/js_wasm/ile.wasm
 
             mkdir -p ./src/assets/
-            cp ${go-wasm-exec}/lib/wasm/wasm_exec.js ./src/assets
+            cp ${go-wasm-exec}/lib/wasm/wasm_exec.js ./src/assets/imported
           '';
+
           installPhase = ''
             mkdir -p $out/srv
             cp -r build/* $out/srv

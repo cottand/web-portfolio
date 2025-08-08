@@ -1,32 +1,69 @@
 /** @jsxImportSource @emotion/react */
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {css} from '@emotion/react';
-import {useTheme, useMediaQuery} from '@mui/material';
+import {useMediaQuery, useTheme, Button, Snackbar, Alert} from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 // Import the loadGoWasm function
 import {loadIleWasm} from '../../ile_wasm';
+import {useLocation, useNavigate} from "react-router-dom";
+
+
+function base64ToString(base64String: string): string {
+    const binString = atob(base64String);
+    let uint8Array = Uint8Array.from(binString, (m) => m.codePointAt(0) ?? 0);
+    return new TextDecoder().decode(uint8Array);
+}
+
+function stringToBase64(str: string): string {
+    const bytes = new TextEncoder().encode(str);
+    const binString = Array.from(bytes, (byte) =>
+        String.fromCodePoint(byte),
+    ).join("");
+    return btoa(binString);
+}
+
 
 export const IleCompiler = () => {
-    const [code, setCode] = useState<string>('package main\n// Type your Ile code here\n');
+    const [code, setCode] = useState<string>(`package main
+
+fn getMessage() {
+    "hello world!"
+}
+
+fn main() {
+  val msg = getMessage()
+  println(msg)
+}`);
     const [output, setOutput] = useState<string>('');
     const [goOutput, setGoOutput] = useState<string>('');
     const [inputHeight, setInputHeight] = useState<number>(200); // Default min-height
+    const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     // Load WASM when component mounts
     useEffect(() => {
         const initWasm = async () => {
             try {
                 await loadIleWasm();
-                handleCodeChange(code);
+
                 // Run initial compilation
+                if (location.hash) {
+                    const hash = location.hash.substring(1);
+                    const decoded = base64ToString(hash);
+                    handleCodeChange(decoded);
+                } else {
+                    handleCodeChange(code);
+                }
             } catch (error) {
                 setOutput(`error initializing WebAssembly: ${error}`);
             }
         };
-
         initWasm();
     }, []);
 
@@ -43,6 +80,11 @@ export const IleCompiler = () => {
 
     // Handle code changes and recompile on every keystroke
     const handleCodeChange = (newCode: string) => {
+        console.log("handleCodeChange: ", newCode)
+        const encoded = stringToBase64(newCode);
+        // Update the URL hash with the encoded code
+        navigate(`#${encoded}`, {replace: true});
+
         setCode(newCode);
         try {
             const result = ileCompile(newCode);
@@ -57,6 +99,20 @@ export const IleCompiler = () => {
         } catch (error) {
             setOutput(`Runtime error: ${error}`);
         }
+    };
+
+    // Generate share link and copy to clipboard
+    const handleShareLink = (content: string) => {
+        const encoded = stringToBase64(content);
+        const shareLink = `https://nico.dcotta.com/ile#${encoded}`;
+
+        navigator.clipboard.writeText(shareLink)
+            .then(() => {
+                setSnackbarOpen(true);
+            })
+            .catch(err => {
+                console.error('Failed to copy link: ', err);
+            });
     };
 
     return (
@@ -80,7 +136,21 @@ export const IleCompiler = () => {
                     display: flex;
                     flex-direction: column;
                 `}>
-                    <h3>Ile Code</h3>
+                    <div css={css`
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    `}>
+                        <h3>ile code</h3>
+                        {/*<Button*/}
+                        {/*    variant="outlined"*/}
+                        {/*    size="small"*/}
+                        {/*    startIcon={<ContentCopyIcon/>}*/}
+                        {/*    onClick={() => handleShareLink(code)}*/}
+                        {/*>*/}
+                        {/*    Share*/}
+                        {/*</Button>*/}
+                    </div>
                     <textarea
                         ref={inputRef}
                         value={code}
@@ -102,14 +172,16 @@ export const IleCompiler = () => {
                 </div>
 
                 {/* Go Output area - next to input on desktop, third on mobile */}
-                {!isMobile && (
-                    <div css={css`
-                        flex: 1;
-                        display: flex;
-                        flex-direction: column;
-                    `}>
-                        <h3>Go Output</h3>
-                        <pre css={css`
+                <div css={css`
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                `}>
+                    <h3>Generated Go output</h3>
+                    <
+                        pre
+                        // readOnly disabled
+                        css={css`
                             flex: 1;
                             font-family: monospace;
                             font-size: 14px;
@@ -122,11 +194,11 @@ export const IleCompiler = () => {
                             color: ${theme.palette.text.primary};
                             min-height: 200px; /* Minimum 10 lines of text */
                             height: ${inputHeight}px; /* Match the height of the Ile code textarea */
+                            margin: 0;
                         `}>
                             {goOutput}
-                        </pre>
-                    </div>
-                )}
+                    </pre>
+                </div>
             </div>
 
             {/* Output area - below both on desktop, second on mobile */}
@@ -135,7 +207,13 @@ export const IleCompiler = () => {
                 display: flex;
                 flex-direction: column;
             `}>
-                <h3>Output</h3>
+                <div css={css`
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                `}>
+                    <h3>Compiler output</h3>
+                </div>
                 <pre css={css`
                     flex: 1;
                     font-family: monospace;
@@ -154,31 +232,21 @@ export const IleCompiler = () => {
                 </pre>
             </div>
 
-            {/* Go Output area on mobile only - third position */}
-            {isMobile && (
-                <div css={css`
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                `}>
-                    <h3>Go Output</h3>
-                    <pre css={css`
-                        flex: 1;
-                        font-family: monospace;
-                        font-size: 14px;
-                        padding: 12px;
-                        border: 1px solid ${theme.palette.divider};
-                        border-radius: 4px;
-                        overflow: scroll;
-                        white-space: pre-wrap;
-                        background-color: ${theme.palette.background.paper};
-                        color: ${theme.palette.text.primary};
-                        height: ${inputHeight}px; /* Match the height of the Ile code textarea */
-                    `}>
-                        {goOutput}
-                    </pre>
-                </div>
-            )}
+            {/* Snackbar notification for copy success */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={() => setSnackbarOpen(false)}
+                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+            >
+                <Alert
+                    onClose={() => setSnackbarOpen(false)}
+                    severity="success"
+                    sx={{width: '100%'}}
+                >
+                    Link copied to clipboard!
+                </Alert>
+            </Snackbar>
         </div>
     );
 };

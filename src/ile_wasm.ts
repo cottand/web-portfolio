@@ -3,23 +3,34 @@
 // @ts-ignore
 
 // file placed here by Nix
-import './assets/wasm_exec.js'
+import './assets/imported/wasm_exec.js'
 
 
 // load and run our Go code
 // @ts-ignore
-export async function loadIleWasm()  {
+export async function loadIleWasm() {
     if (!WebAssembly) {
         throw new Error('WebAssembly is not supported in your browser')
     }
 
     // @ts-ignore
     const go = new window.Go()
-    const result = await WebAssembly.instantiateStreaming(
+    const streaming = WebAssembly.instantiateStreaming(
         // load the binary
-        fetch('/assets/bin/js_wasm/ile.wasm'),
+        fetch('/assets/imported/bin/js_wasm/ile.wasm')
+            // fallback to whatever is in prod
+            .catch((_) => fetch("nico.dcotta.com/assets/bin/js_wasm/ile.wasm")),
         go.importObject
     )
+    // .catch(err => {
+    //     // if this fails, fetch from a fallback
+    //     WebAssembly.instantiateStreaming(
+    //         fetch(''),
+    //         go.importObject,
+    //     )
+    // })
+
+    const result = await streaming
 
     // run it
     go.run(result.instance)
