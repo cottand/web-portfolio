@@ -26,11 +26,13 @@
           npmPackFlags = [ "--ignore-scripts" ];
 
           configureScript = pkgs.writeScript "configure.sh" ''
-            mkdir -p ./public/assets/bin/js_wasm
+            rm -rf ./public/assets/imported || 0
+            mkdir -p ./public/assets/imported/bin/js_wasm
             cp ${ile-wasm}/bin/js_wasm/ile ./public/assets/imported/bin/js_wasm/ile.wasm
 
-            mkdir -p ./src/assets/
-            cp ${go-wasm-exec}/lib/wasm/wasm_exec.js ./src/assets/imported
+            rm -rf ./src/assets/imported || 0
+            mkdir -p ./src/assets/imported
+            cp ${go-wasm-exec}/lib/wasm/wasm_exec.js ./src/assets/imported/
           '';
 
           installPhase = ''

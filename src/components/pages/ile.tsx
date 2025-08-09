@@ -80,7 +80,6 @@ fn main() {
 
     // Handle code changes and recompile on every keystroke
     const handleCodeChange = (newCode: string) => {
-        console.log("handleCodeChange: ", newCode)
         const encoded = stringToBase64(newCode);
         // Update the URL hash with the encoded code
         navigate(`#${encoded}`, {replace: true});
@@ -94,7 +93,13 @@ fn main() {
                 return;
             } else {
                 setOutput(result.types);
-                setGoOutput(result.goOutput);
+
+                // @ts-ignore
+                window.InterpretGo(result.goOutput)
+                    .catch((error: Error) => error.message)
+                    .then((str: string) => {
+                        setGoOutput(str);
+                    })
             }
         } catch (error) {
             setOutput(`Runtime error: ${error}`);
@@ -177,7 +182,7 @@ fn main() {
                     display: flex;
                     flex-direction: column;
                 `}>
-                    <h3>Generated Go output</h3>
+                    <h3>Inferred types</h3>
                     <
                         pre
                         // readOnly disabled
@@ -196,7 +201,7 @@ fn main() {
                             height: ${inputHeight}px; /* Match the height of the Ile code textarea */
                             margin: 0;
                         `}>
-                            {goOutput}
+                            {output}
                     </pre>
                 </div>
             </div>
@@ -212,7 +217,7 @@ fn main() {
                     justify-content: space-between;
                     align-items: center;
                 `}>
-                    <h3>Compiler output</h3>
+                    <h3>Program output</h3>
                 </div>
                 <pre css={css`
                     flex: 1;
@@ -228,7 +233,7 @@ fn main() {
                     background-color: ${theme.palette.background.paper};
                     color: ${theme.palette.text.primary};
                 `}>
-                    {output}
+                    {goOutput}
                 </pre>
             </div>
 
