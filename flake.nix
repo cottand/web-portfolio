@@ -27,8 +27,12 @@
 
           configureScript = pkgs.writeScript "configure.sh" ''
             rm -rf ./public/assets/imported || 0
-            mkdir -p ./public/assets/imported/bin/js_wasm
-            cp ${ile-wasm}/bin/js_wasm/ile ./public/assets/imported/bin/js_wasm/ile.wasm
+            dest="./public/assets/imported/bin/js_wasm"
+            mkdir -p $dest
+            # too big for cloudflare pages
+            #cp ${ile-wasm}/bin/js_wasm/ile $dest/ile.wasm
+            gzip -c ${ile-wasm}/bin/js_wasm/ile > $dest/ile.wasm.gz
+
 
             rm -rf ./src/assets/imported || 0
             mkdir -p ./src/assets/imported
