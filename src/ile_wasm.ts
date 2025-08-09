@@ -13,27 +13,24 @@ export async function loadIleWasm() {
         throw new Error('WebAssembly is not supported in your browser')
     }
 
+
     // @ts-ignore
     const go = new window.Go()
-    const streaming = WebAssembly.instantiateStreaming(
-        // load the binary
-        fetch('/assets/imported/bin/js_wasm/ile.wasm')
-            // fallback to whatever is in prod
-            .catch((_) => fetch("nico.dcotta.com/assets/bin/js_wasm/ile.wasm")),
-        go.importObject
-    )
-    // .catch(err => {
-    //     // if this fails, fetch from a fallback
-    //     WebAssembly.instantiateStreaming(
-    //         fetch(''),
-    //         go.importObject,
-    //     )
-    // })
+    const fetched = await fetch('/assets/imported/bin/js_wasm/ile.wasm.gzip')
+        .catch((_) => fetch("nico.dcotta.com/assets/imported/bin/js_wasm/ile.wasm.gzip"))
 
-    const result = await streaming
+    // @ts-ignore
+    const decompressed = fetched.body?.pipeThrough(new DecompressionStream("gzip"));
+    // @ts-ignore
+    const inst = await WebAssembly.instantiate(
+        await new Response(decompressed).arrayBuffer(),
+        go.importObject,
+    );
+
+    // const inst = await WebAssembly.instantiate(await fetched.arrayBuffer())
 
     // run it
-    go.run(result.instance)
+    go.run(inst.instance)
 
     // wait until it creates the function we need
     // @ts-ignore

@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.11";
+    nixpkgs.url = "nixpkgs/nixos-25.05";
     utils.url = "github:numtide/flake-utils";
 
     ile.url = "github:cottand/ile";
@@ -31,7 +31,7 @@
             mkdir -p $dest
             # too big for cloudflare pages
             #cp ${ile-wasm}/bin/js_wasm/ile $dest/ile.wasm
-            gzip -c ${ile-wasm}/bin/js_wasm/ile > $dest/ile.wasm.gz
+            gzip -c ${ile-wasm}/bin/js_wasm/ile > $dest/ile.wasm.gzip
 
 
             rm -rf ./src/assets/imported || 0
