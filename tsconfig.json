@@ -21,12 +21,12 @@
     "jsx": "preserve",
     "typeRoots": [
       "src/types",
-      "src/types/imported",
+      "src/types/imported/*",
       "node_modules/@types"
     ]
   },
   "include": [
-    "src",
-    "src/components"
+//    "src",
+//    "src/components",
   ]
 }

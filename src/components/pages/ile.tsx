@@ -258,7 +258,6 @@ fn main() {
 
 function ileCompile(program: string): ({ error: string } | { types: string, goOutput: string }) {
     try {
-        // @ts-ignore
         return window.CompileAndShowGoOutput(program);
     } catch (error) {
         return {error: `Compilation error: ${error}`};

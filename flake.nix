@@ -10,8 +10,7 @@
     (utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        go-wasm-exec = ile.packages.${system}.go-wasm-exec;
-        ile-wasm = ile.packages.${system}.ile-wasm;
+        ile-pkgs = ile.packages.${system};
       in
       rec {
         packages.static = pkgs.buildNpmPackage {
@@ -22,7 +21,7 @@
             src = (cleanSource ./.);
           };
 
-          npmDepsHash = "sha256-KqMeNCUGvAkeDBeWomlRD5IJRncXiHrqTw3eoxO5H1Y=";
+          npmDepsHash = "sha256-VmvfzyBQi0pXXtG4QsbkZWEeGkub0i9UuR0sRhFKt6I=";
           npmPackFlags = [ "--ignore-scripts" ];
 
           configureScript = pkgs.writeScript "configure.sh" ''
@@ -32,12 +31,17 @@
             # the WASM binary is too big for cloudflare pages
             # (and it's nice to save bandwidth anyway) so we compress it first
             # note we the must also decompress it directly in JS in ile_wasm.ts
-            gzip -c ${ile-wasm}/bin/js_wasm/ile > $dest/ile.wasm.gzip
+            gzip -c ${ile-pkgs.ile-wasm}/bin/js_wasm/ile > $dest/ile.wasm.gzip
+
+
+            rm -rf ./src/types/imported || 0
+            mkdir -p ./src/types/imported
+            cp ${ile-pkgs.ile-wasm-types} ./src/types/imported/ile-wasm.d.ts
 
 
             rm -rf ./src/assets/imported || 0
             mkdir -p ./src/assets/imported
-            cp ${go-wasm-exec}/lib/wasm/wasm_exec.js ./src/assets/imported/
+            cp ${ile-pkgs.go-wasm-exec}/lib/wasm/wasm_exec.js ./src/assets/imported/
           '';
 
           installPhase = ''
