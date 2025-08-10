@@ -17,17 +17,13 @@ export async function loadIleWasm() {
     // @ts-ignore
     const go = new window.Go()
     const fetched = await fetch('/assets/imported/bin/js_wasm/ile.wasm.gzip')
-        .catch((_) => fetch("nico.dcotta.com/assets/imported/bin/js_wasm/ile.wasm.gzip"))
+        .catch((_) => fetch("https://nico.dcotta.com/assets/imported/bin/js_wasm/ile.wasm.gzip"))
 
-    // @ts-ignore
     const decompressed = fetched.body?.pipeThrough(new DecompressionStream("gzip"));
-    // @ts-ignore
     const inst = await WebAssembly.instantiate(
         await new Response(decompressed).arrayBuffer(),
         go.importObject,
     );
-
-    // const inst = await WebAssembly.instantiate(await fetched.arrayBuffer())
 
     // run it
     go.run(inst.instance)

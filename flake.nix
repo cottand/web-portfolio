@@ -29,8 +29,9 @@
             rm -rf ./public/assets/imported || 0
             dest="./public/assets/imported/bin/js_wasm"
             mkdir -p $dest
-            # too big for cloudflare pages
-            #cp ${ile-wasm}/bin/js_wasm/ile $dest/ile.wasm
+            # the WASM binary is too big for cloudflare pages
+            # (and it's nice to save bandwidth anyway) so we compress it first
+            # note we the must also decompress it directly in JS in ile_wasm.ts
             gzip -c ${ile-wasm}/bin/js_wasm/ile > $dest/ile.wasm.gzip
 
 
