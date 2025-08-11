@@ -21,7 +21,7 @@
             src = (cleanSource ./.);
           };
 
-          npmDepsHash = "sha256-VmvfzyBQi0pXXtG4QsbkZWEeGkub0i9UuR0sRhFKt6I=";
+          npmDepsHash = "sha256-Tz0xdJYiBXNlmS1PEM8zMONlRGRQG91Gcwlx0OaHOgg";
           npmPackFlags = [ "--ignore-scripts" ];
 
           configureScript = pkgs.writeScript "configure.sh" ''
@@ -46,7 +46,7 @@
 
           installPhase = ''
             mkdir -p $out/srv
-            cp -r build/* $out/srv
+            cp -r dist/* $out/srv
           '';
         };
         packages.default = packages.static;
