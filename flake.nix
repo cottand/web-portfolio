@@ -21,7 +21,7 @@
             src = (cleanSource ./.);
           };
 
-          npmDepsHash = "sha256-Tz0xdJYiBXNlmS1PEM8zMONlRGRQG91Gcwlx0OaHOgg";
+          npmDepsHash = "sha256-k0bZOCUehg8tJ1ZFX1tKLIB0imxyoEgkwev0v2IX+9o";
           npmPackFlags = [ "--ignore-scripts" ];
 
           configureScript = pkgs.writeScript "configure.sh" ''
