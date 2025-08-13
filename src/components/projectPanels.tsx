@@ -13,7 +13,6 @@ import checkm8 from "../assets/markdown/projects/Checkm8.md"
 import confis from "../assets/markdown/projects/Confis.md"
 import Balance from "@mui/icons-material/Balance";
 import StorageIcon from '@mui/icons-material/Storage';
-import React from "react";
 import ShareOutlined from "@mui/icons-material/ShareOutlined";
 import Handshake from "@mui/icons-material/Handshake";
 import Code from "@mui/icons-material/Code";
