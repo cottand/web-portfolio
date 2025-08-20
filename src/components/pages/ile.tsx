@@ -4,7 +4,6 @@ import {css} from '@emotion/react';
 import {useMediaQuery, useTheme, Button, Snackbar, Alert} from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-// Import the loadGoWasm function
 import {loadIleWasm} from '../../ile_wasm';
 import {useLocation, useNavigate} from "react-router-dom";
 
