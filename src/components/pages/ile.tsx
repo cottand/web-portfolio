@@ -36,7 +36,6 @@ fn main() {
 }`);
     const [output, setOutput] = useState<string>('');
     const [goOutput, setGoOutput] = useState<string>('');
-    const [inputHeight, setInputHeight] = useState<number>(200); // Default min-height
     const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const theme = useTheme();
@@ -65,17 +64,6 @@ fn main() {
         };
         initWasm();
     }, []);
-
-    // Update input height when code changes or component updates
-    useEffect(() => {
-        if (inputRef.current) {
-            // Get the scrollHeight of the textarea (content height)
-            const scrollHeight = inputRef.current.scrollHeight;
-            // Set the height to the max of 200px (10 lines) or the content height
-            setInputHeight(Math.max(200, scrollHeight));
-        }
-    }, [code]);
-
 
     // Handle code changes and recompile on every keystroke
     const handleCodeChange = (newCode: string) => {
@@ -123,7 +111,7 @@ fn main() {
         <div css={css`
             display: flex;
             flex-direction: column;
-            height: 80vh;
+            //height: 100vh;
             width: 100%;
             gap: 16px;
         `}>
@@ -158,6 +146,7 @@ fn main() {
                     <textarea
                         ref={inputRef}
                         value={code}
+                        rows={code.split('\n').length}
                         onChange={(e) => handleCodeChange(e.target.value)}
                         css={css`
                             flex: 1;
@@ -169,8 +158,8 @@ fn main() {
                             resize: none;
                             background-color: ${theme.palette.background.paper};
                             color: ${theme.palette.text.primary};
-                            min-height: 200px; /* Approximately 10 lines of text */
-                            height: ${inputHeight}px; /* Dynamic height based on content */
+                            min-height: 30vh; /* Approximately 10 lines of text */
+                            max-height: 50vh; /* Dynamic height based on content */
                         `}
                     />
                 </div>
@@ -196,8 +185,8 @@ fn main() {
                             white-space: pre-wrap;
                             background-color: ${theme.palette.background.paper};
                             color: ${theme.palette.text.primary};
-                            min-height: 200px; /* Minimum 10 lines of text */
-                            height: ${inputHeight}px; /* Match the height of the Ile code textarea */
+                            min-height: 30vh; /* Minimum 10 lines of text */
+                            max-height: 80vh; /* Match the height of the Ile code textarea */
                             margin: 0;
                         `}>
                             {output}
@@ -226,8 +215,8 @@ fn main() {
                     border: 1px solid ${theme.palette.divider};
                     border-radius: 4px;
                     overflow: scroll;
-                    min-height: 200px; /* Minimum 10 lines of text */
-                    max-height: 500px;
+                    min-height: 10vh; /* Minimum 10 lines of text */
+                    max-height: 30vh;
                     white-space: pre-wrap;
                     background-color: ${theme.palette.background.paper};
                     color: ${theme.palette.text.primary};
