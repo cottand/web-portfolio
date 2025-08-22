@@ -95,7 +95,7 @@ export const About: FC = () => {
                         </ListItem>
                         <ListItem disablePadding>
                             <ListItemButton component={"a"}
-                                            href={"https://github.com/Cottand/resume/raw/master/out/nicoDCottaResume.pdf"}>
+                                            href={"https://github.com/Cottand/resume/raw/master/nicoResume.pdf"}>
                                 <ListItemIcon><SaveAlt/></ListItemIcon>
                                 <ListItemText>download resumé</ListItemText>
                             </ListItemButton>
