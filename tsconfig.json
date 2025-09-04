@@ -20,7 +20,6 @@
     "noEmit": true,
     "noUncheckedSideEffectImports": true,
     "typeRoots": [
-      "src/types/imported",
       "node_modules/@types"
     ],
     "jsx": "react-jsx",
@@ -28,6 +27,6 @@
   "include": [
     "src",
     "vite.config.ts",
-    //    "src/components",
+    "src/types/imported/*.d.ts"
   ]
 }

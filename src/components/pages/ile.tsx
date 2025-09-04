@@ -72,25 +72,36 @@ fn main() {
         navigate(`#${encoded}`, {replace: true});
 
         setCode(newCode);
-        try {
-            const result = ileCompile(newCode);
-            if ('error' in result) {
-                setOutput(result.error);
-                setGoOutput('');
-                return;
-            } else {
-                setOutput(result.types);
 
-                // @ts-ignore
-                window.InterpretGo(result.goOutput)
-                    .catch((error: Error) => error.message)
-                    .then((str: string) => {
-                        setGoOutput(str);
+        const handle = async () => {
+            try {
+                await window.CompileAndShowGoOutput(newCode)
+                    .catch((error: Error) => {
+                        setOutput(error.message);
+                        setGoOutput('');
+                        return null;
                     })
+                    .then((result) => {
+                        if (result) {
+                            setOutput(result.types);
+                        }
+                        return result;
+                    })
+                    .then((result) => {
+                        if (result) {
+                            return window.InterpretGo(result.goOutput)
+                        }
+                        return null;
+                    })
+                    .catch((error) => error.message)
+                    .then((str) => {
+                        setGoOutput(str ?? "");
+                    })
+            } catch (error) {
+                setOutput(`${error}`);
             }
-        } catch (error) {
-            setOutput(`Runtime error: ${error}`);
         }
+        handle();
     };
 
     // Generate share link and copy to clipboard
@@ -243,13 +254,3 @@ fn main() {
         </div>
     );
 };
-
-function ileCompile(program: string): ({ error: string } | { types: string, goOutput: string }) {
-    try {
-
-        // @ts-ignore
-        return window.CompileAndShowGoOutput(program);
-    } catch (error) {
-        return {error: `Compilation error: ${error}`};
-    }
-}
